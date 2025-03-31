@@ -14,7 +14,12 @@ import {
   TabPanels,
 } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useNavigate } from 'react-router-dom'
+import logo from "../images/NancySmall.webp"
 const navigation = {
+
+  
+  
   categories: [
     {
       id: 'Mujer',
@@ -139,6 +144,7 @@ const navigation = {
 }
 
 export default function Example() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false)
 
   return (
@@ -239,27 +245,15 @@ export default function Example() {
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                  Sign in
+                <a onClick={()=>navigate("login/")} href="" className="-m-2 block p-2 font-medium text-gray-900">
+                  Conectarse
                 </a>
               </div>
               <div className="flow-root">
-                <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                <a href="" onClick={()=>navigate("registro/")} className="-m-2 block p-2 font-medium text-gray-900">
                   Registrarse
                 </a>
               </div>
-            </div>
-
-            <div className="border-t border-gray-200 px-4 py-6">
-              <a href="#" className="-m-2 flex items-center p-2">
-                <img
-                  alt=""
-                  src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg"
-                  className="block h-auto w-5 shrink-0"
-                />
-                <span className="ml-3 block text-base font-medium text-gray-900">CAD</span>
-                <span className="sr-only">, change currency</span>
-              </a>
             </div>
           </DialogPanel>
         </div>
@@ -281,11 +275,11 @@ export default function Example() {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <span className="sr-only">Your Company</span>
+                <a onClick={()=>navigate("/")} href="">
+                  <span className="sr-only">Doña Nancy</span>
                   <img
                     alt=""
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                    src={logo}
                     className="h-8 w-auto"
                   />
                 </a>
@@ -373,25 +367,25 @@ export default function Example() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                  <a onClick={()=>navigate("login/")} href="" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Conectarse
                   </a>
                   <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                  <a onClick={()=>navigate("registro/")} href="" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Registrarse
                   </a>
                 </div>
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
+                  <a href="" onClick={()=>navigate("/productos/")} className="p-2 text-gray-400 hover:text-gray-500">
+                    <span className="sr-only">Buscar</span>
                     <MagnifyingGlassIcon aria-hidden="true" className="size-6" />
                   </a>
                 </div>
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <a onClick={()=>navigate("/carrito/")} href="" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"
                       className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"

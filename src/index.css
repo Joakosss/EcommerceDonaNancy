@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+
+@layer components {
+    .typography {
+      color: var(--color-gray-950);
+      a {
+        color: var(--color-blue-500);
+        &:hover {
+          color: var(--color-blue-800);
+        }
+      }
+    }
+  }

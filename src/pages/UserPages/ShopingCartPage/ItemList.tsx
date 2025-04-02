@@ -1,23 +1,30 @@
+import useShoppingCartStore, { ProductCartType } from "../../../store/useShoppingCartStore";
+
 type ItemCompraProps = {
-  imgLink: string;
-  title: string;
-  price: number;
-  counter: number;
+  product: ProductCartType
 };
 
-function ItemList({ title, imgLink, price, counter }: ItemCompraProps) {
+function ItemList({ product }: ItemCompraProps) {
+
+  const {destroy,decrease,increase} = useShoppingCartStore()
+
+
+  const handleDestroyItem = ()=>{
+    destroy(product.product.id_producto)
+  }
+
   return (
     <>
       <div className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(61,63,68,0.3)]">
         <div className="flex gap-4">
           <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
-            <img src={imgLink} className="w-full h-full object-contain" />
+            <img src={product.product.foto} className="w-full h-full object-contain" />
           </div>
 
           <div className="flex flex-col gap-4">
             <div>
               <h3 className="text-sm sm:text-base font-semibold text-slate-900">
-                {title}
+                {product.product.nombre}
               </h3>
             </div>
 
@@ -25,7 +32,8 @@ function ItemList({ title, imgLink, price, counter }: ItemCompraProps) {
             <div className="mt-auto flex items-center gap-3">
               <button
                 type="button"
-                className="flex items-center justify-center w-5 h-5 bg-slate-400 outline-none rounded-full"
+                className="flex items-center justify-center w-5 h-5  bg-slate-800 outline-none rounded-full cursor-pointer"
+                onClick={()=>decrease(product.product.id_producto)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -39,11 +47,12 @@ function ItemList({ title, imgLink, price, counter }: ItemCompraProps) {
                 </svg>
               </button>
               <span className="font-semibold text-sm leading-[18px]">
-                {counter}
+                {product.quantity}
               </span>
               <button
                 type="button"
-                className="flex items-center justify-center w-5 h-5 bg-slate-800 outline-none rounded-full"
+                className="flex items-center justify-center w-5 h-5 bg-slate-800 outline-none rounded-full cursor-pointer"
+                onClick={()=>increase(product.product.id_producto)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +71,7 @@ function ItemList({ title, imgLink, price, counter }: ItemCompraProps) {
 
         <div className="ml-auto flex flex-col">
           {/* SVG Eliminar */}
-          <div className="flex items-start gap-4 justify-end">
+          <div className="flex items-start gap-4 justify-end" onClick={()=>handleDestroyItem()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-4 h-4 cursor-pointer fill-slate-400 hover:fill-red-600 inline-block"
@@ -80,7 +89,7 @@ function ItemList({ title, imgLink, price, counter }: ItemCompraProps) {
           </div>
           {/* Precio */}
           <h3 className="text-sm sm:text-base font-semibold text-slate-900 mt-auto">
-            ${price}
+            ${product.product.precio}
           </h3>
         </div>
       </div>
@@ -89,3 +98,5 @@ function ItemList({ title, imgLink, price, counter }: ItemCompraProps) {
 }
 
 export default ItemList;
+
+/* bg-slate-400 */

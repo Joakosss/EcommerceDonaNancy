@@ -170,10 +170,7 @@ function CategoryPage({}: Props) {
             productos.map((producto) => (
               <ProductCard
                 key={producto.id}
-                id={producto.id_producto}
-                imgLink={producto.foto}
-                title={producto.nombre}
-                price={producto.precio}
+                product={producto}
               />
             ))}
         </div>

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import TrendingProducts from "../../../components/TrendingProducts";
 import { useSearchProduct } from "../../../hooks/useSearchProduct";
+import useShoppingCartStore from "../../../store/useShoppingCartStore";
 
 type Props = {};
 
@@ -8,6 +9,10 @@ function ProductPage({}: Props) {
   const { id } = useParams();
 
   const { data: product, isLoading, isError } = useSearchProduct(id!);
+  const {add} = useShoppingCartStore()
+  const handleAddProductCart = ()=>{
+    add(product!)
+  }
 
   return (
     <>
@@ -29,10 +34,10 @@ function ProductPage({}: Props) {
               </div>
 
               <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                <a
-                  href="#"
+                <button
+                  onClick={()=>handleAddProductCart()}
                   title=""
-                  className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                  className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700 focus:z-10"
                   role="button"
                 >
                   <svg
@@ -53,7 +58,7 @@ function ProductPage({}: Props) {
                     />
                   </svg>
                   Añadir al carro
-                </a>
+                </button>
               </div>
 
               <hr className="my-6 md:my-8 border-gray-200" />

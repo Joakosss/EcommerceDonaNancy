@@ -16,6 +16,7 @@ import {
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 import logo from "../images/NancySmall.webp"
+import useShoppingCartStore from '../store/useShoppingCartStore'
 const navigation = {
 
   
@@ -145,6 +146,8 @@ const navigation = {
 
 export default function Example() {
   const navigate = useNavigate();
+  const {counterItems} = useShoppingCartStore()
+
   const [open, setOpen] = useState(false)
 
   return (
@@ -390,7 +393,9 @@ export default function Example() {
                       aria-hidden="true"
                       className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                      {counterItems<99 ? counterItems: "+99"}
+                      </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div>

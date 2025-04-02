@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import logoBig from "../images/NancyMid.webp"
 
-function Login({}: Props) {
+function Login() {
   const navigate = useNavigate()
   return (
     <>

@@ -2,21 +2,22 @@ import { useNavigate } from "react-router-dom";
 import { generateSlug } from "../../../utilities/generateSlug";
 import { ProductType } from "../../../types/ProductType";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
-
+import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
+import MyButton from "../../../components/MyButton";
 type ProductCardProps = {
-  product: ProductType
+  product: ProductType;
 };
 
 function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate();
 
-  const {add} = useShoppingCartStore()
-  const handleAddProductCart = ()=>{
-    add(product!)
-  }
+  const { add } = useShoppingCartStore();
+  const handleAddProductCart = () => {
+    add(product!);
+  };
 
   const handleNavigate = (id: string) => {
-    const slugName = generateSlug(product.nombre)
+    const slugName = generateSlug(product.nombre);
     navigate(`/producto/${id}/${slugName}`);
   };
 
@@ -25,7 +26,11 @@ function ProductCard({ product }: ProductCardProps) {
       {/* Imagen */}
       <div className="h-56 w-full">
         <a href="" onClick={() => handleNavigate(product.id_producto)}>
-          <img className="w-full h-full object-contain" src={product.foto} alt="" />
+          <img
+            className="w-full h-full object-contain"
+            src={product.link_foto}
+            alt=""
+          />
         </a>
       </div>
       <div className="pt-6">
@@ -42,33 +47,14 @@ function ProductCard({ product }: ProductCardProps) {
         {/* Precio */}
         <div className="mt-4 flex items-center justify-between gap-4">
           <p className="text-2xl font-bold leading-tight text-gray-900">
-            ${product.precio}
+            ${generateChileanPrice(product.precio)}
           </p>
-
-          <button
+          <MyButton
             type="button"
-            className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700 focus:z-10"
-            onClick={()=>handleAddProductCart()}
-          >
-            <svg
-              className="-ms-2 me-2 h-5 w-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-              />
-            </svg>
-            Añadir al carro
-          </button>
+            variant="secondary"
+            onClick={() => handleAddProductCart()}
+            preBuildChildren="shopingCart"
+          ></MyButton>
         </div>
       </div>
     </div>

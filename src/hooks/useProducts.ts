@@ -1,17 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { ProductType } from "../types/ProductType";
 import axios from "axios";
 
 type useProductsType = {
+  url: string;
   limit?: number;
+  filter?: {};
 };
 
-export const useProducts = ({ limit }: useProductsType = {}) => {
-  return useQuery<ProductType[]>({
-    queryKey: ["productos"],
-    queryFn: async (): Promise<ProductType[]> => {
-      const response = await axios.get("http://localhost:3000/productos", {
-        params: { limit },
+export const useProducts = ({ url, limit, filter }: useProductsType) => {
+  return useQuery({
+    queryKey: ["productos", filter],
+    queryFn: async () => {
+      const response = await axios.get(url, {
+        params: { ...filter },
+        // Guardamos el total de elementos en la cabecera
       });
       return response.data;
     },

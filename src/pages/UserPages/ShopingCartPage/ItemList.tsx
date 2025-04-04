@@ -1,31 +1,45 @@
-import useShoppingCartStore, { ProductCartType } from "../../../store/useShoppingCartStore";
-
+import { useNavigate } from "react-router-dom";
+import useShoppingCartStore, {
+  ProductCartType,
+} from "../../../store/useShoppingCartStore";
+import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
+import { generateSlug } from "../../../utilities/generateSlug";
 type ItemCompraProps = {
-  product: ProductCartType
+  product: ProductCartType;
 };
 
 function ItemList({ product }: ItemCompraProps) {
+  const { destroy, decrease, increase } = useShoppingCartStore();
+  const navigate = useNavigate();
 
-  const {destroy,decrease,increase} = useShoppingCartStore()
-
-
-  const handleDestroyItem = ()=>{
-    destroy(product.product.id_producto)
-  }
+  const handleDestroyItem = () => {
+    destroy(product.product.id_producto);
+  };
+  const handleNavigate = (id: string) => {
+    const slugName = generateSlug(product.product.nombre);
+    navigate(`/producto/${id}/${slugName}`);
+  };
 
   return (
     <>
       <div className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(61,63,68,0.3)]">
         <div className="flex gap-4">
           <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
-            <img src={product.product.foto} className="w-full h-full object-contain" />
+            <img
+              src={product.product.link_foto}
+              className="w-full h-full object-contain"
+            />
           </div>
 
           <div className="flex flex-col gap-4">
             <div>
-              <h3 className="text-sm sm:text-base font-semibold text-slate-900">
+              <a
+                href=""
+                onClick={() => handleNavigate(product.product.id_producto)}
+                className="min-h-[150px] text-lg font-semibold leading-tight text-gray-900 hover:underline "
+              >
                 {product.product.nombre}
-              </h3>
+              </a>
             </div>
 
             {/* Botones cantidad productos */}
@@ -33,7 +47,7 @@ function ItemList({ product }: ItemCompraProps) {
               <button
                 type="button"
                 className="flex items-center justify-center w-5 h-5  bg-slate-800 outline-none rounded-full cursor-pointer"
-                onClick={()=>decrease(product.product.id_producto)}
+                onClick={() => decrease(product.product.id_producto)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +66,7 @@ function ItemList({ product }: ItemCompraProps) {
               <button
                 type="button"
                 className="flex items-center justify-center w-5 h-5 bg-slate-800 outline-none rounded-full cursor-pointer"
-                onClick={()=>increase(product.product.id_producto)}
+                onClick={() => increase(product.product.id_producto)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -71,11 +85,12 @@ function ItemList({ product }: ItemCompraProps) {
 
         <div className="ml-auto flex flex-col">
           {/* SVG Eliminar */}
-          <div className="flex items-start gap-4 justify-end" onClick={()=>handleDestroyItem()}>
+          <div className="flex items-start gap-4 justify-end">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-4 h-4 cursor-pointer fill-slate-400 hover:fill-red-600 inline-block"
               viewBox="0 0 24 24"
+              onClick={() => handleDestroyItem()}
             >
               <path
                 d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -89,7 +104,7 @@ function ItemList({ product }: ItemCompraProps) {
           </div>
           {/* Precio */}
           <h3 className="text-sm sm:text-base font-semibold text-slate-900 mt-auto">
-            ${product.product.precio}
+            ${generateChileanPrice(product.product.precio)}
           </h3>
         </div>
       </div>
@@ -98,5 +113,3 @@ function ItemList({ product }: ItemCompraProps) {
 }
 
 export default ItemList;
-
-/* bg-slate-400 */

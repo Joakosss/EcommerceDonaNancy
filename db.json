@@ -2,23 +2,28 @@
   "categoria": [
     {
       "id_categoria": 1,
-      "descripcion": "Ropa"
+      "descripcion": "Ropa",
+      "id": "38de"
     },
     {
       "id_categoria": 2,
-      "descripcion": "Electrónicos"
+      "descripcion": "Electrónicos",
+      "id": "70ad"
     },
     {
       "id_categoria": 3,
-      "descripcion": "Muebles"
+      "descripcion": "Muebles",
+      "id": "ee46"
     },
     {
       "id_categoria": 4,
-      "descripcion": "Zapatos"
+      "descripcion": "Zapatos",
+      "id": "00ce"
     },
     {
       "id_categoria": 5,
-      "descripcion": "Varios"
+      "descripcion": "Varios",
+      "id": "472d"
     }
   ],
   "productos": [
@@ -30,7 +35,8 @@
       "precio": 40,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "1785"
     },
     {
       "id_producto": "2",
@@ -40,7 +46,8 @@
       "precio": 10,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "d38f"
     },
     {
       "id_producto": "3",
@@ -50,7 +57,8 @@
       "precio": 69,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "6fc7"
     },
     {
       "id_producto": "4",
@@ -60,7 +68,8 @@
       "precio": 90,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "35b6"
     },
     {
       "id_producto": "5",
@@ -70,7 +79,8 @@
       "precio": 79,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "e438"
     },
     {
       "id_producto": "6",
@@ -80,7 +90,8 @@
       "precio": 25,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "2e4f"
     },
     {
       "id_producto": "7",
@@ -90,7 +101,8 @@
       "precio": 79,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "9abf"
     },
     {
       "id_producto": "8",
@@ -100,7 +112,8 @@
       "precio": 98,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "faea"
     },
     {
       "id_producto": "9",
@@ -110,7 +123,8 @@
       "precio": 61,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "0b06"
     },
     {
       "id_producto": "10",
@@ -120,7 +134,8 @@
       "precio": 86,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "9c57"
     },
     {
       "id_producto": "11",
@@ -130,7 +145,8 @@
       "precio": 35,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "dc77"
     },
     {
       "id_producto": "12",
@@ -140,7 +156,8 @@
       "precio": 58,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "179e"
     },
     {
       "id_producto": "13",
@@ -150,7 +167,8 @@
       "precio": 84,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "fb10"
     },
     {
       "id_producto": "14",
@@ -160,7 +178,8 @@
       "precio": 43,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "fd33"
     },
     {
       "id_producto": "15",
@@ -170,7 +189,8 @@
       "precio": 39,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "a4e1"
     },
     {
       "id_producto": "16",
@@ -180,7 +200,8 @@
       "precio": 73,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "b899"
     },
     {
       "id_producto": "17",
@@ -190,7 +211,8 @@
       "precio": 35,
       "stock": 0,
       "id_categoria": 1,
-      "descuento": 0
+      "descuento": 0,
+      "id": "b8b7"
     },
     {
       "id_producto": "18",
@@ -200,7 +222,8 @@
       "precio": 69,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "d8fc"
     },
     {
       "id_producto": "19",
@@ -210,7 +233,8 @@
       "precio": 44,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "3b4d"
     },
     {
       "id_producto": "20",
@@ -220,7 +244,8 @@
       "precio": 28,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "daf7"
     },
     {
       "id_producto": "21",
@@ -230,7 +255,8 @@
       "precio": 48,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "4c28"
     },
     {
       "id_producto": "22",
@@ -240,7 +266,8 @@
       "precio": 10,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "db5c"
     },
     {
       "id_producto": "23",
@@ -250,7 +277,8 @@
       "precio": 43,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "e08e"
     },
     {
       "id_producto": "24",
@@ -260,7 +288,8 @@
       "precio": 97,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "477c"
     },
     {
       "id_producto": "25",
@@ -270,7 +299,8 @@
       "precio": 39,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "7ccf"
     },
     {
       "id_producto": "26",
@@ -280,7 +310,8 @@
       "precio": 27,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "1f39"
     },
     {
       "id_producto": "27",
@@ -290,7 +321,8 @@
       "precio": 16,
       "stock": 0,
       "id_categoria": 2,
-      "descuento": 0
+      "descuento": 0,
+      "id": "1795"
     },
     {
       "id_producto": "28",
@@ -300,7 +332,8 @@
       "precio": 53,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "aa4c"
     },
     {
       "id_producto": "29",
@@ -310,7 +343,8 @@
       "precio": 24,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "3af4"
     },
     {
       "id_producto": "30",
@@ -320,7 +354,8 @@
       "precio": 66,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "a63e"
     },
     {
       "id_producto": "31",
@@ -330,7 +365,8 @@
       "precio": 25,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "77be"
     },
     {
       "id_producto": "32",
@@ -340,7 +376,8 @@
       "precio": 67,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "48b8"
     },
     {
       "id_producto": "33",
@@ -350,7 +387,8 @@
       "precio": 49,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "cd20"
     },
     {
       "id_producto": "34",
@@ -360,7 +398,8 @@
       "precio": 71,
       "stock": 0,
       "id_categoria": 3,
-      "descuento": 0
+      "descuento": 0,
+      "id": "4e83"
     },
     {
       "id_producto": "35",
@@ -370,7 +409,8 @@
       "precio": 39,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "81e7"
     },
     {
       "id_producto": "36",
@@ -380,7 +420,8 @@
       "precio": 39,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "1367"
     },
     {
       "id_producto": "37",
@@ -390,7 +431,8 @@
       "precio": 33,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "a9a9"
     },
     {
       "id_producto": "38",
@@ -400,7 +442,8 @@
       "precio": 27,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "564f"
     },
     {
       "id_producto": "39",
@@ -410,7 +453,8 @@
       "precio": 84,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "799d"
     },
     {
       "id_producto": "40",
@@ -420,7 +464,8 @@
       "precio": 68,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "5506"
     },
     {
       "id_producto": "41",
@@ -430,7 +475,8 @@
       "precio": 36,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "5c40"
     },
     {
       "id_producto": "42",
@@ -440,7 +486,8 @@
       "precio": 53,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "3852"
     },
     {
       "id_producto": "43",
@@ -450,7 +497,8 @@
       "precio": 17,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "51db"
     },
     {
       "id_producto": "44",
@@ -460,7 +508,8 @@
       "precio": 39,
       "stock": 0,
       "id_categoria": 4,
-      "descuento": 0
+      "descuento": 0,
+      "id": "9bde"
     },
     {
       "id_producto": "45",
@@ -470,7 +519,8 @@
       "precio": 22,
       "stock": 0,
       "id_categoria": 5,
-      "descuento": 0
+      "descuento": 0,
+      "id": "45be"
     },
     {
       "id_producto": "46",
@@ -480,7 +530,8 @@
       "precio": 37,
       "stock": 0,
       "id_categoria": 5,
-      "descuento": 0
+      "descuento": 0,
+      "id": "b84a"
     },
     {
       "id_producto": "47",
@@ -490,7 +541,8 @@
       "precio": 73,
       "stock": 0,
       "id_categoria": 5,
-      "descuento": 0
+      "descuento": 0,
+      "id": "4a73"
     },
     {
       "id_producto": "48",
@@ -500,7 +552,8 @@
       "precio": 48,
       "stock": 0,
       "id_categoria": 5,
-      "descuento": 0
+      "descuento": 0,
+      "id": "69ba"
     },
     {
       "id_producto": "49",
@@ -510,7 +563,8 @@
       "precio": 61,
       "stock": 0,
       "id_categoria": 5,
-      "descuento": 0
+      "descuento": 0,
+      "id": "8a56"
     },
     {
       "id_producto": "51",
@@ -520,10 +574,127 @@
       "precio": 50,
       "stock": 0,
       "id_categoria": 5,
-      "descuento": 0
+      "descuento": 0,
+      "id": "8677"
     }
   ],
-  "Boleta": [],
+  "Boleta": [
+    {
+      "id": "00ac",
+      "boleta": {
+        "fecha": "2025-04-04T23:29:44.170Z",
+        "total": 148,
+        "estado_boleta": 1,
+        "usuario": 1,
+        "forma_pago": 1,
+        "productos": [
+          {
+            "id": "3",
+            "cantidad": 1
+          },
+          {
+            "id": "7",
+            "cantidad": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "edd6",
+      "boleta": {
+        "fecha": "2025-04-04T23:33:08.867Z",
+        "total": 148,
+        "estado_boleta": 1,
+        "usuario": 1,
+        "forma_pago": 1,
+        "productos": [
+          {
+            "id": "3",
+            "cantidad": 1
+          },
+          {
+            "id": "7",
+            "cantidad": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "f4f6",
+      "boleta": {
+        "fecha": "2025-04-04T23:33:51.356Z",
+        "total": 148,
+        "estado_boleta": 1,
+        "usuario": 1,
+        "forma_pago": 1,
+        "productos": [
+          {
+            "id": "3",
+            "cantidad": 1
+          },
+          {
+            "id": "7",
+            "cantidad": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "47a6",
+      "boleta": {
+        "fecha": "2025-04-05T00:08:41.572Z",
+        "total": 148,
+        "estado_boleta": 1,
+        "usuario": 1,
+        "forma_pago": 1,
+        "productos": []
+      }
+    },
+    {
+      "id": "19b0",
+      "boleta": {
+        "fecha": "2025-04-05T00:35:25.917Z",
+        "total": 318,
+        "estado_boleta": 1,
+        "usuario": 1,
+        "forma_pago": 1,
+        "productos": [
+          {
+            "id": "1",
+            "cantidad": 2
+          },
+          {
+            "id": "3",
+            "cantidad": 1
+          },
+          {
+            "id": "4",
+            "cantidad": 1
+          },
+          {
+            "id": "5",
+            "cantidad": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "9ae5",
+      "boleta": {
+        "fecha": "2025-04-05T00:35:46.867Z",
+        "total": 69,
+        "estado_boleta": 1,
+        "usuario": 1,
+        "forma_pago": 1,
+        "productos": [
+          {
+            "id": "3",
+            "cantidad": 1
+          }
+        ]
+      }
+    }
+  ],
   "BoletaProducto": [],
   "EstadoBoleta": [],
   "FormaPago": [],
@@ -538,8 +709,14 @@
     }
   ],
   "TipoEntrega": [
-    { "id": "1", "descripcion": "Envio" },
-    { "id": "2", "descripcion": "Retiro" }
+    {
+      "id": "1",
+      "descripcion": "Envio"
+    },
+    {
+      "id": "2",
+      "descripcion": "Retiro"
+    }
   ],
   "EstadoEntrega": [
     {

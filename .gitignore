@@ -1,24 +1,43 @@
-# Logs
-logs
+# === ARCHIVOS GLOBALES IGNORADOS ===
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
+.DS_Store
 *.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
+# === ENTORNOS ===
+.env
+.env.*
+!.env.example
+
+# === BACKEND (Express) ===
+Back/node_modules/
+Back/dist/
+Back/logs/
+Back/.env
+Back/.env.*
+Back/coverage/
+
+# === FRONTEND (React) ===
+Client/node_modules/
+Client/build/
+Client/.next/
+Client/out/
+Client/.env
+Client/.env.*
+Client/.eslintcache
+
+# === IDEs ===
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# === EXCEPCIONES (archivos de configuración que SÍ queremos commitear) ===
+!.vscode/extensions.json
+!.vscode/settings.json.example

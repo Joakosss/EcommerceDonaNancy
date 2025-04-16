@@ -14,6 +14,9 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.0.0)
+      '@mercadopago/sdk-react':
+        specifier: ^1.0.2
+        version: 1.0.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@tailwindcss/vite':
         specifier: ^4.0.17
         version: 4.0.17(vite@6.2.3(jiti@2.4.2)(lightningcss@1.29.2))
@@ -434,6 +437,15 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@mercadopago/sdk-js@0.0.3':
+    resolution: {integrity: sha512-kO48DNLHdfFAp3on12nuKdqNlEmw1x3+nM6wLd04BdWOXoFcAhkNMQV3AyUIanXdO/bB/dENakdacLT29297EQ==}
+
+  '@mercadopago/sdk-react@1.0.2':
+    resolution: {integrity: sha512-EZa1Jj9RChp4wZxTKHHgF/4zVzgkyGwo8UUYtLveBrVeUcbRK+Nu1aZXgfL2hQeQIGA/nlk1sHtWqMC2f8cMzQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2020,6 +2032,14 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@mercadopago/sdk-js@0.0.3': {}
+
+  '@mercadopago/sdk-react@1.0.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@mercadopago/sdk-js': 0.0.3
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

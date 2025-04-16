@@ -1,4 +1,9 @@
-function PayFormPage() {
+type PayFormPageProps = {
+  methodPayment: "Webpay" | "Transferencia";
+  handleSetMethodPayment: (methodPayment: "Webpay" | "Transferencia") => void;
+};
+
+function PayFormPage({methodPayment,handleSetMethodPayment}:PayFormPageProps) {
   return (
     <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <div className="lg:flex lg:items-start lg:gap-12 xl:gap-16">
@@ -53,8 +58,9 @@ function PayFormPage() {
                 <select
                   id="select-country-input-3"
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                  defaultValue={""}
                 >
-                  <option selected>United States</option>
+                  <option value="">United States</option>
                   <option value="AS">Australia</option>
                   <option value="FR">France</option>
                   <option value="ES">Spain</option>
@@ -74,8 +80,9 @@ function PayFormPage() {
                 <select
                   id="select-city-input-3"
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                  defaultValue={""}
                 >
-                  <option selected>San Francisco</option>
+                  <option value={""}>San Francisco</option>
                   <option value="NY">New York</option>
                   <option value="LA">Los Angeles</option>
                   <option value="CH">Chicago</option>
@@ -85,65 +92,68 @@ function PayFormPage() {
             </div>
           </div>
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-gray-900 ">Payment</h3>
+            <h3 className="text-xl font-semibold text-gray-900 ">
+              Métodos de pago
+            </h3>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
                 <div className="flex items-start">
                   <div className="flex h-5 items-center">
                     <input
-                      id="credit-card"
-                      aria-describedby="credit-card-text"
+                      id="transferencia"
+                      aria-describedby="transferencia-text"
                       type="radio"
                       name="payment-method"
-                      value=""
-                      className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
-                      checked
+                      value="Transferencia"
+                      checked={methodPayment === 'Transferencia'}  
+                      onChange={()=>handleSetMethodPayment("Transferencia")}
+                      className="h-4 w-4 border-gray-300 bg-white text-primary-600"
                     />
                   </div>
 
                   <div className="ms-4 text-sm">
                     <label
-                      htmlFor="credit-card"
-                      className="font-medium leading-none text-gray-900 "
-                    >
-                      MercadoPago
-                    </label>
-                    <p
-                      id="credit-card-text"
-                      className="mt-1 text-xs font-normal text-gray-500 "
-                    >
-                      Paga con MercadoPago
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
-                <div className="flex items-start">
-                  <div className="flex h-5 items-center">
-                    <input
-                      id="pay-on-delivery"
-                      aria-describedby="pay-on-delivery-text"
-                      type="radio"
-                      name="payment-method"
-                      value=""
-                      className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600"
-                    />
-                  </div>
-
-                  <div className="ms-4 text-sm">
-                    <label
-                      htmlFor="pay-on-delivery"
+                      htmlFor="transferencia"
                       className="font-medium leading-none text-gray-900"
                     >
                       Paga con transferencia
                     </label>
                     <p
-                      id="pay-on-delivery-text"
+                      id="transferencia-text"
                       className="mt-1 text-xs font-normal text-gray-500"
                     >
-                      Paga con transferencia (debes esperar su aprovación)
+                      Paga con transferencia (debes esperar su aprobación)
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4">
+                <div className="flex items-start">
+                  <div className="flex h-5 items-center">
+                    <input
+                      id="Webpay"
+                      aria-describedby="Webpay-text"
+                      type="radio"
+                      name="payment-method"
+                      value="Webpay"
+                      checked={methodPayment === 'Webpay'}  
+                      onChange={()=>handleSetMethodPayment("Webpay")}
+                      className="h-4 w-4 border-gray-300 bg-white text-primary-600"
+                    />
+                  </div>
+                  <div className="ms-4 text-sm">
+                    <label
+                      htmlFor="Webpay"
+                      className="font-medium leading-none text-gray-900 "
+                    >
+                      Webpay
+                    </label>
+                    <p
+                      id="Webpay-text"
+                      className="mt-1 text-xs font-normal text-gray-500 "
+                    >
+                      Paga con Webpay
                     </p>
                   </div>
                 </div>

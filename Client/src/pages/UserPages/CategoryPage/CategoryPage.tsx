@@ -52,7 +52,7 @@ function CategoryPage({}: Props) {
 
         {/* Aqui van los productos */}
         <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          {isLoading ? 
+          {isLoading || isError ? 
             (Array.from({length:8})).map((_,i)=>(
               <ProductCardSkeleton key={i}></ProductCardSkeleton>
             ))

@@ -7,7 +7,7 @@ type Props = {};
 
 function Layout({}: Props) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <ToastContainer
         position="top-right"
         style={{
@@ -23,7 +23,7 @@ function Layout({}: Props) {
         </main>
         <Footer />
       </div>
-    </>
+    </div>
   );
 }
 

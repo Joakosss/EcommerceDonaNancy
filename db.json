@@ -578,7 +578,7 @@
       "id": "8677"
     }
   ],
-  "Boleta": [
+  "Pedido": [
     {
       "id": "00ac",
       "boleta": {
@@ -734,6 +734,84 @@
     {
       "id": "4",
       "descripcion": "Preparado"
+    }
+  ],
+  "PEDIDOS": [
+    {
+      "id": "123",
+      "fecha_pedido": "2025-04-10",
+      "cliente_id": "45",
+      "total": 100,
+      "Productos": [
+        {
+          "producto_id": "1785",
+          "nombre": "Camiseta gráfica de montaña majestuosa",
+          "cantidad": 2,
+          "precio_unitario": 40,
+          "link_foto": "https://i.imgur.com/QkIa5tT.jpeg"
+        },
+        {
+          "producto_id": "d38f",
+          "nombre": "Sudadera con capucha roja clásica",
+          "cantidad": 2,
+          "precio_unitario": 10,
+          "link_foto": "https://i.imgur.com/1twoaDy.jpeg"
+        }
+      ],
+      "Entrega": {
+        "entrega_id": "77",
+        "direccion": "Av. Siempre Viva 742",
+        "fecha_entrega": "2025-04-12",
+        "estado_entrega": "Entregado"
+      },
+      "estado_boleta": "Entregado",
+      "forma_pago": "Transferencia"
+    }
+  ],
+  "PEDIDOSPOPULARES": [
+    {
+      "id_producto": "1",
+      "nombre": "Camiseta gráfica de montaña majestuosa",
+      "descripcion": "Eleva tu guardarropa con esta elegante camiseta negra que presenta un impresionante gráfico de cordillera en blanco y negro. Perfecta para quienes aman la naturaleza o desean añadir un toque de diseño inspirado en ella a su look. Confeccionada en suave tela transpirable que garantiza comodidad todo el día. Ideal para salidas casuales o como regalo único, esta camiseta es una adición versátil a cualquier colección.",
+      "link_foto": "https://i.imgur.com/QkIa5tT.jpeg",
+      "precio": 40,
+      "stock": 0,
+      "id_categoria": 1,
+      "descuento": 0,
+      "id": "1785"
+    },
+    {
+      "id_producto": "2",
+      "nombre": "Sudadera con capucha roja clásica",
+      "descripcion": "Mejora tu vestuario casual con nuestra sudadera con capucha roja clásica. Confeccionada con una mezcla de algodón suave para máxima comodidad, esta vibrante sudadera roja cuenta con un bolsillo canguro, capucha con cordón ajustable y puños acanalados para un ajuste cómodo. Su diseño atemporal combina fácilmente con jeans o pantalones deportivos para un look relajado pero con estilo, convirtiéndola en una adición versátil a tu atuendo diario.",
+      "link_foto": "https://i.imgur.com/1twoaDy.jpeg",
+      "precio": 10,
+      "stock": 0,
+      "id_categoria": 1,
+      "descuento": 0,
+      "id": "d38f"
+    },
+    {
+      "id_producto": "3",
+      "nombre": "Sudadera gris Heather clásica",
+      "descripcion": "Mantente cómodo y elegante con nuestra sudadera gris Heather clásica. Confeccionada en tela suave y duradera, incluye bolsillo canguro, capucha con cordón ajustable y puños acanalados. Perfecta para un día relajado fuera de casa o una tranquila velada en casa, esta sudadera es un complemento versátil para cualquier guardarropa.",
+      "link_foto": "https://i.imgur.com/cHddUCu.jpeg",
+      "precio": 69,
+      "stock": 0,
+      "id_categoria": 1,
+      "descuento": 0,
+      "id": "6fc7"
+    },
+    {
+      "id_producto": "4",
+      "nombre": "Sudadera con capucha gris clásica",
+      "descripcion": "Mejora tu vestuario casual con nuestra sudadera con capucha gris clásica. Elaborada con una suave mezcla de algodón, esta sudadera cuenta con un bolsillo canguro frontal, capucha con cordón ajustable y puños acanalados para un ajuste ceñido. Ideal para esas frescas tardes o los relajados fines de semana, combina a la perfección con tus jeans o pantalones deportivos favoritos.",
+      "link_foto": "https://i.imgur.com/R2PN9Wq.jpeg",
+      "precio": 90,
+      "stock": 0,
+      "id_categoria": 1,
+      "descuento": 0,
+      "id": "35b6"
     }
   ]
 }

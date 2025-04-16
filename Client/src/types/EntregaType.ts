@@ -1,4 +1,4 @@
-import { BoletaType } from "./BoletaType";
+import { BoletaType } from "./PedidoType";
 import { EstadoEntregaType } from "./EstadoEntregaType";
 import { SucursalType } from "./SucursalType";
 import { TipoEntregaType } from "./TipoEntregaType";

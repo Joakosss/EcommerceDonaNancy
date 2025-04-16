@@ -13,12 +13,20 @@ pnpm-debug.log*
 !.env.example
 
 # === BACKEND (Express) ===
-Back/node_modules/
-Back/dist/
-Back/logs/
-Back/.env
-Back/.env.*
-Back/coverage/
+ApiNodeJS/node_modules/
+ApiNodeJS/dist/
+ApiNodeJS/logs/
+ApiNodeJS/.env
+ApiNodeJS/.env.*
+ApiNodeJS/coverage/
+
+#===========================
+/node_modules/
+/dist/
+/logs/
+/.env
+/.env.*
+/coverage/
 
 # === FRONTEND (React) ===
 Client/node_modules/

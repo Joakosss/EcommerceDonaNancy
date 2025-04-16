@@ -2,43 +2,61 @@ import { useNavigate } from "react-router-dom";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
-import useCreateBoleta from "../../../hooks/useCreateBoleta";
-import { useEffect } from "react";
+import axios from "axios";
 
 type PayZoneProps = {
   handleNextPage: () => void;
+  handleLoading: (bool: boolean) => void;
   step: 1 | 2;
+  methodPayment: "Webpay" | "Transferencia";
 };
 
-function PayZone({ handleNextPage, step }: PayZoneProps) {
+function PayZone({
+  handleNextPage,
+  handleLoading,
+  step,
+  methodPayment,
+}: PayZoneProps) {
   const navigation = useNavigate();
-  const { totalPrice, counterItems, shoppingCart, empty } =
-    useShoppingCartStore();
+  const { totalPrice, counterItems, shoppingCart } = useShoppingCartStore();
   const discount = counterItems >= 4 ? totalPrice * 0.25 : 0;
-  const { isSuccess, isError, isPending, mutate } = useCreateBoleta();
-  const handleCreateBoleta = () => {
+
+  const createProducts = () => {
     const productosBasicos = shoppingCart.map((p) => ({
       id: p.product.id_producto,
-      cantidad: p.quantity,
+      quantity: p.quantity,
+      price: p.product.precio /* Esto se puede borrar a futuro */,
     }));
-    const boleta = {
-      fecha: new Date(),
-      total: totalPrice,
-      estado_boleta: 1,
-      usuario: 1,
-      forma_pago: 1,
-      productos: [...productosBasicos],
-    };
-    mutate(boleta);
+    return productosBasicos;
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      empty();
-      navigation("/");
+  const handlebuyWebPay = async () => {
+    handleLoading(true);
+    const products = createProducts();
+    try {
+      const response = await axios.post("http://localhost:4000/webpay/create", {
+        amount: 5000,
+        products: products,
+      });
+      const { token, url } = response.data;
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = url;
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "token_ws";
+      input.value = token;
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+    } catch (error) {
+      handleLoading(false);
     }
-  }, [isSuccess]);
+  };
 
+  const handleBuyTransferencia = () => {
+    alert("pagando con transferencia");
+  };
   return (
     <>
       <div className="bg-white rounded px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(61,63,68,0.3)]">
@@ -81,9 +99,11 @@ function PayZone({ handleNextPage, step }: PayZoneProps) {
           )}
           {step === 2 && (
             <MyButton
-              onClick={() => {
-                handleCreateBoleta();
-              }}
+              onClick={
+                methodPayment === "Webpay"
+                  ? handlebuyWebPay
+                  : handleBuyTransferencia
+              }
               variant="primary"
             >
               Pagar
@@ -95,6 +115,11 @@ function PayZone({ handleNextPage, step }: PayZoneProps) {
           >
             Continuar comprando
           </MyButton>
+
+          {/*           <Wallet
+            initialization={{ preferenceId: preference! }}
+            customization={{ theme: "dark" }}
+          /> */}
         </div>
       </div>
     </>

@@ -17,7 +17,7 @@ function ProductPage({}: Props) {
 
   return (
     <>
-      {!isLoading ? (
+      {!isLoading && !isError ? (
         <>
           <section className="py-8 bg-white md:py-16 antialiased">
             <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">

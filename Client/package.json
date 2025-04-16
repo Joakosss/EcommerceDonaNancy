@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@mercadopago/sdk-react": "^1.0.2",
     "@tailwindcss/vite": "^4.0.17",
     "@tanstack/react-query": "^5.71.1",
     "@tanstack/react-query-devtools": "5.71.1",

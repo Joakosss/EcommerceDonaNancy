@@ -4,7 +4,6 @@ import { ProductType } from "../../../types/ProductType";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
-import { toast } from "react-toastify";
 
 type ProductCardProps = {
   product: ProductType;

@@ -805,5 +805,94 @@
       "stock": 100,
       "id_categoria": 1
     }
+  ],
+  "Usuarios": [
+    {
+      "id": "229799ce-51dd-49be-9416-5d5c6cd2a4a5",
+      "nombre_usuario": "Prueba",
+      "contrasennia": "Prueba",
+      "p_nombre": "Prueba",
+      "s_nombre": "Prueba",
+      "p_apellido": "Prueba",
+      "s_apellido": "Prueba",
+      "telefono": 123456789,
+      "correo": "Prueba@Prueba.com",
+      "perfil": "1"
+    },
+    {
+      "id": "a9a9",
+      "user": {
+        "p_nombre": "asdsds",
+        "s_nombre": "asd",
+        "p_apellido": "Joaquín",
+        "s_apellido": "Pérez",
+        "correo_electronico": "asdasd@asdasd.com",
+        "telefono": "934994163",
+        "Direccion": "Honestidad 1081",
+        "nombre_usuario": "sada",
+        "contrasenia": "asd",
+        "confirmar_contrasenia": "asd"
+      }
+    },
+    {
+      "id": "4cf4",
+      "user": {
+        "p_nombre": "asdsds",
+        "s_nombre": "asd",
+        "p_apellido": "Joaquín",
+        "s_apellido": "Pérez",
+        "correo_electronico": "asdasd@asdasd.com",
+        "telefono": "934994163",
+        "Direccion": "Honestidad 1081",
+        "nombre_usuario": "sada",
+        "contrasenia": "asd",
+        "confirmar_contrasenia": "asd"
+      }
+    },
+    {
+      "id": "1c9d",
+      "user": {
+        "p_nombre": "asd",
+        "s_nombre": "asd",
+        "p_apellido": "asd",
+        "s_apellido": "asd",
+        "correo_electronico": "asdasd@asdasd.com",
+        "telefono": "934994163",
+        "Direccion": "Honestidad 1081",
+        "nombre_usuario": "sada",
+        "contrasenia": "123",
+        "confirmar_contrasenia": "123"
+      }
+    },
+    {
+      "id": "04d1",
+      "user": {
+        "p_nombre": "asd",
+        "s_nombre": "asd",
+        "p_apellido": "asd",
+        "s_apellido": "asd",
+        "correo_electronico": "asdasd@asdasd.com",
+        "telefono": "934994163",
+        "Direccion": "Honestidad 1081",
+        "nombre_usuario": "sada",
+        "contrasenia": "123",
+        "confirmar_contrasenia": "123"
+      }
+    },
+    {
+      "id": "6fc9",
+      "user": {
+        "p_nombre": "asd",
+        "s_nombre": "asdsd",
+        "p_apellido": "asda",
+        "s_apellido": "asddsa",
+        "correo_electronico": "asdasd@asdasd.com",
+        "telefono": "934994163",
+        "Direccion": "Honestidad 1081",
+        "nombre_usuario": "sada",
+        "contrasenia": "asd",
+        "confirmar_contrasenia": "asd"
+      }
+    }
   ]
 }

@@ -1,43 +1,91 @@
-import { useNavigate } from "react-router-dom";
-import logoBig from "../images/NancyMid.webp"
+import { Link } from "react-router-dom";
+import logo from "../images/NancySmall.svg";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+
+type FormType = {
+  user: string;
+  pass: string;
+};
 
 function Login() {
-  const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormType>();
+
+  const { mutate, error } = useMutation({
+    mutationFn: async ({ user, pass }: { user: string; pass: string }) => {
+      const response = await axios.get("http://localhost:3000/Usuarios", {
+        user,
+        pass,
+      });
+      return response;
+    },
+    onSuccess: () => {
+      alert("exito");
+    },
+    onError: () => "Error",
+  });
+
+  const onSubmit = (data: FormType) => {
+    mutate(data);
+  };
+
   return (
     <>
-      <section className="bg-gray-200">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <a
-            onClick={()=>navigate("/")}
-            href=""
+      <section className="bg-gray-200 min-h-screen">
+        <div className="flex flex-col items-center justify-center px-6  mx-auto h-screen ">
+          <Link
+            to={"/"}
             className="flex items-center mb-6 text-2xl font-semibold dark:text-black"
           >
             <img
-              className="w-50 h-50"
-              src={logoBig}
+              className="w-[130px] h-[130px]"
+              src={logo}
               alt="logo"
+              loading="eager"
             />
-          </a>
+          </Link>
           <div className="w-full  rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 bg-white">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              {error?.message && (
+                <small className="font-bold text-red-600">error.message</small>
+              )}
+              {errors?.user && (
+                <small className="font-bold text-red-600">
+                  {errors?.user.message}
+                </small>
+              )}
+              {errors?.pass && (
+                <small className="font-bold text-red-600">
+                  {errors?.pass.message}
+                </small>
+              )}
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                Sign in to your account
+                Iniciar Sesión
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="usuario"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Your email
+                    Nombre de Usuario*
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="name@company.com"
-                    required
+                    type="text"
+                    id="usuario"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                    placeholder="Tu nombre"
+                    {...register("user", {
+                      minLength: { value: 1, message: "Usuario es requerido" },
+                    })}
                   />
                 </div>
                 <div>
@@ -45,32 +93,33 @@ function Login() {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Password
+                    Contraseña*
                   </label>
                   <input
                     type="password"
-                    name="password"
                     id="password"
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    required
+                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                    {...register("pass", {
+                      minLength: { value: 1, message: "Usuario es requerido" },
+                    })}
                   />
                 </div>
-                
+
                 <button
                   type="submit"
-                  className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="w-full text-white bg-[#1c4364] hover:bg-[#1c4464e5] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
-                  Sign in
+                  Conectarse
                 </button>
                 <p className="text-sm font-light text-gray-500 ">
-                  Don’t have an account yet?{" "}
-                  <a
-                    href="#"
-                    className="font-medium text-primary-600 hover:underline "
+                  ¿No tienes cuenta?{" "}
+                  <Link
+                    to={"/registro"}
+                    className="font-medium text-[#1c4364] hover:underline "
                   >
-                    Sign up
-                  </a>
+                    Registrarse
+                  </Link>
                 </p>
               </form>
             </div>

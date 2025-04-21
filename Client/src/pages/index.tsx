@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import ProductPage from "./UserPages/ProductPage/ProductPage";
 import CategoryPage from "./UserPages/CategoryPage/CategoryPage";
 import ShopingCartPage from "./UserPages/ShopingCartPage/ShopingCartPage";
-import Registro from "./Registro";
+import Registro from "./Registro/Registro";
 import Login from "./Login";
 import Success from "./UserPages/reponseShopping/Success";
 import Failure from "./UserPages/reponseShopping/Failure";

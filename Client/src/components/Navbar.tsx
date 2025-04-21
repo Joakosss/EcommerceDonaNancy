@@ -7,7 +7,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import logo from "../images/NancySmall.webp";
+import logo from "../images/NancySmall.svg";
 import useShoppingCartStore from "../store/useShoppingCartStore";
 
 export default function Example() {
@@ -86,7 +86,7 @@ export default function Example() {
               <div className="ml-4 flex lg:ml-0">
                 <a onClick={() => navigate("/")} href="">
                   <span className="sr-only">Doña Nancy</span>
-                  <img alt="" src={logo} className="h-8 w-auto" />
+                  <img alt="Logo dona nancy" src={logo} className="h-12 w-auto" />
                 </a>
               </div>
 

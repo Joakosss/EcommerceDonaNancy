@@ -64,7 +64,7 @@ function Login() {
                   {errors?.pass.message}
                 </small>
               )}
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
                 Iniciar Sesión
               </h1>
               <form
@@ -108,7 +108,7 @@ function Login() {
 
                 <button
                   type="submit"
-                  className="w-full text-white bg-[#1c4364] hover:bg-[#1c4464e5] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="w-full text-white bg-primary hover:bg-primary/90 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
                   Conectarse
                 </button>
@@ -116,7 +116,7 @@ function Login() {
                   ¿No tienes cuenta?{" "}
                   <Link
                     to={"/registro"}
-                    className="font-medium text-[#1c4364] hover:underline "
+                    className="font-medium text-primary hover:underline "
                   >
                     Registrarse
                   </Link>

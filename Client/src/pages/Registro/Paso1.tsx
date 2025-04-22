@@ -99,7 +99,7 @@ function Paso1({ onNext }: { onNext: () => void }) {
       </div>
       <button
         type="button"
-        className=" mt-3 w-full text-white bg-[#1c4364] hover:bg-[#1c4464e5]  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        className=" mt-3 w-full text-white bg-primary hover:bg-primary/90  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
         onClick={handleNext}
       >
         Siguiente

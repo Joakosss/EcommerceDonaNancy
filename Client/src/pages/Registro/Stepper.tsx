@@ -12,7 +12,7 @@ const steps = [
 function Stepper({ step, ChangeStep }: StepperProps) {
   const getTextClass = (current: number) =>
     step >= current
-      ? "text-[#1c4364] hover:text-[#1c4464e5] cursor-pointer"
+      ? "text-primary hover:text-primary/90 cursor-pointer"
       : "text-gray-500 cursor-default";
 
   return (

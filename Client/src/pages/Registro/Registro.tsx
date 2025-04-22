@@ -7,7 +7,6 @@ import Paso1 from "./Paso1";
 import Paso2 from "./Paso2";
 import Paso3 from "./Paso3";
 import { useRegister } from "../../hooks/useRegister";
-import { UsuarioType } from "../../types/UsuarioType";
 
 type FormType = {
   nombre_usuario: string;
@@ -43,7 +42,7 @@ function Registro() {
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <Link
           to={"/"}
-          className="flex items-center mb-6 text-2xl font-semibold dark:text-black"
+          className="flex items-center mb-6 text-2xl font-semibold"
         >
           <img
             className="w-[130px] h-[130px]"
@@ -55,7 +54,7 @@ function Registro() {
 
         <div className="w-full  rounded-lg shadow  md:mt-0 sm:max-w-lg xl:p-0 bg-white">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
               Registrándose
             </h1>
             <Stepper step={step} ChangeStep={ChangeStep} />
@@ -71,7 +70,7 @@ function Registro() {
                     <Paso3 onNext={nextStep} />
                     <button
                       type="submit"
-                      className=" mt-3 w-full text-white bg-[#1c4364] hover:bg-[#1c4464e5]  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                      className=" mt-3 w-full text-white bg-primary hover:bg-primary/90  font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     >
                       Unirme
                     </button>
@@ -81,7 +80,7 @@ function Registro() {
                   ¿Ya tienes cuenta?{" "}
                   <Link
                     to={"/login"}
-                    className="font-medium text-[#1c4364] hover:underline "
+                    className="font-medium text-primary hover:underline "
                   >
                     Conectarse
                   </Link>

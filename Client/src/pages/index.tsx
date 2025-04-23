@@ -9,6 +9,7 @@ import Login from "./Login";
 import Success from "./UserPages/reponseShopping/Success";
 import Failure from "./UserPages/reponseShopping/Failure";
 import MyPurchasesPage from "./UserPages/MyPurchasesPage/MyPurchasesPage";
+import DashBoard from "./DashBoard/DashBoard";
 
 const router = createBrowserRouter([
   //por cada ruta un objeto
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "failure/:error", element: <Failure /> },
     ],
   },
+  { path: "DashBoard/", element: <DashBoard />, children: [] },
   { path: "Administrador/", element: <Layout />, children: [] },
   { path: "Vendedor/", element: <Layout />, children: [] },
   { path: "Bodeguero/", element: <Layout />, children: [] },

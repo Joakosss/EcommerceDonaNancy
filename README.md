@@ -18,7 +18,7 @@ Frontend: React.js – para construir una interfaz dinámica y responsiva.
 
 Backend: FastAPI y Express.js – permitiendo una arquitectura flexible y modular.
 
-Base de datos: PostgreSQL – para gestionar datos de usuarios, productos y órdenes de forma eficiente y relacional.
+Base de datos: OracleSql – para gestionar datos de usuarios, productos y órdenes de forma eficiente y relacional.
 
 ## Instalación:
 

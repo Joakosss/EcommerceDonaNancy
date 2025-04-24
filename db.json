@@ -1,29 +1,24 @@
 {
   "categoria": [
     {
-      "id_categoria": 1,
-      "descripcion": "Ropa",
-      "id": "38de"
+      "id": 1,
+      "descripcion": "Ropa"
     },
     {
-      "id_categoria": 2,
-      "descripcion": "Electrónicos",
-      "id": "70ad"
+      "id": 2,
+      "descripcion": "Electrónicos"
     },
     {
-      "id_categoria": 3,
-      "descripcion": "Muebles",
-      "id": "ee46"
+      "id": 3,
+      "descripcion": "Muebles"
     },
     {
-      "id_categoria": 4,
-      "descripcion": "Zapatos",
-      "id": "00ce"
+      "id": 4,
+      "descripcion": "Zapatos"
     },
     {
-      "id_categoria": 5,
-      "descripcion": "Varios",
-      "id": "472d"
+      "id": 5,
+      "descripcion": "Varios"
     }
   ],
   "productos": [
@@ -576,6 +571,15 @@
       "id_categoria": 5,
       "descuento": 0,
       "id": "8677"
+    },
+    {
+      "id": "3055",
+      "nombre": "probando",
+      "descripcion": "asd",
+      "link_foto": "",
+      "precio": 1234,
+      "stock": 1,
+      "id_categoria": "2"
     }
   ],
   "Pedido": [
@@ -893,6 +897,39 @@
         "contrasenia": "asd",
         "confirmar_contrasenia": "asd"
       }
+    },
+    {
+      "id": "9c60",
+      "nombre_usuario": "asd.asd",
+      "p_nombre": "asdsds",
+      "p_apellido": "asd",
+      "s_apellido": "asd",
+      "telefono": "934994163",
+      "perfil": "2",
+      "correo": "asdsds.asd@donaNancy.cl",
+      "contrasennia": "asd.asd93"
+    },
+    {
+      "id": "30fd",
+      "nombre_usuario": "asd.asd",
+      "p_nombre": "asd",
+      "p_apellido": "asd",
+      "s_apellido": "asd",
+      "telefono": "934994163",
+      "perfil": "2",
+      "correo": "asd.asd@donaNancy.cl",
+      "contrasennia": "asd.asd93"
+    },
+    {
+      "id": "de6a",
+      "nombre_usuario": "asd.asd",
+      "p_nombre": "asd",
+      "p_apellido": "asd",
+      "s_apellido": "asd",
+      "telefono": "934994163",
+      "perfil": "2",
+      "correo": "asd.asd@donaNancy.cl",
+      "contrasennia": "asd.asd93"
     }
   ]
 }

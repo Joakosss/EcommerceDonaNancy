@@ -5,7 +5,7 @@ import SideBar from "./SideBar";
 import ProductTable from "./ProductTable";
 import { FaBox, FaUser, FaClipboardList } from "react-icons/fa";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Modal from "../../components/Modal";
+import { ToastContainer } from "react-toastify";
 
 function DashBoard() {
   const menuItems = [
@@ -16,16 +16,18 @@ function DashBoard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState<string | null>(null);
-  
 
   const [animationParent] = useAutoAnimate();
 
   return (
     <>
-      <NavbarDashBoard setIsSidebarOpen={setIsSidebarOpen} isSidebarOpen={isSidebarOpen}/>
+      <NavbarDashBoard
+        setIsSidebarOpen={setIsSidebarOpen}
+        isSidebarOpen={isSidebarOpen}
+      />
       <SideBar isSidebarOpen={isSidebarOpen} />
       <div className="p-4 bg-gray-100">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg  mt-14">
+        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 min-h-[89vh]">
           {/* Menu de opciones */}
           <div className="grid grid-cols-4 gap-4 mb-4">
             {menuItems.map(({ label, icon: Icon }) => (
@@ -66,12 +68,19 @@ function DashBoard() {
           </div>
           {/*  */}
           {/* Tablas de actividades */}
-          <div ref={animationParent} className="grid grid-cols-1 gap-4 min-h-100">
+          <div ref={animationParent} className="grid grid-cols-1 gap-4 h-100">
             {isSelected === "Productos" && <ProductTable />}
           </div>
         </div>
       </div>
-      
+      <ToastContainer
+        position="top-right"
+        style={{
+          position: "fixed", // Fija la posición en la pantalla
+          right: "20px", // Ajusta la distancia desde el borde derecho
+          zIndex: 9999, // Asegura que esté encima de otros elementos
+        }}
+      />
     </>
   );
 }
@@ -82,7 +91,7 @@ function NavbarDashBoard({
   setIsSidebarOpen,
   isSidebarOpen,
 }: {
-  setIsSidebarOpen: (isSidebarOpen:boolean) => void;
+  setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   isSidebarOpen: boolean;
 }) {
   return (
@@ -126,4 +135,3 @@ function NavbarDashBoard({
     </nav>
   );
 }
-

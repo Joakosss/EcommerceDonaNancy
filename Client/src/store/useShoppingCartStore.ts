@@ -31,7 +31,7 @@ const useShoppingCartStore = create<ShoppingCartStore>()(
       add: (product) =>
         set((state) => {
           const existingItem = state.shoppingCart.find(
-            (p) => p.product.id_producto === product.id_producto
+            (p) => p.product.id === product.id
           );
 
           if (!existingItem) {
@@ -59,11 +59,11 @@ const useShoppingCartStore = create<ShoppingCartStore>()(
       destroy: (id) =>
         set((state) => {
           const itemRemoved = state.shoppingCart.find(
-            (p) => p.product.id_producto === id
+            (p) => p.product.id === id
           );
           if (!itemRemoved) return state; /* si no existe retorna nada */
           const cartWithoutItem = state.shoppingCart.filter(
-            (p) => p.product.id_producto !== id
+            (p) => p.product.id!== id
           );
           return {
             ...state,
@@ -85,10 +85,10 @@ const useShoppingCartStore = create<ShoppingCartStore>()(
       increase: (id) =>
         set((state) => {
           const itemRemoved = state.shoppingCart.find(
-            (p) => p.product.id_producto === id
+            (p) => p.product.id === id
           );
           const newCart = state.shoppingCart.map((p) =>
-            p.product.id_producto === id && p.quantity > 0
+            p.product.id === id && p.quantity > 0
               ? { ...p, quantity: p.quantity + 1 }
               : p
           );
@@ -106,12 +106,12 @@ const useShoppingCartStore = create<ShoppingCartStore>()(
       decrease: (id) =>
         set((state) => {
           const itemRemoved = state.shoppingCart.find(
-            (p) => p.product.id_producto === id
+            (p) => p.product.id === id
           );
           if (itemRemoved!.quantity <= 1) return state;
 
           const newCart = state.shoppingCart.map((p) =>
-            p.product.id_producto === id && p.quantity > 1
+            p.product.id === id && p.quantity > 1
               ? { ...p, quantity: p.quantity - 1 }
               : p
           );

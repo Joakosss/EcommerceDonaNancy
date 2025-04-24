@@ -14,7 +14,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.0.17",
-    "@tanstack/react-query": "^5.71.1",
+    "@tanstack/react-query": "^5.74.4",
     "@tanstack/react-query-devtools": "5.71.1",
     "axios": "^1.8.4",
     "react": "^19.0.0",

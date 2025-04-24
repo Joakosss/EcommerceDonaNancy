@@ -1,7 +1,7 @@
 import { PerfilType } from "./PerfilType";
 
 export type UsuarioType = {
-  id: string;
+  id?: string;
   nombre_usuario: string;
   contrasennia?: string;
   p_nombre: string;
@@ -11,5 +11,5 @@ export type UsuarioType = {
   telefono: number;
   correo: string;
   direccion?: string;
-  perfil?: PerfilType;
+  perfil?: string;
 };

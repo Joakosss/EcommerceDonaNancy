@@ -49,7 +49,7 @@ function Paso2({ onNext }: { onNext: () => void }) {
           className="block mb-2 text-sm font-medium text-gray-900"
         >
           Teléfono*{" "}
-          {errors.correo_electronico?.message && (
+          {errors.telefono?.message && (
             <small className="text-red-700">
               {errors.telefono?.message as string}{" "}
             </small>

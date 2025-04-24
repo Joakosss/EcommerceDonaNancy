@@ -15,7 +15,8 @@ function Paso1({ onNext }: { onNext: () => void }) {
   };
 
   return (
-    <section>
+    <>
+
       <div>
         <label
           htmlFor="p_nombre"
@@ -104,7 +105,7 @@ function Paso1({ onNext }: { onNext: () => void }) {
       >
         Siguiente
       </button>
-    </section>
+    </>
   );
 }
 

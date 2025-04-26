@@ -28,6 +28,15 @@ ApiNodeJS/coverage/
 /.env.*
 /coverage/
 
+# === BACKEND (FastAPI) ===
+venv/
+__pycache__/
+*.py[cod]
+*.db
+instance/
+.mypy_cache/
+.pytest_cache/
+
 # === FRONTEND (React) ===
 Client/node_modules/
 Client/build/

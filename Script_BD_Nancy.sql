@@ -10,6 +10,8 @@ DROP TABLE estado_entrega CASCADE CONSTRAINTS;
 DROP TABLE forma_pago CASCADE CONSTRAINTS;
 DROP TABLE pedido CASCADE CONSTRAINTS;
 DROP TABLE producto CASCADE CONSTRAINTS;
+DROP TABLE marca CASCADE CONSTRAINTS;
+DROP TABLE modelo CASCADE CONSTRAINTS;
 
 
 CREATE TABLE perfil (
@@ -74,6 +76,8 @@ ALTER TABLE tipo_entrega ADD CONSTRAINT tipo_entrega_pk PRIMARY KEY ( id_tipo_en
 
 CREATE TABLE pedido_producto (
     cantidad             INTEGER NOT NULL,
+    fecha                DATE NOT NULL,
+    valor_unidad         INTEGER NOT NULL,
     pedido_id_boleta     VARCHAR2(50 CHAR) NOT NULL,
     producto_id_producto VARCHAR2(50 CHAR) NOT NULL
 );
@@ -113,6 +117,20 @@ CREATE TABLE forma_pago (
 
 ALTER TABLE forma_pago ADD CONSTRAINT forma_pago_pk PRIMARY KEY ( id_forma_pago );
 
+CREATE TABLE marca (
+    id_marca VARCHAR2(50 CHAR) NOT NULL,
+    descripcion VARCHAR2(200 CHAR) NOT NULL
+);
+
+ALTER TABLE marca ADD CONSTRAINT marca_pk PRIMARY KEY ( id_marca );
+
+CREATE TABLE modelo (
+    id_modelo VARCHAR2(50 CHAR) NOT NULL,
+    descripcion VARCHAR2(200 CHAR) NOT NULL
+);
+
+ALTER TABLE modelo ADD CONSTRAINT modelo_pk PRIMARY KEY ( id_modelo );
+
 CREATE TABLE producto (
     id_producto            VARCHAR2(50 CHAR) NOT NULL,
     nombre                 VARCHAR2(200 CHAR) NOT NULL,
@@ -120,7 +138,9 @@ CREATE TABLE producto (
     link_foto              VARCHAR2(500 CHAR) NOT NULL,
     precio                 INTEGER NOT NULL,
     stock                  INTEGER NOT NULL,
-    categoria_id_categoria VARCHAR2(50 CHAR) NOT NULL
+    categoria_id_categoria VARCHAR2(50 CHAR) NOT NULL,
+    marca_id_marca        VARCHAR2(50 CHAR) NOT NULL,
+    modelo_id_modelo      VARCHAR2(50 CHAR) NOT NULL
 );
 
 ALTER TABLE producto ADD CONSTRAINT producto_pk PRIMARY KEY ( id_producto );
@@ -169,7 +189,7 @@ ALTER TABLE usuario
     ADD CONSTRAINT usuario_perfil_fk FOREIGN KEY ( perfil_id_perfil )
         REFERENCES perfil ( id_perfil );
 
-//Inserción de datos admin
+//Inserciï¿½n de datos admin
 INSERT INTO perfil VALUES (1,'Administrador');
 
-INSERT INTO usuario VALUES (1, 'NancyDiaz', 'NDia.1822', '18225225-0', 'Nancy', 'Andrea', 'Díaz', 'Vega', 912341234, 'nancy.diaz@btnancy.cl', 'Las Parras 0350', 1);
+INSERT INTO usuario VALUES (1, 'NancyDiaz', 'NDia.1822', '18225225-0', 'Nancy', 'Andrea', 'Dï¿½az', 'Vega', 912341234, 'nancy.diaz@btnancy.cl', 'Las Parras 0350', 1);

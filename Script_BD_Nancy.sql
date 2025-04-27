@@ -193,3 +193,5 @@ ALTER TABLE usuario
 INSERT INTO perfil VALUES (1,'Administrador');
 
 INSERT INTO usuario VALUES (1, 'NancyDiaz', 'NDia.1822', '18225225-0', 'Nancy', 'Andrea', 'D�az', 'Vega', 912341234, 'nancy.diaz@btnancy.cl', 'Las Parras 0350', 1);
+
+COMMIT;

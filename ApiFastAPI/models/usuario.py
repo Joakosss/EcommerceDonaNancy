@@ -1,7 +1,7 @@
 from . import SQLModel, Field, uuid
 
 class Usuario(SQLModel, table=True):
-    id_usuario: str = Field(default_factory=uuid.uuid4, primary_key=True)
+    id_usuario: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
     nombre_usuario: str = Field(max_length=100, nullable=False)
     contrasenia: str = Field(max_length=100, nullable=False)
     run_usuario: str = Field(max_length=20, nullable=False)
@@ -12,4 +12,4 @@ class Usuario(SQLModel, table=True):
     telefono: int = Field(nullable=False)
     correo: str = Field(max_length=200, nullable=False)
     direccion: str = Field(max_length=200, nullable=True)
-    id_perfil: str = Field(foreign_key="perfil.id_perfil", nullable=False)
+    id_perfil: str = Field(max_length=50, foreign_key="perfil.id_perfil", nullable=False)

@@ -13,3 +13,19 @@ class Usuario(SQLModel, table=True):
     correo: str = Field(max_length=200, nullable=False)
     direccion: str = Field(max_length=200, nullable=True)
     id_perfil: str = Field(max_length=50, foreign_key="perfil.id_perfil", nullable=False)
+
+""" def crear_usuario():
+    usu = Usuario(
+        id_usuario="1",
+        nombre_usuario="NancyDiaz",
+        contrasenia="NDia.1822",
+        run_usuario="18225225-0",
+        p_nombre="Nancy",
+        s_nombre="Andrea",
+        p_apellido="Díaz",
+        s_apellido="Vega",
+        telefono=912341234,
+        correo="nancy.diaz@btnancy.cl",
+        direccion="Las Parras 0350",
+        id_perfil="1"
+    ) """

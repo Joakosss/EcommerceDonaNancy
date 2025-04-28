@@ -1,5 +1,5 @@
 #Conexion a la BD
-from sqlmodel import create_engine
+from sqlmodel import create_engine, Session
 from dotenv import load_dotenv
 import os
 
@@ -21,3 +21,8 @@ DB_SERVICE=orcl.duoc.com.cl """
 DATABASE_URL = f"oracle+oracledb://{usuario}:{contrasena}@{host}:{puerto}/?service_name={servicio}"
 
 engine = create_engine(DATABASE_URL, echo=True)
+
+#dependencias para crear sesion en la bd 
+def get_session():
+    with Session(engine) as session:
+        yield session

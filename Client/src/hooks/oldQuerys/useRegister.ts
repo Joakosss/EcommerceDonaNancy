@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { UsuarioType } from "../types/UsuarioType";
+import { UsuarioType } from "../../types/UsuarioType";
 
 export const useRegister = () => {
   return useMutation({

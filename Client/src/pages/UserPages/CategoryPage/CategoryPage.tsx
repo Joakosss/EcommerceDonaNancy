@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import { useProducts } from "../../../hooks/useProducts";
+import { useProducts } from "../../../hooks/oldQuerys/useProducts";
 import { useState } from "react";
 import { ProductType } from "../../../types/ProductType";
 import ProductCardSkeleton from "./ProductCardSkeleton";

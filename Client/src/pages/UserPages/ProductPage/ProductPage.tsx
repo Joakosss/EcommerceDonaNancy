@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import TrendingProducts from "../../../components/TrendingProducts";
-import { useSearchProduct } from "../../../hooks/useSearchProduct";
+import { useSearchProduct } from "../../../hooks/oldQuerys/useSearchProduct";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";

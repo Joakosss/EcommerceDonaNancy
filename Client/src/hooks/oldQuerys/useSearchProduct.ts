@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ProductType } from "../types/ProductType";
+import { ProductType } from "../../types/ProductType";
 import axios from "axios";
 
 export const useSearchProduct = (id:string)=>{

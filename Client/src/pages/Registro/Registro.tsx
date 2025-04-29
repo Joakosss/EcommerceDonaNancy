@@ -6,7 +6,7 @@ import Stepper from "./Stepper";
 import Paso1 from "./Paso1";
 import Paso2 from "./Paso2";
 import Paso3 from "./Paso3";
-import { useRegister } from "../../hooks/useRegister";
+import { useRegister } from "../../hooks/oldQuerys/useRegister";
 
 type FormType = {
   nombre_usuario: string;

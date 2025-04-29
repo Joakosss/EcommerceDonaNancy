@@ -11,5 +11,5 @@ export type UsuarioType = {
   telefono: number;
   correo: string;
   direccion?: string;
-  perfil?: string;
+  id_perfil?: string;
 };

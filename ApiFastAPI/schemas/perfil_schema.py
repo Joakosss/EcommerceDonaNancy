@@ -1,10 +1,11 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 class PerfilCrear(BaseModel):
     descripcion: str 
 
 class PerfilLeer(BaseModel):
-    id_perfil: str
+    id_perfil: UUID
     descripcion: str
 
     class Config:

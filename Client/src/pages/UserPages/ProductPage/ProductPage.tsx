@@ -1,15 +1,18 @@
 import { useParams } from "react-router-dom";
 import TrendingProducts from "../../../components/TrendingProducts";
-import { useSearchProduct } from "../../../hooks/oldQuerys/useSearchProduct";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
+import { useGetQuery } from "../../../hooks/query/useGetQuery";
+import { ProductType } from "../../../types/ProductType";
 type Props = {};
 
 function ProductPage({}: Props) {
   const { id } = useParams();
-
-  const { data: product, isLoading, isError } = useSearchProduct(id!);
+  const {data, isLoading, isError} = useGetQuery<ProductType[]>(["producto", id], "http://localhost:3000/productos", {
+    params: { id: id }, // aplica filtro o no segun corresponda
+  });
+  const product = data?.[0]
   const { add } = useShoppingCartStore();
   const handleAddProductCart = () => {
     add(product!);

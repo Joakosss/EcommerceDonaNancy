@@ -26,7 +26,7 @@ function ProductCard({ product }: ProductCardProps) {
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       {/* Imagen */}
       <div className="h-56 w-full">
-        <a href="" onClick={() => handleNavigate(product.id_producto)}>
+        <a href="" onClick={() => handleNavigate(product.id!)}>
           <img
             className="w-full h-full object-contain"
             src={product.link_foto}
@@ -39,7 +39,7 @@ function ProductCard({ product }: ProductCardProps) {
         <div className="h-[48px] max-h-[48px]">
           <a
             href=""
-            onClick={() => handleNavigate(product.id_producto)}
+            onClick={() => handleNavigate(product.id!)}
             className="min-h-[150px] text-lg font-semibold leading-tight text-gray-900 hover:underline "
           >
             {product.nombre}

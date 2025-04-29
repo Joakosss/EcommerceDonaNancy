@@ -1,6 +1,9 @@
-import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import {
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import axios, { AxiosRequestConfig } from "axios";
-
 
 export function useGetQuery<
   TData = unknown,
@@ -15,8 +18,12 @@ export function useGetQuery<
   return useQuery({
     queryKey,
     queryFn: async () => {
-      const response = await axios.get<TData>(url, axiosConfig);
-      return response.data;
+      try {
+        const response = await axios.get<TData>(url, axiosConfig);
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
     },
     ...options,
   });

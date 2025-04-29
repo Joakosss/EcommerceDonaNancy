@@ -1,15 +1,21 @@
 import { useState } from "react";
-import Spinner from "../../components/Spinner";
-import { ProductType } from "../../types/ProductType";
-import { generateChileanPrice } from "../../utilities/generateChileanPrice";
+import Spinner from "../../../components/Spinner";
+import { ProductType } from "../../../types/ProductType";
+import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import { FaCirclePlus } from "react-icons/fa6";
-import Modal from "../../components/Modal";
+import Modal from "../../../components/Modal";
 import { FaSearch } from "react-icons/fa";
-import CreateProduct from "./Forms/Product/CreateProduct";
-import { useGetQuery } from "../../hooks/query/useGetQuery";
-import UpdateProduct from "./Forms/Product/UpdateProduct";
-import DeleteProduct from "./Forms/Product/DeleteProduct";
-import { productCategoryTypesConstants } from "../../constants/productCategoryTypesConstants";
+import CreateProduct from "../Forms/Product/CreateProduct";
+import { useGetQuery } from "../../../hooks/query/useGetQuery";
+import UpdateProduct from "../Forms/Product/UpdateProduct";
+import DeleteProduct from "../Forms/Product/DeleteProduct";
+import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
+
+type ModalState =
+  | { type: "create" }
+  | { type: "update"; data: ProductType }
+  | { type: "delete"; data: string }
+  | { type: null };
 
 function ProductTable() {
   const [isFilter, setIsFilter] = useState<string>("");
@@ -26,13 +32,7 @@ function ProductTable() {
     }
   );
 
-  const [isModal, setIsModal] = useState<boolean>(false);
-  const [isModalProduct, setIsModalProduct] = useState<ProductType | null>(
-    null
-  );
-  const [isModalDeleteProduct, setIsModalDeleteProduct] = useState<
-    string | null
-  >(null);
+  const [modal, setModal] = useState<ModalState>({ type: null });
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
@@ -89,7 +89,7 @@ function ProductTable() {
             />
             <button
               className="m-1 flex items-center justify-center flex-col"
-              onClick={() => setIsModal(true)}
+              onClick={() => setModal({ type: "create" })}
             >
               <FaCirclePlus
                 size={30}
@@ -134,34 +134,40 @@ function ProductTable() {
                 <Tr
                   key={producto.id}
                   producto={producto}
-                  setIsModalProduct={setIsModalProduct}
-                  setIsModalDeleteProduct={setIsModalDeleteProduct}
+                  UpdateModal={() =>
+                    setModal({ type: "update", data: producto })
+                  }
+                  deleteModal={() =>
+                    setModal({ type: "delete", data: producto.id! })
+                  }
                 />
               ))}
             </tbody>
           </table>
         </div>
       )}
-      {/* Extras */}
-      <Modal isOpen={isModal} onClose={() => setIsModal(false)}>
-        <CreateProduct onClose={() => setIsModal(false)} />
-      </Modal>
-      {isModalProduct !== null && (
-        <Modal isOpen={true} onClose={() => setIsModalProduct(null)}>
+      {/* modales */}
+      <Modal
+        key={"modal"}
+        isOpen={modal.type !== null}
+        onClose={() => setModal({ type: null })}
+      >
+        {modal.type === "create" && (
+          <CreateProduct onClose={() => setModal({ type: null })} />
+        )}
+        {modal.type === "update" && (
           <UpdateProduct
-            product={isModalProduct}
-            onClose={() => setIsModalProduct(null)}
+            product={modal.data}
+            onClose={() => setModal({ type: null })}
           />
-        </Modal>
-      )}
-      {isModalDeleteProduct !== null && (
-        <Modal isOpen={true} onClose={() => setIsModalDeleteProduct(null)}>
+        )}
+        {modal.type === "delete" && (
           <DeleteProduct
-            idProduct={isModalDeleteProduct}
-            onClose={() => setIsModalDeleteProduct(null)}
+            idProduct={modal.data}
+            onClose={() => setModal({ type: null })}
           />
-        </Modal>
-      )}
+        )}
+      </Modal>
     </div>
   );
 }
@@ -170,12 +176,12 @@ export default ProductTable;
 
 function Tr({
   producto,
-  setIsModalProduct,
-  setIsModalDeleteProduct,
+  UpdateModal,
+  deleteModal,
 }: {
   producto: ProductType;
-  setIsModalProduct: (arg: ProductType) => void;
-  setIsModalDeleteProduct: (arg: string) => void;
+  UpdateModal: (arg: ProductType) => void;
+  deleteModal: (arg: string) => void;
 }) {
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
@@ -192,7 +198,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            setIsModalProduct(producto);
+            UpdateModal(producto);
           }}
         >
           Editar
@@ -200,7 +206,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            setIsModalDeleteProduct(producto.id!);
+            deleteModal(producto.id!);
           }}
         >
           Eliminar

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
 import { productCategoryTypesConstants } from "../../../../constants/productCategoryTypesConstants";
-import { usePutMutation } from "../../../../hooks/mutation/usePutMutation";
+import { usePatchMutation } from "../../../../hooks/mutation/usePatchMutation";
 import Input from "../../../../components/FormComponents/Input";
 import Textarea from "../../../../components/FormComponents/Textarea";
 import Select from "../../../../components/FormComponents/Select";
@@ -38,7 +38,7 @@ function UpdateProduct({ product, onClose }: Props) {
     },
   }); //Manejamos el formulario
 
-  const { mutate, isPending } = usePutMutation<ProductType>(
+  const { mutate, isPending } = usePatchMutation<ProductType>(
     `http://localhost:3000/productos/${product.id}`,
     {
       onSuccess: () => {

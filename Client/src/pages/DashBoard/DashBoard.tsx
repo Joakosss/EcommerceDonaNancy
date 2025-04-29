@@ -2,18 +2,14 @@ import { useState } from "react";
 import NancySmall from "../../images/NancySmall.svg";
 import { Link } from "react-router-dom";
 import SideBar from "./SideBar";
-import ProductTable from "./ProductTable";
-import { FaBox, FaUser, FaClipboardList } from "react-icons/fa";
+import ProductTable from "./WorkSpaces/ProductTable";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ToastContainer } from "react-toastify";
-import UserTable from "./UserTable";
+import UserTable from "./WorkSpaces/UserTable";
+import { menuItems } from "../../constants/dashBoardMenuItems";
 
 function DashBoard() {
-  const menuItems = [
-    { label: "Pedidos", icon: FaClipboardList },
-    { label: "Productos", icon: FaBox },
-    { label: "Usuarios", icon: FaUser },
-  ];
+
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState<string | null>(null);
@@ -26,7 +22,7 @@ function DashBoard() {
         setIsSidebarOpen={setIsSidebarOpen}
         isSidebarOpen={isSidebarOpen}
       />
-      <SideBar isSidebarOpen={isSidebarOpen} />
+      <SideBar isSidebarOpen={isSidebarOpen} setIsSelected={setIsSelected}/>
       <div className="p-4 bg-gray-100">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 min-h-[89vh]">
           {/* Menu de opciones */}
@@ -70,10 +66,8 @@ function DashBoard() {
           {/*  */}
           {/* Tablas de actividades */}
           <div ref={animationParent} className="grid grid-cols-1 gap-4 ">
-            {isSelected === "Productos" && <ProductTable key={12321}/>}
-          </div>
-          <div ref={animationParent} className="grid grid-cols-1 gap-4">
-            {isSelected === "Usuarios" && <UserTable key={1212321}/>}
+            {isSelected === "Productos" && <ProductTable key={12321} />}
+            {isSelected === "Usuarios" && <UserTable key={1212321} />}
           </div>
         </div>
       </div>

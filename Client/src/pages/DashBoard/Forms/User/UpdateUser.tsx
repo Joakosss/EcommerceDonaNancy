@@ -3,7 +3,7 @@ import { ProductType } from "../../../../types/ProductType";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
-import { usePutMutation } from "../../../../hooks/mutation/usePutMutation";
+import { usePatchMutation } from "../../../../hooks/mutation/usePatchMutation";
 import Input from "../../../../components/FormComponents/Input";
 import Select from "../../../../components/FormComponents/Select";
 import { UsuarioType } from "../../../../types/UsuarioType";
@@ -37,7 +37,7 @@ function UpdateUser({ user, onClose }: Props) {
     },
   }); //Manejamos el formulario
 
-  const { mutate, isPending } = usePutMutation<ProductType>(
+  const { mutate, isPending } = usePatchMutation<ProductType>(
     `http://localhost:3000/Usuarios/${user.id}`,
     {
       onSuccess: () => {

@@ -571,13 +571,13 @@
       "id": "8677"
     },
     {
-      "id": "5967",
-      "nombre": "Camiseta gráfica de montaña majestuosa",
+      "nombre": "Camiseta gráfica de montaña",
       "descripcion": "Eleva tu guardarropa con esta elegante camiseta negra que presenta un impresionante gráfico de cordillera en blanco y negro. Perfecta para quienes aman la naturaleza o desean añadir un toque de diseño inspirado en ella a su look. Confeccionada en suave tela transpirable que garantiza comodidad todo el día. Ideal para salidas casuales o como regalo único, esta camiseta es una adición versátil a cualquier colección.",
       "link_foto": "https://i.imgur.com/QkIa5tT.jpeg",
       "precio": 40,
       "stock": 1,
-      "id_categoria": "1"
+      "id_categoria": "1",
+      "id": "5967"
     }
   ],
   "Pedido": [
@@ -891,6 +891,17 @@
       "id_perfil": "2",
       "correo": "eduardo.joaquín@donaNancy.cl",
       "contrasennia": "edu.joa93"
+    },
+    {
+      "id": "91c4",
+      "nombre_usuario": "asd.joa",
+      "p_nombre": "asdsds",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "3",
+      "correo": "asdsds.joaquín@donaNancy.cl",
+      "contrasennia": "asd.joa93"
     }
   ]
 }

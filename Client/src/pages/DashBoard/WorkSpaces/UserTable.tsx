@@ -1,14 +1,20 @@
 import { useState } from "react";
-import Spinner from "../../components/Spinner";
+import Spinner from "../../../components/Spinner";
 import { FaCirclePlus } from "react-icons/fa6";
-import Modal from "../../components/Modal";
+import Modal from "../../../components/Modal";
 import { FaSearch } from "react-icons/fa";
-import { useGetQuery } from "../../hooks/query/useGetQuery";
-import DeleteUser from "./Forms/User/DeleteUser";
-import { UsuarioType } from "../../types/UsuarioType";
-import CreateUser from "./Forms/User/CreateUser";
-import { userTypesConstants } from "../../constants/userTypesConstants";
-import UpdateUser from "./Forms/User/UpdateUser";
+import { useGetQuery } from "../../../hooks/query/useGetQuery";
+import DeleteUser from "../Forms/User/DeleteUser";
+import { UsuarioType } from "../../../types/UsuarioType";
+import CreateUser from "../Forms/User/CreateUser";
+import { userTypesConstants } from "../../../constants/userTypesConstants";
+import UpdateUser from "../Forms/User/UpdateUser";
+
+type ModalState =
+  | { type: "create" }
+  | { type: "update"; data: UsuarioType }
+  | { type: "delete"; data: string }
+  | { type: null };
 
 function ProductTable() {
   const [isFilter, setIsFilter] = useState<string>("");
@@ -25,11 +31,7 @@ function ProductTable() {
     }
   );
 
-  const [isModal, setIsModal] = useState<boolean>(false);
-  const [isModalUser, setIsModalUser] = useState<UsuarioType | null>(null);
-  const [isModalDeleteUser, setIsModalDeleteUser] = useState<string | null>(
-    null
-  );
+  const [modal, setModal] = useState<ModalState>({ type: null });
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
@@ -82,7 +84,7 @@ function ProductTable() {
             />
             <button
               className="m-1 flex items-center justify-center flex-col"
-              onClick={() => setIsModal(true)}
+              onClick={() => setModal({type:"create"})}
             >
               <FaCirclePlus
                 size={30}
@@ -124,8 +126,12 @@ function ProductTable() {
                 <Tr
                   key={usuario.id}
                   usuario={usuario}
-                  setIsModalDeleteUser={setIsModalDeleteUser}
-                  setIsModalUser={setIsModalUser}
+                  UpdateModal={() =>
+                    setModal({ type: "update", data: usuario })
+                  }
+                  deleteModal={() =>
+                    setModal({ type: "delete", data: usuario.id! })
+                  }
                 />
               ))}
             </tbody>
@@ -133,22 +139,28 @@ function ProductTable() {
         </div>
       )}
       {/* Extras */}
-      <Modal isOpen={isModal} onClose={() => setIsModal(false)}>
-        <CreateUser onClose={() => setIsModal(false)} />
-      </Modal>
-      {isModalUser !== null && (
-        <Modal isOpen={true} onClose={() => setIsModalUser(null)}>
-          <UpdateUser user={isModalUser} onClose={() => setIsModalUser(null)} />
-        </Modal>
-      )}
-      {isModalDeleteUser !== null && (
-        <Modal isOpen={true} onClose={() => setIsModalDeleteUser(null)}>
-          <DeleteUser
-            idUser={isModalDeleteUser}
-            onClose={() => setIsModalDeleteUser(null)}
+      {/* modales */}
+      <Modal
+        key={"modal"}
+        isOpen={modal.type !== null}
+        onClose={() => setModal({ type: null })}
+      >
+        {modal.type === "create" && (
+          <CreateUser onClose={() => setModal({ type: null })} />
+        )}
+        {modal.type === "update" && (
+          <UpdateUser
+            user={modal.data}
+            onClose={() => setModal({ type: null })}
           />
-        </Modal>
-      )}
+        )}
+        {modal.type === "delete" && (
+          <DeleteUser
+            idUser={modal.data}
+            onClose={() => setModal({ type: null })}
+          />
+        )}
+      </Modal>
     </div>
   );
 }
@@ -157,12 +169,12 @@ export default ProductTable;
 
 function Tr({
   usuario,
-  setIsModalUser,
-  setIsModalDeleteUser,
+  UpdateModal,
+  deleteModal,
 }: {
   usuario: UsuarioType;
-  setIsModalUser: (arg: UsuarioType) => void;
-  setIsModalDeleteUser: (arg: string) => void;
+  UpdateModal: (arg: UsuarioType) => void;
+  deleteModal: (arg: string) => void;
 }) {
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
@@ -179,7 +191,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            setIsModalUser(usuario);
+            UpdateModal(usuario);
           }}
         >
           Editar
@@ -187,7 +199,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            setIsModalDeleteUser(usuario.id!);
+            deleteModal(usuario.id!);
           }}
         >
           Eliminar

@@ -13,7 +13,7 @@ import {
    * @param {any} TContext - onsucces onerror
    */
   
-  export const usePutMutation = <
+  export const usePatchMutation = <
     TData = unknown,
     TError = unknown,
     TVariables = any,
@@ -25,7 +25,7 @@ import {
     return useMutation({
       mutationFn: async (body: TVariables) => {
         try {
-          const response = await axios.put(url, body);
+          const response = await axios.patch(url, body);
           return response.data;
         } catch (error) {
           throw error;

@@ -5,7 +5,7 @@ class PerfilCrear(BaseModel):
     descripcion: str 
 
 class PerfilLeer(BaseModel):
-    id_perfil: UUID
+    id_perfil: str
     descripcion: str
 
     class Config:

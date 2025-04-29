@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "../../components/Spinner";
 import { FaCirclePlus } from "react-icons/fa6";
 import Modal from "../../components/Modal";

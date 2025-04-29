@@ -9,21 +9,30 @@ import CreateProduct from "./Forms/Product/CreateProduct";
 import { useGetQuery } from "../../hooks/query/useGetQuery";
 import UpdateProduct from "./Forms/Product/UpdateProduct";
 import DeleteProduct from "./Forms/Product/DeleteProduct";
+import { productCategoryTypesConstants } from "../../constants/productCategoryTypesConstants";
 
 function ProductTable() {
+  const [isFilter, setIsFilter] = useState<string>("");
   const {
     // Trae los productos
     isLoading,
     isError,
     data: productos,
   } = useGetQuery<ProductType[]>(
-    ["productos"],
-    "http://localhost:3000/productos"
+    ["productos", isFilter],
+    "http://localhost:3000/productos",
+    {
+      params: isFilter ? { id_categoria: isFilter } : {},
+    }
   );
 
   const [isModal, setIsModal] = useState<boolean>(false);
-  const [isModalProduct, setIsModalProduct] = useState<ProductType | null>(null);
-  const [isModalDeleteProduct, setIsModalDeleteProduct] = useState<string|null>(null);
+  const [isModalProduct, setIsModalProduct] = useState<ProductType | null>(
+    null
+  );
+  const [isModalDeleteProduct, setIsModalDeleteProduct] = useState<
+    string | null
+  >(null);
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
@@ -71,16 +80,24 @@ function ProductTable() {
             </button>
           </form>
 
-          <button
-            className="m-1 flex items-center justify-center flex-col"
-            onClick={() => setIsModal(true)}
-          >
-            <FaCirclePlus
-              size={30}
-              className="text-primary hover:text-primary/90 cursor-pointer"
+          <div className="flex gap-8">
+            <Select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setIsFilter(e.target.value)
+              }
+              value={isFilter}
             />
-            <p className="text-sm text-primary">Crear</p>
-          </button>
+            <button
+              className="m-1 flex items-center justify-center flex-col"
+              onClick={() => setIsModal(true)}
+            >
+              <FaCirclePlus
+                size={30}
+                className="text-primary hover:text-primary/90 cursor-pointer"
+              />
+              <p className="text-sm text-primary">Crear</p>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -141,7 +158,7 @@ function ProductTable() {
         <Modal isOpen={true} onClose={() => setIsModalDeleteProduct(null)}>
           <DeleteProduct
             idProduct={isModalDeleteProduct}
-            onClose={()=> setIsModalDeleteProduct(null)}
+            onClose={() => setIsModalDeleteProduct(null)}
           />
         </Modal>
       )}
@@ -154,13 +171,12 @@ export default ProductTable;
 function Tr({
   producto,
   setIsModalProduct,
-  setIsModalDeleteProduct
+  setIsModalDeleteProduct,
 }: {
   producto: ProductType;
   setIsModalProduct: (arg: ProductType) => void;
   setIsModalDeleteProduct: (arg: string) => void;
 }) {
-
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
       <th
@@ -184,12 +200,30 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            setIsModalDeleteProduct(producto.id!)
+            setIsModalDeleteProduct(producto.id!);
           }}
         >
           Eliminar
         </button>
       </td>
     </tr>
+  );
+}
+
+function Select({ ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <div className="mt-3" id="tipoUsuarioSelect">
+      <select
+        {...props}
+        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 cursor-pointer outline-none"
+      >
+        <option value="">Todos</option>
+        {productCategoryTypesConstants.map((productCategory) => (
+          <option key={productCategory.id} value={productCategory.id}>
+            {productCategory.descripcion}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

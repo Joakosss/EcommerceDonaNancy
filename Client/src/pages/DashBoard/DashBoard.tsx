@@ -66,8 +66,9 @@ function DashBoard() {
           {/*  */}
           {/* Tablas de actividades */}
           <div ref={animationParent} className="grid grid-cols-1 gap-4 ">
-            {isSelected === "Productos" && <ProductTable key={12321} />}
-            {isSelected === "Usuarios" && <UserTable key={1212321} />}
+            {isSelected === "Pedidos" && <UserTable key={"Pedidos"} />}
+            {isSelected === "Productos" && <ProductTable key={"Productos"} />}
+            {isSelected === "Usuarios" && <UserTable key={"Usuarios"} />}
           </div>
         </div>
       </div>

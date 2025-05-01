@@ -15,8 +15,18 @@ class UsuarioCrear(BaseModel):
     id_perfil: str
 
 class UsuarioLeer(BaseModel):
-    id_perfil: UUID
-    descripcion: str
+    id_usuario: UUID
+    nombre_usuario: str 
+    contrasenia: str
+    run_usuario: str
+    p_nombre: str
+    s_nombre: str | None = None
+    p_apellido: str
+    s_apellido: str
+    telefono: int
+    correo: str
+    direccion: str | None = None
+    id_perfil: str
 
     class Config:
         from_attributes = True

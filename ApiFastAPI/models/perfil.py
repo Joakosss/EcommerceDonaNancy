@@ -1,4 +1,5 @@
-from . import SQLModel, Field, Session, uuid
+from . import SQLModel, Field, uuid
+from sqlmodel import Session, select
 from database import engine
 
 class Perfil(SQLModel, table=True):
@@ -6,13 +7,21 @@ class Perfil(SQLModel, table=True):
     descripcion: str = Field(max_length = 400, nullable = False)
 
 def crear_perfil():
-    perfil_1 = Perfil(id_perfil="0", descripcion="Administrador")
-    perfil_2 = Perfil(id_perfil="1", descripcion="Cliente")
-    perfil_3 = Perfil(id_perfil="2", descripcion="Vendedor")
-    perfil_4 = Perfil(id_perfil="3", descripcion="Bodeguero")
-    perfil_5 = Perfil(id_perfil="4", descripcion="Contador")
+    perfiles = [
+        Perfil(id_perfil="0", descripcion="Administrador"),
+        Perfil(id_perfil="1", descripcion="Cliente"),
+        Perfil(id_perfil="2", descripcion="Vendedor"),
+        Perfil(id_perfil="3", descripcion="Bodeguero"),
+        Perfil(id_perfil="4", descripcion="Contador")
+    ]
+        
+    with Session(engine) as sesion: #La sesion se cierra al terminar el bloque 
+        perfiles_existentes = sesion.exec(select(Perfil)).all() #Si ya existen perfiles no se van a crear de nuevo
+        if not perfiles_existentes: 
+            sesion.add_all(perfiles)
+            sesion.commit()
+            print("Perfiles creados")
+        else:
+            print("Perfiles ya existen")
+        
 
-    #La sesion se cierra al terminar el bloque 
-    with Session(engine) as sesion:
-        sesion.add(perfil_1, perfil_2, perfil_3, perfil_4, perfil_5)
-        sesion.commit()

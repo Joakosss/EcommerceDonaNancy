@@ -3,4 +3,4 @@ import uuid
 import os
 
 from .perfil import Perfil, crear_perfil
-from .usuario import Usuario
+from .usuario import Usuario, crear_usuario

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from models import Perfil
 from database import get_session
@@ -31,10 +31,10 @@ def get_perfil_id(id_perfil: str, session: Session = Depends(get_session)):
 @router.post("/", response_model=PerfilLeer)
 def post_perfil(perfil: PerfilCrear, session: Session = Depends(get_session)):
     try:
-        db_perfil =  Perfil(**perfil.model_dump())
+        db_perfil =  Perfil(**perfil.model_dump()) #convierte el modelo a un diccionario
         session.add(db_perfil)
         session.commit()
-        session.refresh(db_perfil)
+        session.refresh(db_perfil) #devuelve el objeto actualizado desde la base de datos
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al crear perfil{str(e)}")
     return db_perfil 
@@ -71,7 +71,7 @@ def patch_perfil(id_perfil: str, perfil: PerfilActualizar, session: Session = De
         raise HTTPException(status_code=500, detail=f"Error al actualizar perfil {str(e)}")
     return db_perfil
     
-@router.delete("/perfil-delete/{id_perfil}")
+@router.delete("/{id_perfil}")
 def delete_perfil(id_perfil: str, session: Session = Depends(get_session)):
     try:
         db_perfil = session.get(Perfil, id_perfil)

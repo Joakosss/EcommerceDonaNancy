@@ -1,5 +1,7 @@
-from . import SQLModel, Field, Session, uuid
+from . import SQLModel, Field, uuid
 from database import engine
+from uuid import uuid4
+from sqlmodel import Session, select
 
 class Usuario(SQLModel, table=True):
     id_usuario: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
@@ -17,7 +19,7 @@ class Usuario(SQLModel, table=True):
 
 def crear_usuario():
     usu = Usuario(
-        id_usuario="1",
+        id_usuario=str(uuid4()),
         nombre_usuario="NancyDiaz",
         contrasenia="NDia.1822",
         run_usuario="18225225-0",
@@ -28,9 +30,12 @@ def crear_usuario():
         telefono=912341234,
         correo="nancy.diaz@btnancy.cl",
         direccion="Las Parras 0350",
-        id_perfil="1"
+        id_perfil="0"
     ) 
 
     with Session(engine) as sesion:
-        sesion.add(usu)
-        sesion.commit()
+        if sesion.exec(select(Usuario).where(Usuario.run_usuario == "18225225-0")).first():
+            print("Usuario ya existe")
+        else:
+            sesion.add(usu)
+            sesion.commit()

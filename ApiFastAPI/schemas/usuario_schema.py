@@ -22,4 +22,13 @@ class UsuarioLeer(BaseModel):
         from_attributes = True
 
 class UsuarioActualizar(BaseModel):
-    descripcion: str | None = None
+    nombre_usuario: str | None = None
+    contrasenia: str | None = None
+    p_nombre: str | None = None
+    s_nombre: str | None = None
+    p_apellido: str | None = None
+    s_apellido: str | None = None
+    telefono: int | None = None
+    correo: str | None = None
+    direccion: str | None = None
+    id_perfil: str | None = None

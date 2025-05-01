@@ -4,10 +4,12 @@ from models import Perfil
 from database import get_session
 from schemas import PerfilCrear, PerfilLeer, PerfilActualizar
 
+router = APIRouter(
+    prefix="/perfiles",
+    tags=["Perfiles"],
+)
 
-router = APIRouter()
-
-@router.get("/perfiles", response_model=list[PerfilLeer])
+@router.get("/", response_model=list[PerfilLeer])
 def get_perfiles(session: Session = Depends(get_session)):
     try:
         perfiles = session.exec(select(Perfil)).all()
@@ -15,7 +17,18 @@ def get_perfiles(session: Session = Depends(get_session)):
         raise HTTPException(status_code=500, detail=f"Error al obtener perfiles {str(e)}")
     return perfiles
 
-@router.post("/perfil-post", response_model=PerfilLeer)
+@router.get("/{id_perfil}", response_model=PerfilLeer)
+def get_perfil_id(id_perfil: str, session: Session = Depends(get_session)):
+    try:
+        perfil = session.get(Perfil, id_perfil)
+        if not perfil:
+            raise HTTPException(status_code=404, detail="Perfil no encontrado")
+        return perfil
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener perfil {str(e)}")
+    
+@router.post("/", response_model=PerfilLeer)
 def post_perfil(perfil: PerfilCrear, session: Session = Depends(get_session)):
     try:
         db_perfil =  Perfil(**perfil.model_dump())
@@ -26,19 +39,7 @@ def post_perfil(perfil: PerfilCrear, session: Session = Depends(get_session)):
         raise HTTPException(status_code=500, detail=f"Error al crear perfil{str(e)}")
     return db_perfil 
 
-@router.get("/perfil-get/{id_perfil}", response_model=PerfilLeer)
-def get_perfil_id(id_perfil: str, session: Session = Depends(get_session)):
-    try:
-        perfil = session.get(Perfil, id_perfil)
-        if not perfil:
-            raise HTTPException(status_code=404, detail="Perfil no encontrado")
-        return perfil
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener perfil {str(e)}")
-
-#PUT 
-@router.put("/perfil-put/{id_perfil}", response_model=PerfilLeer)
+@router.put("/{id_perfil}", response_model=PerfilLeer)
 def put_perfil(id_perfil: str, perfil: PerfilActualizar, session: Session = Depends(get_session)):
     try:
         db_perfil = session.get(Perfil, id_perfil)
@@ -54,8 +55,7 @@ def put_perfil(id_perfil: str, perfil: PerfilActualizar, session: Session = Depe
         raise HTTPException(status_code=500, detail=f"Error al actualizar perfil {str(e)}")
     return db_perfil
 
-#PATCH
-@router.patch("/perfil-patch/{id_perfil}", response_model=PerfilLeer)
+@router.patch("/{id_perfil}", response_model=PerfilLeer)
 def patch_perfil(id_perfil: str, perfil: PerfilActualizar, session: Session = Depends(get_session)):
     try:
         db_perfil = session.get(Perfil, id_perfil)
@@ -71,8 +71,7 @@ def patch_perfil(id_perfil: str, perfil: PerfilActualizar, session: Session = De
         raise HTTPException(status_code=500, detail=f"Error al actualizar perfil {str(e)}")
     return db_perfil
     
-#DELETE
-@router.delete("/perfil-delete/{id_perfil}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/perfil-delete/{id_perfil}")
 def delete_perfil(id_perfil: str, session: Session = Depends(get_session)):
     try:
         db_perfil = session.get(Perfil, id_perfil)

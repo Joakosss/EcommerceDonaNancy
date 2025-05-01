@@ -1,4 +1,5 @@
-from . import SQLModel, Field, uuid
+from . import SQLModel, Field, Session, uuid
+from database import engine
 
 class Usuario(SQLModel, table=True):
     id_usuario: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
@@ -14,7 +15,7 @@ class Usuario(SQLModel, table=True):
     direccion: str = Field(max_length=200, nullable=True)
     id_perfil: str = Field(max_length=50, foreign_key="perfil.id_perfil", nullable=False)
 
-""" def crear_usuario():
+def crear_usuario():
     usu = Usuario(
         id_usuario="1",
         nombre_usuario="NancyDiaz",
@@ -28,4 +29,8 @@ class Usuario(SQLModel, table=True):
         correo="nancy.diaz@btnancy.cl",
         direccion="Las Parras 0350",
         id_perfil="1"
-    ) """
+    ) 
+
+    with Session(engine) as sesion:
+        sesion.add(usu)
+        sesion.commit()

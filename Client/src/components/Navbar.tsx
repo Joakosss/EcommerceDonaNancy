@@ -9,11 +9,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import logo from "../images/NancySmall.svg";
 import useShoppingCartStore from "../store/useShoppingCartStore";
+import { FaMoneyBill } from "react-icons/fa";
+import useExchange from "../store/useExchangeStore";
 
 export default function Example() {
   const navigate = useNavigate();
   const { counterItems } = useShoppingCartStore();
   const [open, setOpen] = useState(false);
+  const {exchange,setExchange} = useExchange();
 
   return (
     <div className="bg-white">
@@ -86,7 +89,11 @@ export default function Example() {
               <div className="ml-4 flex lg:ml-0">
                 <a onClick={() => navigate("/")} href="">
                   <span className="sr-only">Doña Nancy</span>
-                  <img alt="Logo dona nancy" src={logo} className="h-12 w-auto" />
+                  <img
+                    alt="Logo dona nancy"
+                    src={logo}
+                    className="h-12 w-auto"
+                  />
                 </a>
               </div>
 
@@ -122,7 +129,21 @@ export default function Example() {
                     />
                   </a>
                 </div>
-
+                {/* Tipo dinero */}
+                <div className="ml-4 flow-root lg:ml-6">
+                  <button
+                    onClick={() => setExchange()}
+                    className="group -m-2 flex items-center p-2"
+                  >
+                    <FaMoneyBill
+                      aria-hidden="true"
+                      className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
+                    />
+                    <span className="ml-2 text-sm font-bold text-gray-700 group-hover:text-gray-800">
+                      {exchange}
+                    </span>
+                  </button>
+                </div>
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
                   <a

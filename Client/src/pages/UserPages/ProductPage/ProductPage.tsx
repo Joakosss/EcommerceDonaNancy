@@ -5,14 +5,24 @@ import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
 import { useGetQuery } from "../../../hooks/query/useGetQuery";
 import { ProductType } from "../../../types/ProductType";
+import { useQueryClient } from "@tanstack/react-query";
+import useExchange from "../../../store/useExchangeStore";
 type Props = {};
 
 function ProductPage({}: Props) {
+  const queryClient = useQueryClient();
+  const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
+  const { exchange } = useExchange();
+
   const { id } = useParams();
-  const {data, isLoading, isError} = useGetQuery<ProductType[]>(["producto", id], "http://localhost:3000/productos", {
-    params: { id: id }, // aplica filtro o no segun corresponda
-  });
-  const product = data?.[0]
+  const { data, isLoading, isError } = useGetQuery<ProductType[]>(
+    ["producto", id],
+    "http://localhost:3000/productos",
+    {
+      params: { id: id }, // aplica filtro o no segun corresponda
+    }
+  );
+  const product = data?.[0];
   const { add } = useShoppingCartStore();
   const handleAddProductCart = () => {
     add(product!);
@@ -20,7 +30,7 @@ function ProductPage({}: Props) {
 
   return (
     <>
-      {!isLoading && !isError ? (
+      {!isLoading && !isError && product ? (
         <>
           <section className="py-8 bg-white md:py-16 antialiased">
             <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
@@ -35,7 +45,12 @@ function ProductPage({}: Props) {
                   </h1>
                   <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
                     <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-                      ${generateChileanPrice(product!.precio)}
+                      {exchange === "CLP"
+                        ? `$${generateChileanPrice(product!.precio)}`
+                        : `$${
+                            Math.round((product!.precio / DolarCache!) * 100) /
+                            100
+                          } USD`}
                     </p>
                   </div>
 
@@ -55,6 +70,7 @@ function ProductPage({}: Props) {
           </section>
         </>
       ) : (
+        /* Cargando */
         <>
           <section className="py-8 bg-white md:py-16 antialiased animate-pulse">
             <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">

@@ -3,9 +3,12 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { fetchDolarPrice } from "../hooks/fetchDolarPrice";
 type Props = {};
 
+
 function Layout({}: Props) {
+  fetchDolarPrice();
   return (
     <div className="flex flex-col min-h-screen">
       <ToastContainer

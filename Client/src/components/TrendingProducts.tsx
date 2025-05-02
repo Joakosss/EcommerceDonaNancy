@@ -1,12 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { ProductType } from "../types/ProductType";
 import { generateChileanPrice } from "../utilities/generateChileanPrice";
 import { useNavigate } from "react-router-dom";
 import { generateSlug } from "../utilities/generateSlug";
 import cartC from "../images/CartC.svg";
+import useExchange from "../store/useExchangeStore";
 
 export default function Example() {
+  const queryClient = useQueryClient();
+  const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
+  const { exchange } = useExchange();
   const {
     data: products,
     isLoading,
@@ -63,7 +67,11 @@ export default function Example() {
                   </h3>
                 </div>
                 <p className="text-xl font-medium text-gray-900">
-                  ${generateChileanPrice(product.precio)}
+                  {exchange === "CLP"
+                    ? `$${generateChileanPrice(product.precio)}`
+                    : `$${
+                        Math.round((product.precio / DolarCache!) * 100) / 100
+                      } USD `}
                 </p>
               </div>
             ))}

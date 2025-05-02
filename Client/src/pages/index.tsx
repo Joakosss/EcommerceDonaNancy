@@ -12,6 +12,7 @@ import MyPurchasesPage from "./UserPages/MyPurchasesPage/MyPurchasesPage";
 import DashBoard from "./DashBoard/DashBoard";
 
 const router = createBrowserRouter([
+
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
   { path: "login/", element: <Login /> },

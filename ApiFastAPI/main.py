@@ -7,7 +7,7 @@ from endpoints import perfil_router, usuario_router, auth_router
 app = FastAPI(
     title="API Boutique Doña Nancy",
     description="API gestión de usuarios y perfiles (Por ahora :p)",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 # Crear tablas

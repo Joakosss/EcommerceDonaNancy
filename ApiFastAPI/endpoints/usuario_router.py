@@ -3,25 +3,31 @@ from sqlmodel import Session, select
 from models import Usuario
 from database import get_session
 from schemas import UsuarioCrear, UsuarioLeer, UsuarioActualizar
-from auth import crear_contrasenia
+from auth import crear_contrasenia, obtener_usuario
 
 router = APIRouter(
     prefix="/usuarios",
     tags=["Usuarios"],
 )
 
-
+#obtener todos los usuarios (requiere login)
 @router.get("/", response_model=list[UsuarioLeer])
-def get_usuarios(session: Session = Depends(get_session)):
+def get_usuarios(
+    session: Session = Depends(get_session),
+    usuario_actual: Usuario = Depends(obtener_usuario)
+):
     try:
         usuarios = session.exec(select(Usuario)).all()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener usuarios {str(e)}")
-    return usuarios
+    return usuarios 
 
-
+#obtener un usuario por id (requiere login)
 @router.get("/{id_usuario}", response_model=UsuarioLeer)
-def get_usuario_id(id_usuario: str, session: Session = Depends(get_session)):
+def get_usuario_id(
+    id_usuario: str, session: Session = Depends(get_session),
+    usuario_actual: Usuario = Depends(obtener_usuario)
+):
     try:
         perfil = session.get(Usuario, id_usuario)
         if not perfil:
@@ -31,7 +37,7 @@ def get_usuario_id(id_usuario: str, session: Session = Depends(get_session)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener usuario {str(e)}")
 
-
+#crear un usuario (no requiere login)
 @router.post("/", response_model=UsuarioLeer)
 def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session)):
     try:
@@ -44,9 +50,12 @@ def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session))
         raise HTTPException(status_code=500, detail=f"Error al crear usuario {str(e)}")
     return db_usuario
 
-
+#actualizar un usuario (requiere login)
 @router.patch("/{id_usuario}", response_model=UsuarioLeer)
-def patch_usuario(id_usuario: str, usuario: UsuarioActualizar, session: Session = Depends(get_session)):
+def patch_usuario(
+    id_usuario: str, usuario: UsuarioActualizar, session: Session = Depends(get_session),
+    usuario_actual: Usuario = Depends(obtener_usuario)
+):
     try:
         db_usuario = session.get(Usuario, id_usuario)
         if not db_usuario:
@@ -61,9 +70,12 @@ def patch_usuario(id_usuario: str, usuario: UsuarioActualizar, session: Session 
         raise HTTPException(status_code=500, detail=f"Error al actualizar usuario {str(e)}")
     return db_usuario
 
-
+#eliminar un usuario (requiere login)
 @router.delete("/{id_usuario}")
-def delete_usuario(id_usuario: str, session: Session = Depends(get_session)):
+def delete_usuario(
+    id_usuario: str, session: Session = Depends(get_session),
+    usuario_actual: Usuario = Depends(obtener_usuario)
+):
     try:
         db_usuario = session.get(Usuario, id_usuario)
         if not db_usuario:

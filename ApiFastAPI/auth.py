@@ -37,6 +37,13 @@ def crear_token_acceso(data: dict, expires_delta: timedelta | None = None) -> st
     encoded_jwt = jwt.encode(to_enconde, SECRET_KEY, algorithm=ALGORITHM) #se codifica el diccionario con la clave secreta y el algoritmo
     return encoded_jwt 
 
+#función para crear token de refresco
+def crear_token_refresco(data: dict, expires_delta: timedelta = timedelta(days=1)):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + expires_delta #se le suma al tiempo actual el tiempo de expiracion
+    to_encode.update({"exp": expire}) #se le agrega la fecha de expiracion al diccionario
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) #se codifica el diccionario
+
 #función para verificar el token de acceso
 def verificar_token_acceso(token: str):
     try:

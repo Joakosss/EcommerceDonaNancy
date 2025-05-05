@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from sqlmodel import SQLModel
 from database import engine
 from models import crear_perfil, crear_usuario
-from endpoints import perfil_router, usuario_router
+from endpoints import perfil_router, usuario_router, auth_router
 
 app = FastAPI(
     title="API Boutique Doña Nancy",
@@ -30,5 +30,6 @@ async def root():
     return {"mensaje": "FastAPI Doña Nancy"}
 
 #Importar enpoints
+app.include_router(auth_router.router, prefix="/api", tags=["Autenticación"])
 app.include_router(perfil_router.router, prefix="/api", tags=["Perfiles"])
 app.include_router(usuario_router.router, prefix="/api", tags=["Usuarios"])

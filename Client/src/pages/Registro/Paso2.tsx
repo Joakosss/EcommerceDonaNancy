@@ -18,22 +18,22 @@ function Paso2({ onNext }: { onNext: () => void }) {
     <section>
       <div>
         <label
-          htmlFor="correo_electronico"
+          htmlFor="correo"
           className="block mb-2 text-sm font-medium text-gray-900"
         >
           Correo Electronico*{" "}
-          {errors.correo_electronico?.message && (
+          {errors.correo?.message && (
             <small className="text-red-700">
-              {errors.correo_electronico?.message as string}{" "}
+              {errors.correo?.message as string}{" "}
             </small>
           )}
         </label>
         <input
           type="email"
-          id="correo_electronico"
+          id="correo"
           className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
           placeholder="TuCorreo@correo.cl"
-          {...register("correo_electronico", {
+          {...register("correo", {
             required: "Es requerido",
             pattern: {
               value:
@@ -70,11 +70,11 @@ function Paso2({ onNext }: { onNext: () => void }) {
       </div>
       <div className="mt-3">
         <label
-          htmlFor="Direccion"
+          htmlFor="direccion"
           className="block mb-2 text-sm font-medium text-gray-900"
         >
           Dirección{" "}
-          {errors.correo_electronico?.message && (
+          {errors.direccion?.message && (
             <small className="text-red-700">
               {errors.Direccion?.message as string}{" "}
             </small>
@@ -82,10 +82,10 @@ function Paso2({ onNext }: { onNext: () => void }) {
         </label>
         <input
           type="string"
-          id="Direccion"
+          id="direccion"
           className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
           placeholder="Calle 123 Comuna"
-          {...register("Direccion")}
+          {...register("direccion")}
         />
       </div>
       <button

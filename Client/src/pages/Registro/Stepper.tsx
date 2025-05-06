@@ -4,6 +4,7 @@ type StepperProps = {
 };
 
 const steps = [
+  { id: 0, label: "Identidad" },
   { id: 1, label: "Información Básica" },
   { id: 2, label: "Contactos" },
   { id: 3, label: "Usuario" },
@@ -23,9 +24,9 @@ function Stepper({ step, ChangeStep }: StepperProps) {
             className={`font-medium ${getTextClass(item.id)}`}
             onClick={step >= item.id ? () => ChangeStep(item.id) : () => {}}
           >
-            {item.id}. {item.label}
+            {item.label}
           </span>
-          {idx < steps.length - 1 && <span className="text-gray-400">-</span>}
+          {idx < steps.length - 1 && <span className="text-gray-400">/</span>}
         </div>
       ))}
     </div>

@@ -6,17 +6,19 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/NancySmall.svg";
 import useShoppingCartStore from "../store/useShoppingCartStore";
 import { FaMoneyBill } from "react-icons/fa";
 import useExchange from "../store/useExchangeStore";
+import useAuthStore from "../store/useAuthStore";
 
 export default function Example() {
   const navigate = useNavigate();
   const { counterItems } = useShoppingCartStore();
   const [open, setOpen] = useState(false);
-  const {exchange,setExchange} = useExchange();
+  const { exchange, setExchange } = useExchange();
+  const { tokens, logout } = useAuthStore();
 
   return (
     <div className="bg-white">
@@ -36,34 +38,45 @@ export default function Example() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 cursor-pointer"
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Close menu</span>
                 <XMarkIcon aria-hidden="true" className="size-6" />
               </button>
             </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <a
-                  onClick={() => navigate("login/")}
-                  href=""
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Conectarse
-                </a>
+            {/* Muestra sidebar segun login o no */}
+            {tokens ? (
+              <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                <div className="flow-root">
+                  <button
+                    onClick={logout}
+                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
               </div>
-              <div className="flow-root">
-                <a
-                  href=""
-                  onClick={() => navigate("registro/")}
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Registrarse
-                </a>
+            ) : (
+              <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                <div className="flow-root">
+                  <Link
+                    to={"login/"}
+                    className="-m-2 block p-2 font-medium text-gray-900"
+                  >
+                    Conectarse
+                  </Link>
+                </div>
+                <div className="flow-root">
+                  <Link
+                    to={"registro/"}
+                    className="-m-2 block p-2 font-medium text-gray-900"
+                  >
+                    Registrarse
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </DialogPanel>
         </div>
       </Dialog>
@@ -78,7 +91,7 @@ export default function Example() {
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
+                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden cursor-pointer"
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open menu</span>
@@ -87,34 +100,44 @@ export default function Example() {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a onClick={() => navigate("/")} href="">
+                <Link to={"/"}>
                   <span className="sr-only">Doña Nancy</span>
                   <img
                     alt="Logo dona nancy"
                     src={logo}
                     className="h-12 w-auto"
                   />
-                </a>
+                </Link>
               </div>
-
+              {/* Navbar pantalla completa validando si esta logeado o no */}
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    onClick={() => navigate("login/")}
-                    href=""
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Conectarse
-                  </a>
-                  <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                  <a
-                    onClick={() => navigate("registro/")}
-                    href=""
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Registrarse
-                  </a>
-                </div>
+                {tokens ? (
+                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                    <button
+                      onClick={logout}
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800 cursor-pointer"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
+                ) : (
+                  /* No esta logeado */
+                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                    <Link
+                      to={"login/"}
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Conectarse
+                    </Link>
+                    <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
+                    <Link
+                      to={"registro/"}
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Registrarse
+                    </Link>
+                  </div>
+                )}
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <a

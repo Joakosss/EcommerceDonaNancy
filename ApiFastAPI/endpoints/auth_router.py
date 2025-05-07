@@ -24,7 +24,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), sesion: Session = De
     return {
         "access_token": token, 
         "refresh_token": refresh_token, 
-        "token_type": "bearer"#bearer es el tipo de token que se va a usar en la autenticacion
+        "token_type": "bearer",#bearer es el tipo de token que se va a usar en la autenticacion
+        "autorization":usuario.id_perfil
     }
 
 @router.post("/refresh")

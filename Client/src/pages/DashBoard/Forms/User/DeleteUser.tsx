@@ -1,8 +1,6 @@
-import { useDeleteMutation } from "../../../../hooks/mutation/useDeleteMutation";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
-import useAuthStore from "../../../../store/useAuthStore";
-import { AxiosRequestHeaders } from "axios";
+import useMutateDeleteUser from "../../../../hooks/NewQuerys/userQuerys/useMutateDeleteUser";
 
 type Props = {
   idUser: string;
@@ -11,11 +9,11 @@ type Props = {
 
 function DeleteUser({ idUser, onClose }: Props) {
   const queryClient = useQueryClient();
-  const { tokens } = useAuthStore();
 
-  const { mutate, isPending } = useDeleteMutation(
-    `http://127.0.0.1:8000/api/usuarios/${idUser}`,
-    {
+  const { mutate } = useMutateDeleteUser();
+
+  const handleMutate = () => {
+    mutate(idUser, {
       onSuccess: () => {
         toast.success("Usuario eliminado ", {
           hideProgressBar: true,
@@ -32,13 +30,7 @@ function DeleteUser({ idUser, onClose }: Props) {
           autoClose: 1000,
         });
       },
-    }
-  );
-
-  const handleMutate = () => {
-    mutate({
-      Authorization: `Bearer ${tokens?.access_token}`,
-    } as AxiosRequestHeaders);
+    });
   };
 
   return (
@@ -51,9 +43,9 @@ function DeleteUser({ idUser, onClose }: Props) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         ></path>
       </svg>
       <p className="mb-4 text-gray-500 ">

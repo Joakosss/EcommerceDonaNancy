@@ -8,6 +8,7 @@ import { UsuarioType } from "../../../types/UsuarioType";
 import CreateUser from "../Forms/User/CreateUser";
 import { userTypesConstants } from "../../../constants/userTypesConstants";
 import UpdateUser from "../Forms/User/UpdateUser";
+import useQueryGetUsers from "../../../hooks/NewQuerys/userQuerys/UseQueryGetUsers";
 
 type ModalState =
   | { type: "create" }
@@ -25,7 +26,7 @@ function ProductTable() {
     data: usuarios,
     isError,
     isLoading,
-  } = useGetUsersQuery({ id_perfil: isPerfilFilter, nombre: isNameFilter });
+  } = useQueryGetUsers({ id_perfil: isPerfilFilter, nombre: isNameFilter });
   const [modal, setModal] = useState<ModalState>({ type: null });
 
   /* UseEffect para no mandar consultas cada vez que modificamos el input */
@@ -238,8 +239,5 @@ function Select({ ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
       </select>
     </div>
   );
-}
-function useGetUsersQuery(arg0: { id_perfil: string; nombre: string; }): { data: any; isError: any; isLoading: any; } {
-  throw new Error("Function not implemented.");
 }
 

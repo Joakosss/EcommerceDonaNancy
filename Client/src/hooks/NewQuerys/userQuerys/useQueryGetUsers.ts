@@ -21,10 +21,9 @@ function useQueryGetUsers(filtros?: Record<string, string | number | boolean>) {
           }
         );
         return response.data ;
-      } catch (error) {
+      } catch (error:any) {
         const errorAxios = error as AxiosError;
         if (errorAxios.response?.status === 401 && tokens?.refresh_token) {
-          alert("Aaaaaa")
           /* Aqui se hace el refresh del token */
           try {
             const response = await axios.post(
@@ -45,13 +44,12 @@ function useQueryGetUsers(filtros?: Record<string, string | number | boolean>) {
               }
             );
             return retryResponse.data;
-          } catch (error) {
-            /* logout(); */
-            throw error;
+          } catch (error:any) {
+            logout();
+            throw new Error(error.response?.data.detail || "Sesión expirada")
           }
         }
-        /* logout(); */
-        throw error;
+        throw new Error(error.response?.data.detail || "La solicitud de usuarios falló")
       }
     },
   });

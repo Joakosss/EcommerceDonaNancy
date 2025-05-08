@@ -3,20 +3,20 @@ import {
     UseMutationOptions,
     UseMutationResult,
   } from "@tanstack/react-query";
-  import axios from "axios";
+  import axios, { AxiosRequestHeaders} from "axios";
   
   export const useDeleteMutation = <
-  TData = unknown,
+  TData = unknown, 
   TError = unknown,
   TContext = unknown
   >(
     url: string,
-    options?: UseMutationOptions<TData, TError,void, TContext>
-  ): UseMutationResult<TData, TError,void, TContext> => {
+    options?: UseMutationOptions<TData, TError, AxiosRequestHeaders, TContext>,
+  ): UseMutationResult<TData, TError,AxiosRequestHeaders, TContext> => {
     return useMutation({
-      mutationFn: async () => {
+      mutationFn: async (headers:AxiosRequestHeaders) => {
         try {
-          const response = await axios.delete(url);
+          const response = await axios.delete(url,{headers});
           return response.data;
         } catch (error) {
           throw error;

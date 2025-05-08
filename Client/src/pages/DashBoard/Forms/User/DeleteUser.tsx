@@ -1,6 +1,8 @@
 import { useDeleteMutation } from "../../../../hooks/mutation/useDeleteMutation";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import useAuthStore from "../../../../store/useAuthStore";
+import { AxiosRequestHeaders } from "axios";
 
 type Props = {
   idUser: string;
@@ -9,8 +11,10 @@ type Props = {
 
 function DeleteUser({ idUser, onClose }: Props) {
   const queryClient = useQueryClient();
+  const { tokens } = useAuthStore();
+
   const { mutate, isPending } = useDeleteMutation(
-    `http://localhost:3000/Usuarios/${idUser}`,
+    `http://127.0.0.1:8000/api/usuarios/${idUser}`,
     {
       onSuccess: () => {
         toast.success("Usuario eliminado ", {
@@ -30,6 +34,13 @@ function DeleteUser({ idUser, onClose }: Props) {
       },
     }
   );
+
+  const handleMutate = () => {
+    mutate({
+      Authorization: `Bearer ${tokens?.access_token}`,
+    } as AxiosRequestHeaders);
+  };
+
   return (
     <div className="relative p-4 text-center bg-white rounded-lg shadow  sm:p-5">
       <svg
@@ -60,7 +71,7 @@ function DeleteUser({ idUser, onClose }: Props) {
         <button
           type="submit"
           className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300   "
-          onClick={() => mutate()}
+          onClick={handleMutate}
         >
           Sí, Estoy seguro
         </button>

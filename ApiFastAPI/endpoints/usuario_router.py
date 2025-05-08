@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
-from models import Usuario
+from models import Usuario, crear_nombreUsuario, crear_correo
 from database import get_session
 from schemas import UsuarioCrear, UsuarioLeer, UsuarioActualizar
 from auth import crear_contrasenia, obtener_usuario
@@ -38,14 +38,41 @@ def get_usuario_id(
         raise HTTPException(status_code=500, detail=f"Error al obtener usuario {str(e)}")
 
 #crear un usuario (no requiere login)
-@router.post("/", response_model=UsuarioLeer)
+@router.post("/", response_model=UsuarioLeer) 
 def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session)):
     try:
+
+        #Crea el nombre de usuario si no se ingresa
+        if not usuario.nombre_usuario:
+            usuario.nombre_usuario = crear_nombreUsuario(usuario.p_nombre, usuario.p_apellido, usuario.run_usuario)
+        #Crea el correo si no se ingresa
+        if not usuario.correo: 
+            usuario.correo = crear_correo(usuario.p_nombre, usuario.p_apellido)
+
+        errores = []#puse los errores en una lista por si hay mas de uno
+
+        #verifica si rut, username o correo ya existan en la bd
+        run_usuario =  session.exec(select(Usuario).where(Usuario.run_usuario == usuario.run_usuario)).first()
+        if run_usuario:
+            errores.append("El rut a registrar ya existe")
+
+        nombre_usuario = session.exec(select(Usuario).where(Usuario.nombre_usuario == usuario.nombre_usuario)).first()
+        if nombre_usuario:
+            errores.append("El nombre de usuario a registrar ya existe")
+        
+        correo_usuario = session.exec(select(Usuario).where(Usuario.correo == usuario.correo)).first()
+        if correo_usuario:
+            errores.append("El correo a registrar ya existe")
+        
+        if errores:
+            raise HTTPException(status_code=400, detail=errores)
+        #Guarda el usuario en bd
         db_usuario = Usuario(**usuario.model_dump())
         db_usuario.contrasenia = crear_contrasenia(usuario.contrasenia) #encripta la contraseña
         session.add(db_usuario) #convierte el modelo a un diccionario
         session.commit()
         session.refresh(db_usuario)#devuelve el objeto actualizado desde la base de datos
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al crear usuario {str(e)}")
     return db_usuario

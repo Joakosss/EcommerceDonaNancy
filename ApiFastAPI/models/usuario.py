@@ -1,6 +1,7 @@
 from . import SQLModel, Field, uuid
 from database import engine
 from sqlmodel import Session, select
+from unidecode import unidecode
 
 class Usuario(SQLModel, table=True):
     id_usuario: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
@@ -16,16 +17,7 @@ class Usuario(SQLModel, table=True):
     direccion: str = Field(max_length=200, nullable=True)
     id_perfil: str = Field(max_length=50, foreign_key="perfil.id_perfil", nullable=False)
 
-def crear_nombreUsuario(apellido: str, rut: str) -> str:
-    # Extraer el primer apellido y los primeros 3 dígitos del RUT
-    primer_apellido = apellido.split()[0].lower()
-    rut_digitos = rut.split("-")[0][:3]
-    
-    # Concatenar el primer apellido y los 3 dígitos del RUT
-    nombre_usuario = f"{primer_apellido}{rut_digitos}"
-    
-    return nombre_usuario
-
+#Crear usuario admin por defecto
 def crear_usuario():
     usu = Usuario(
         id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc6",
@@ -49,3 +41,20 @@ def crear_usuario():
         else:
             sesion.add(usu)
             sesion.commit()
+
+#funciones para crear el nombre de usuario y el correo si no se ingresan en el registro
+def crear_nombreUsuario(nombre: str, apellido: str, rut: str) -> str:
+    p_nombre = unidecode(nombre.split()[0][:3].lower())
+    p_apellido = unidecode(apellido.split()[0].lower())
+    run = rut.split("-")[0][:3]
+
+    username = f"{p_apellido}.{p_nombre}{run}"
+
+    return username
+
+def crear_correo(nombre: str, apellido: str) -> str:
+    p_nombre = unidecode(nombre.split()[0][:3].lower())
+    p_apellido = unidecode(apellido.split()[0].lower())
+
+    correo = f"{p_nombre}.{p_apellido}@bdnancy.cl"
+    return correo

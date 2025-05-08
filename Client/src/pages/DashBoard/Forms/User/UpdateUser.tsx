@@ -8,6 +8,7 @@ import Input from "../../../../components/FormComponents/Input";
 import Select from "../../../../components/FormComponents/Select";
 import { UsuarioType } from "../../../../types/UsuarioType";
 import { userTypesConstants } from "../../../../constants/userTypesConstants";
+import useMutatePatchUser from "../../../../hooks/NewQuerys/userQuerys/useMutatePatchUser";
 
 type Props = {
   user: UsuarioType;
@@ -41,8 +42,10 @@ function UpdateUser({ user, onClose }: Props) {
     },
   }); //Manejamos el formulario
 
-  const { mutate, isPending } = usePatchMutation<ProductType>(
-    `http://localhost:3000/Usuarios/${user.id}`,
+  const { mutate, isPending } = useMutatePatchUser();
+
+  /*   const { mutate, isPending } = usePatchMutation<ProductType>(
+    `http://localhost:3000/Usuarios/${user.id_usuario}`,
     {
       onSuccess: () => {
         toast.success("Usuario Modificado ", {
@@ -61,10 +64,32 @@ function UpdateUser({ user, onClose }: Props) {
         });
       },
     }
-  );
+  ); */
 
   const onSubmit = (data: FormType) => {
-    mutate(data);
+    const id = user.id_usuario!;
+    const newUser = data;
+    mutate(
+      { id, newUser },
+      {
+        onSuccess: () => {
+          toast.success("Usuario Modificado ", {
+            hideProgressBar: true,
+            position: "top-left",
+            autoClose: 1000,
+          });
+          queryClient.invalidateQueries({ queryKey: ["usuarios"] });
+          onClose();
+        },
+        onError: () => {
+          toast.error("Usuario no modificado", {
+            hideProgressBar: true,
+            position: "top-left",
+            autoClose: 1000,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -73,10 +98,7 @@ function UpdateUser({ user, onClose }: Props) {
       <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
         Modificar un Usuario
       </h1>
-      <form
-        className="space-y-4 md:space-y-6"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
         <Input
           key={"runInput"}
           label="Run* "
@@ -149,7 +171,9 @@ function UpdateUser({ user, onClose }: Props) {
         <Select
           key={"tipoUsuarioSelect"}
           label="Tipo de cuenta* "
-          options={userTypesConstants}
+          options={userTypesConstants.filter(
+            (type) =>type.id !== "0"&&type.id !== "1"
+          )}
           error={errors.id_perfil}
           {...register("id_perfil", {
             required: "Debes seleccionar una categoría",

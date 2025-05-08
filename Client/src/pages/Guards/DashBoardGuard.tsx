@@ -3,11 +3,14 @@ import useAuthStore from "../../store/useAuthStore";
 
 function DashBoardGuard() {
     const {tokens} = useAuthStore();
-    console.log(tokens)
+
     if (tokens?.autorization==="1") {
         return <Navigate to={"*"}></Navigate>
-    }
-    return <Outlet/>
+    } 
+    if (tokens?.autorization!=="1") {
+        return <Outlet/>
+    } 
+    return <Navigate to={"/"}></Navigate>
 }
 
 export default DashBoardGuard

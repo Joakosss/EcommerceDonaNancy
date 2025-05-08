@@ -14,9 +14,11 @@ type Props = {
   onClose: () => void;
 };
 type FormType = {
+  run_usuario: string;
   p_nombre: string;
   p_apellido: string;
   s_apellido: string;
+  correo: string;
   telefono: number;
   id_perfil: string;
 };
@@ -29,9 +31,11 @@ function UpdateUser({ user, onClose }: Props) {
     formState: { errors },
   } = useForm<FormType>({
     defaultValues: {
+      run_usuario: user.run_usuario,
       p_nombre: user.p_nombre,
       p_apellido: user.p_apellido,
       s_apellido: user.s_apellido,
+      correo: user.correo,
       telefono: user.telefono,
       id_perfil: user.id_perfil,
     },
@@ -74,6 +78,20 @@ function UpdateUser({ user, onClose }: Props) {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
+          key={"runInput"}
+          label="Run* "
+          Placeholder="ej: 10100100-8"
+          typeInput="text"
+          error={errors.run_usuario}
+          {...register("run_usuario", {
+            required: "Es requerido",
+            pattern: {
+              value: /^\d{1,2}\d{3}\d{3}-[\dkK]$/,
+              message: "Rut no válido verifica guion y digito verificador",
+            },
+          })}
+        />
+        <Input
           key={"nombreInput"}
           label="Primer Nombre* "
           Placeholder="Tu primer nombre"
@@ -101,6 +119,21 @@ function UpdateUser({ user, onClose }: Props) {
           error={errors.s_apellido}
           {...register("s_apellido", {
             required: "Es requerido",
+          })}
+        />
+        <Input
+          key={"correoInput"}
+          label="Correo* "
+          Placeholder="Ingrese correo"
+          typeInput="text"
+          error={errors.correo}
+          {...register("correo", {
+            required: "Es requerido",
+            pattern: {
+              value:
+                /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/,
+              message: "El correo no es válido",
+            },
           })}
         />
         <Input

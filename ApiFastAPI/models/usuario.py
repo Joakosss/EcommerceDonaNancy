@@ -1,6 +1,5 @@
 from . import SQLModel, Field, uuid
 from database import engine
-from uuid import uuid4
 from sqlmodel import Session, select
 
 class Usuario(SQLModel, table=True):
@@ -17,11 +16,21 @@ class Usuario(SQLModel, table=True):
     direccion: str = Field(max_length=200, nullable=True)
     id_perfil: str = Field(max_length=50, foreign_key="perfil.id_perfil", nullable=False)
 
+def crear_nombreUsuario(apellido: str, rut: str) -> str:
+    # Extraer el primer apellido y los primeros 3 dígitos del RUT
+    primer_apellido = apellido.split()[0].lower()
+    rut_digitos = rut.split("-")[0][:3]
+    
+    # Concatenar el primer apellido y los 3 dígitos del RUT
+    nombre_usuario = f"{primer_apellido}{rut_digitos}"
+    
+    return nombre_usuario
+
 def crear_usuario():
     usu = Usuario(
-        id_usuario=str(uuid4()),
+        id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc6",
         nombre_usuario="NancyDiaz",
-        contrasenia="NDia.1822",
+        contrasenia="$2b$12$L/KK5SnXRVZUiG77mMoQGOqf4j2raFialEpj9/qGUNvEdkjBkt3pa",
         run_usuario="18225225-0",
         p_nombre="Nancy",
         s_nombre="Andrea",
@@ -34,7 +43,8 @@ def crear_usuario():
     ) 
 
     with Session(engine) as sesion:
-        if sesion.exec(select(Usuario).where(Usuario.run_usuario == "18225225-0")).first():
+        #Validación para que no cree el usuario si ya existe
+        if sesion.exec(select(Usuario).where(Usuario.id_usuario == usu.id_usuario)).first():
             print("Usuario ya existe")
         else:
             sesion.add(usu)

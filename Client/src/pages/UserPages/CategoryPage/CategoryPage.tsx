@@ -1,22 +1,24 @@
 import ProductCard from "./ProductCard";
-import { useProducts } from "../../../hooks/useProducts";
 import { useState } from "react";
 import { ProductType } from "../../../types/ProductType";
 import ProductCardSkeleton from "./ProductCardSkeleton";
+import { useGetQuery } from "../../../hooks/query/useGetQuery";
 type Props = {};
 
 function CategoryPage({}: Props) {
   /* Hooks que trae los productos */
   const [filter, setFilter] = useState<string>("");
-
   const {
     isLoading,
     isError,
     data: productos,
-  } = useProducts({
-    url: "http://localhost:3000/productos",
-    filter: { id_categoria: filter },
-  });
+  } = useGetQuery<ProductType>(
+    ["productos", filter],
+    "http://localhost:3000/productos",
+    {
+      params: filter ? { id_categoria: filter } : {}, // aplica filtro o no segun corresponda
+    }
+  );
 
   const handleFilter = (newFilter: string) => {
     setFilter(newFilter);
@@ -52,15 +54,13 @@ function CategoryPage({}: Props) {
 
         {/* Aqui van los productos */}
         <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          {isLoading || isError ? 
-            (Array.from({length:8})).map((_,i)=>(
-              <ProductCardSkeleton key={i}></ProductCardSkeleton>
-            ))
-           : (
-            productos.map((producto: ProductType) => (
-              <ProductCard key={producto.id} product={producto} />
-            ))
-          )}
+          {isLoading || isError
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <ProductCardSkeleton key={i}></ProductCardSkeleton>
+              ))
+            : productos!.map((producto: ProductType) => (
+                <ProductCard key={producto.id} product={producto} />
+              ))}
         </div>
 
         <div className="w-full text-center">

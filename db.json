@@ -1,41 +1,86 @@
 {
+  "Modelo": [
+    {
+      "id": "10",
+      "descripcion": "Nuevo"
+    },
+    {
+      "id": "11",
+      "descripcion": "Usado"
+    },
+    {
+      "id": "20",
+      "descripcion": "Bateria"
+    },
+    {
+      "id": "21",
+      "descripcion": "Cableado"
+    },
+    {
+      "id": "30",
+      "descripcion": "Moderno"
+    },
+    {
+      "id": "31",
+      "descripcion": "Retro"
+    },
+    {
+      "id": "40",
+      "descripcion": "Altos"
+    },
+    {
+      "id": "41",
+      "descripcion": "Bajos"
+    },
+    {
+      "id": "50",
+      "descripcion": "Transportes"
+    },
+    {
+      "id": "51",
+      "descripcion": "Extras"
+    }
+  ],
+  "Marca": [
+    {
+      "id": "0",
+      "descripcion": "Doña Nancy"
+    },
+    {
+      "id": "1",
+      "descripcion": "Shein"
+    }
+  ],
   "categoria": [
     {
-      "id_categoria": 1,
-      "descripcion": "Ropa",
-      "id": "38de"
+      "id": "1",
+      "descripcion": "Ropa"
     },
     {
-      "id_categoria": 2,
-      "descripcion": "Electrónicos",
-      "id": "70ad"
+      "id": "2",
+      "descripcion": "Electrónicos"
     },
     {
-      "id_categoria": 3,
-      "descripcion": "Muebles",
-      "id": "ee46"
+      "id": "3",
+      "descripcion": "Muebles"
     },
     {
-      "id_categoria": 4,
-      "descripcion": "Zapatos",
-      "id": "00ce"
+      "id": "4",
+      "descripcion": "Zapatos"
     },
     {
-      "id_categoria": 5,
-      "descripcion": "Varios",
-      "id": "472d"
+      "id": "5",
+      "descripcion": "Varios"
     }
   ],
   "productos": [
     {
-      "id_producto": "1",
-      "nombre": "Camiseta gráfica de montaña majestuosa",
+      "nombre": "Camiseta gráfica de montaña",
       "descripcion": "Eleva tu guardarropa con esta elegante camiseta negra que presenta un impresionante gráfico de cordillera en blanco y negro. Perfecta para quienes aman la naturaleza o desean añadir un toque de diseño inspirado en ella a su look. Confeccionada en suave tela transpirable que garantiza comodidad todo el día. Ideal para salidas casuales o como regalo único, esta camiseta es una adición versátil a cualquier colección.",
       "link_foto": "https://i.imgur.com/QkIa5tT.jpeg",
-      "precio": 40,
-      "stock": 0,
-      "id_categoria": 1,
-      "descuento": 0,
+      "precio": 500,
+      "stock": 25,
+      "id_categoria": "1",
       "id": "1785"
     },
     {
@@ -576,6 +621,15 @@
       "id_categoria": 5,
       "descuento": 0,
       "id": "8677"
+    },
+    {
+      "nombre": "Camiseta gráfica de montaña",
+      "descripcion": "Eleva tu guardarropa con esta elegante camiseta negra que presenta un impresionante gráfico de cordillera en blanco y negro. Perfecta para quienes aman la naturaleza o desean añadir un toque de diseño inspirado en ella a su look. Confeccionada en suave tela transpirable que garantiza comodidad todo el día. Ideal para salidas casuales o como regalo único, esta camiseta es una adición versátil a cualquier colección.",
+      "link_foto": "https://i.imgur.com/QkIa5tT.jpeg",
+      "precio": 40,
+      "stock": 1,
+      "id_categoria": "1",
+      "id": "5967"
     }
   ],
   "Pedido": [
@@ -695,11 +749,6 @@
       }
     }
   ],
-  "BoletaProducto": [],
-  "EstadoBoleta": [],
-  "FormaPago": [],
-  "Perfil": [],
-  "Entrega": [],
   "Sucursal": [
     {
       "id": "1",
@@ -768,50 +817,143 @@
       "forma_pago": "Transferencia"
     }
   ],
-  "PEDIDOSPOPULARES": [
+  "PedidosPopulares": [
     {
-      "id_producto": "1",
+      "id": "1785",
       "nombre": "Camiseta gráfica de montaña majestuosa",
       "descripcion": "Eleva tu guardarropa con esta elegante camiseta negra que presenta un impresionante gráfico de cordillera en blanco y negro. Perfecta para quienes aman la naturaleza o desean añadir un toque de diseño inspirado en ella a su look. Confeccionada en suave tela transpirable que garantiza comodidad todo el día. Ideal para salidas casuales o como regalo único, esta camiseta es una adición versátil a cualquier colección.",
       "link_foto": "https://i.imgur.com/QkIa5tT.jpeg",
       "precio": 40,
-      "stock": 0,
-      "id_categoria": 1,
-      "descuento": 0,
-      "id": "1785"
+      "stock": 10,
+      "id_categoria": 1
     },
     {
-      "id_producto": "2",
+      "id": "d38f",
       "nombre": "Sudadera con capucha roja clásica",
       "descripcion": "Mejora tu vestuario casual con nuestra sudadera con capucha roja clásica. Confeccionada con una mezcla de algodón suave para máxima comodidad, esta vibrante sudadera roja cuenta con un bolsillo canguro, capucha con cordón ajustable y puños acanalados para un ajuste cómodo. Su diseño atemporal combina fácilmente con jeans o pantalones deportivos para un look relajado pero con estilo, convirtiéndola en una adición versátil a tu atuendo diario.",
       "link_foto": "https://i.imgur.com/1twoaDy.jpeg",
       "precio": 10,
-      "stock": 0,
-      "id_categoria": 1,
-      "descuento": 0,
-      "id": "d38f"
+      "stock": 20,
+      "id_categoria": 1
     },
     {
-      "id_producto": "3",
+      "id": "6fc7",
       "nombre": "Sudadera gris Heather clásica",
       "descripcion": "Mantente cómodo y elegante con nuestra sudadera gris Heather clásica. Confeccionada en tela suave y duradera, incluye bolsillo canguro, capucha con cordón ajustable y puños acanalados. Perfecta para un día relajado fuera de casa o una tranquila velada en casa, esta sudadera es un complemento versátil para cualquier guardarropa.",
       "link_foto": "https://i.imgur.com/cHddUCu.jpeg",
       "precio": 69,
-      "stock": 0,
-      "id_categoria": 1,
-      "descuento": 0,
-      "id": "6fc7"
+      "stock": 50,
+      "id_categoria": 1
     },
     {
-      "id_producto": "4",
+      "id": "35b6",
       "nombre": "Sudadera con capucha gris clásica",
       "descripcion": "Mejora tu vestuario casual con nuestra sudadera con capucha gris clásica. Elaborada con una suave mezcla de algodón, esta sudadera cuenta con un bolsillo canguro frontal, capucha con cordón ajustable y puños acanalados para un ajuste ceñido. Ideal para esas frescas tardes o los relajados fines de semana, combina a la perfección con tus jeans o pantalones deportivos favoritos.",
       "link_foto": "https://i.imgur.com/R2PN9Wq.jpeg",
       "precio": 90,
-      "stock": 0,
-      "id_categoria": 1,
-      "descuento": 0,
-      "id": "35b6"
+      "stock": 100,
+      "id_categoria": 1
+    }
+  ],
+  "Usuarios": [
+    {
+      "id": "1a2f",
+      "nombre_usuario": "asd.joa",
+      "p_nombre": "asdsds",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "3",
+      "correo": "asdsds.joaquín@donaNancy.cl",
+      "contrasennia": "asd.joa93"
+    },
+    {
+      "id": "3e7e",
+      "nombre_usuario": "asd.joa",
+      "p_nombre": "asd",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "1",
+      "correo": "asd.joaquín@donaNancy.cl",
+      "contrasennia": "asd.joa93"
+    },
+    {
+      "id": "8012",
+      "nombre_usuario": "asd.joa",
+      "p_nombre": "asdsds",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "2",
+      "correo": "asdsds.joaquín@donaNancy.cl",
+      "contrasennia": "asd.joa93"
+    },
+    {
+      "id": "5844",
+      "nombre_usuario": "edu.joa",
+      "p_nombre": "Eduardo",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "2",
+      "correo": "eduardo.joaquín@donaNancy.cl",
+      "contrasennia": "edu.joa93"
+    },
+    {
+      "id": "53b2",
+      "nombre_usuario": "edu.joa",
+      "p_nombre": "Eduardo",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "3",
+      "correo": "eduardo.joaquín@donaNancy.cl",
+      "contrasennia": "edu.joa93"
+    },
+    {
+      "id": "1cc3",
+      "nombre_usuario": "asd.joa",
+      "p_nombre": "asdsds",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "2",
+      "correo": "asdsds.joaquín@donaNancy.cl",
+      "contrasennia": "asd.joa93"
+    },
+    {
+      "id": "492a",
+      "nombre_usuario": "edu.joa",
+      "p_nombre": "Eduardo",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "2",
+      "correo": "eduardo.joaquín@donaNancy.cl",
+      "contrasennia": "edu.joa93"
+    },
+    {
+      "id": "e016",
+      "nombre_usuario": "edu.joa",
+      "p_nombre": "Eduardo",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "2",
+      "correo": "eduardo.joaquín@donaNancy.cl",
+      "contrasennia": "edu.joa93"
+    },
+    {
+      "id": "91c4",
+      "nombre_usuario": "asd.joa",
+      "p_nombre": "asdsds",
+      "p_apellido": "Joaquín",
+      "s_apellido": "Pérez",
+      "telefono": "934994163",
+      "id_perfil": "3",
+      "correo": "asdsds.joaquín@donaNancy.cl",
+      "contrasennia": "asd.joa93"
     }
   ]
 }

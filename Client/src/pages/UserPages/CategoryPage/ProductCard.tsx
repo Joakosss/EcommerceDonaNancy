@@ -4,20 +4,23 @@ import { ProductType } from "../../../types/ProductType";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
-import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
+import useExchange from "../../../store/useExchangeStore";
 
 type ProductCardProps = {
   product: ProductType;
 };
 
 function ProductCard({ product }: ProductCardProps) {
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
+  const { exchange } = useExchange();
 
+  const navigate = useNavigate();
   const { add } = useShoppingCartStore();
   const handleAddProductCart = () => {
     add(product!);
   };
-
   const handleNavigate = (id: string) => {
     const slugName = generateSlug(product.nombre);
     navigate(`/producto/${id}/${slugName}`);
@@ -27,7 +30,7 @@ function ProductCard({ product }: ProductCardProps) {
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       {/* Imagen */}
       <div className="h-56 w-full">
-        <a href="" onClick={() => handleNavigate(product.id_producto)}>
+        <a href="" onClick={() => handleNavigate(product.id!)}>
           <img
             className="w-full h-full object-contain"
             src={product.link_foto}
@@ -40,7 +43,7 @@ function ProductCard({ product }: ProductCardProps) {
         <div className="h-[48px] max-h-[48px]">
           <a
             href=""
-            onClick={() => handleNavigate(product.id_producto)}
+            onClick={() => handleNavigate(product.id!)}
             className="min-h-[150px] text-lg font-semibold leading-tight text-gray-900 hover:underline "
           >
             {product.nombre}
@@ -48,8 +51,10 @@ function ProductCard({ product }: ProductCardProps) {
         </div>
         {/* Precio */}
         <div className="mt-4 flex items-center justify-between gap-4">
-          <p className="text-2xl font-bold leading-tight text-gray-900">
-            ${generateChileanPrice(product.precio)}
+          <p className="text-xl font-bold leading-tight text-gray-900">
+            {exchange === "CLP"
+              ? `$${generateChileanPrice(product.precio)}`
+              : `$${Math.round((product.precio / DolarCache!) * 100) / 100} USD`}
           </p>
           <MyButton
             type="button"

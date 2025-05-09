@@ -3,11 +3,18 @@ from sqlmodel import SQLModel
 from database import engine
 from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos
 from endpoints import perfil_router, usuario_router, auth_router
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title="API Boutique Doña Nancy",
     description="API gestión de usuarios y perfiles (Por ahora :p)",
     version="0.2.0",
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 # Crear tablas

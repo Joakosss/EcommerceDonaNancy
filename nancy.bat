@@ -15,15 +15,15 @@ echo [2/4] Iniciando frontend...
 if exist "%BASE_DIR%Client\" (
     start cmd /k "cd /d "%BASE_DIR%Client" && pnpm run dev"
 ) else (
-    echo [ERROR] No se encontró la carpeta Client
+    echo [ERROR] No se encontrï¿½ la carpeta Client
 )
 
 :: Iniciar el backend
 echo [3/4] Iniciando backend...
-if exist "%BASE_DIR%Backend\" (
-    start cmd /k "cd /d "%BASE_DIR%Backend" && pnpm run dev"
+if exist "%BASE_DIR%ApiNodeJS\" (
+    start cmd /k "cd /d "%BASE_DIR%ApiNodeJS" && pnpm run dev"
 ) else (
-    echo [ERROR] No se encontró la carpeta Back
+    echo [ERROR] No se encontrï¿½ la carpeta Back
 )
 
 echo ----------------------------------

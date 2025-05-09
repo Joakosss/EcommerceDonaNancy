@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary:#1c4364;
+  --font-poppins: "Poppins", sans-serif;
 
-@layer components {
-    .typography {
-      color: var(--color-gray-950);
-      a {
-        color: var(--color-blue-500);
-        &:hover {
-          color: var(--color-blue-800);
-        }
-      }
-    }
+
+}
+
+@layer base {
+  html {
+    font-family: var(--font-poppins); /* Aplica Poppins a toda la página */
   }
+}
+

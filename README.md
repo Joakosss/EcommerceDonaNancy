@@ -21,5 +21,14 @@ Backend: FastAPI y Express.js – permitiendo una arquitectura flexible y modula
 Base de datos: OracleSql – para gestionar datos de usuarios, productos y órdenes de forma eficiente y relacional.
 
 ## Instalación:
-
+### fastApi:
+    1. Crear BD oracle usuario y contraseña "  db_nancy  "
+```bash
+  cd ApiFastApi
+  python -m venv venv
+  venv\Scripts\activate
+  pip install -r requirements.txt
+  uvicorn main:app
+```
+    
 

@@ -11,11 +11,11 @@ function PromoSection({}: Props) {
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <h2
               id="sale-heading"
-              className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl"
+              className="text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl"
             >
               ¡Lleva Más, Paga Menos!
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-xl text-gray-600">
+            <p className="mx-auto mt-4 max-w-xl text-xl text-primary/70">
               <strong>
                 Después del 4to producto, obtén un 25% de descuento en todo lo
                 adicional.

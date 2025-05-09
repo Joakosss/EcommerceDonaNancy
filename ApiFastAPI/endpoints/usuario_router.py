@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from sqlmodel import Session, select, or_
 from models import Usuario, crear_nombreUsuario, crear_correo
 from database import get_session
 from schemas import UsuarioCrear, UsuarioLeer, UsuarioActualizar
 from auth import crear_contrasenia, obtener_usuario
+from typing import Optional
 
 router = APIRouter(
     prefix="/usuarios",
@@ -56,7 +57,7 @@ def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session))
         if run_usuario:
             errores.append("El rut a registrar ya existe")
 
-        nombre_usuario = session.exec(select(Usuario).where(Usuario.nombre_usuario == usuario.nombre_usuario)).first()
+        nombre_usuario = session.exec(select(Usuario).where(Usuario.id_usuario == usuario.nombre_usuario)).first()
         if nombre_usuario:
             errores.append("El nombre de usuario a registrar ya existe")
         
@@ -112,3 +113,30 @@ def delete_usuario(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al eliminar usuario {str(e)}")
     return {"mensaje": "Usuario eliminado correctamente"}
+
+#petición get con filtros (requiere login)
+@router.get("/buscar/", response_model=list[UsuarioLeer])
+def get_buscar_usuarios(
+    #campos a filtrar opcionales
+    id_usuario: Optional[str] = None,
+    id_perfil: Optional[str] = None,
+    p_nombre: Optional[str] = None,
+    session: Session = Depends(get_session),
+    usuario_actual: Usuario = Depends(obtener_usuario)
+):
+    try:
+        query = select(Usuario)
+
+        if id_usuario:
+            query = query.where(Usuario.id_usuario == id_usuario)
+
+        if id_perfil:
+            query = query.where(Usuario.id_perfil == id_perfil)
+
+        if p_nombre:
+            query = query.where(Usuario.p_nombre == p_nombre)
+
+        usuarios = session.exec(query).all()
+        return usuarios   
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al buscar usuarios {str(e)}")

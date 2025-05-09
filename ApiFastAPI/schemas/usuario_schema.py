@@ -33,7 +33,6 @@ class UsuarioLeer(BaseModel):
 
 class UsuarioActualizar(BaseModel):
     nombre_usuario: str | None = None
-    contrasenia: str | None = None
     p_nombre: str | None = None
     s_nombre: str | None = None
     p_apellido: str | None = None

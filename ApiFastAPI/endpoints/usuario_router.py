@@ -11,17 +11,29 @@ router = APIRouter(
     tags=["Usuarios"],
 )
 
-#obtener todos los usuarios (requiere login)
+#petición get (requiere login)
 @router.get("/", response_model=list[UsuarioLeer])
-def get_usuarios(
+def get_buscar_usuarios(
+    id_usuario: Optional[str] = None,
+    id_perfil: Optional[str] = None,
+    p_nombre: Optional[str] = None,
     session: Session = Depends(get_session),
     usuario_actual: Usuario = Depends(obtener_usuario)
 ):
     try:
-        usuarios = session.exec(select(Usuario)).all()
+        query = select(Usuario)
+
+        if id_usuario:
+            query = query.where(Usuario.id_usuario == id_usuario)
+        if id_perfil:
+            query = query.where(Usuario.id_perfil == id_perfil)
+        if p_nombre:
+            query = query.where(Usuario.p_nombre.ilike(f"%{p_nombre}%"))
+
+        usuarios = session.exec(query).all()
+        return usuarios   
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener usuarios {str(e)}")
-    return usuarios 
+        raise HTTPException(status_code=500, detail=f"Error al buscar usuarios: {str(e)}")
 
 #obtener un usuario por id (requiere login)
 @router.get("/{id_usuario}", response_model=UsuarioLeer)
@@ -113,30 +125,3 @@ def delete_usuario(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al eliminar usuario {str(e)}")
     return {"mensaje": "Usuario eliminado correctamente"}
-
-#petición get con filtros (requiere login)
-@router.get("/buscar/", response_model=list[UsuarioLeer])
-def get_buscar_usuarios(
-    #campos a filtrar opcionales
-    id_usuario: Optional[str] = None,
-    id_perfil: Optional[str] = None,
-    p_nombre: Optional[str] = None,
-    session: Session = Depends(get_session),
-    usuario_actual: Usuario = Depends(obtener_usuario)
-):
-    try:
-        query = select(Usuario)
-
-        if id_usuario:
-            query = query.where(Usuario.id_usuario == id_usuario)
-
-        if id_perfil:
-            query = query.where(Usuario.id_perfil == id_perfil)
-
-        if p_nombre:
-            query = query.where(Usuario.p_nombre == p_nombre)
-
-        usuarios = session.exec(query).all()
-        return usuarios   
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al buscar usuarios {str(e)}")

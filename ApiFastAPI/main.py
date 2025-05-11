@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 from database import engine
-from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos
+from models import *
 from endpoints import perfil_router, usuario_router, auth_router
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
@@ -24,6 +24,7 @@ def crear_tablas():
         SQLModel.metadata.create_all(engine)
         print("Tablas creadas correctamente")
         try:
+            #Funciones para agregar datos fijos en BD
             crear_perfil()
             crear_usuario()
             crear_estado_entrega()

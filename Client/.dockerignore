@@ -1,0 +1,18 @@
+# Client/.dockerignore
+
+# No subas tu node_modules local
+node_modules
+.pnpm
+
+# Si tuvieras dist/build
+dist
+build
+
+# Archivos de editor, OS, etc.
+.vscode
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+.env.local

@@ -1,0 +1,13 @@
+services:
+  react:
+    build:
+      context: ./Client
+      dockerfile: dockerfile.dev
+    volumes:
+      - ./Client:/app
+      - /app/node_modules  # Evita sobrescribir node_modules del contenedor
+    ports:
+      - "5173:5173"
+    environment:
+    # Permite que Vite detecte cambios dentro del contenedor
+      - CHOKIDAR_USEPOLLING=true

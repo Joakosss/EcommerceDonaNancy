@@ -112,7 +112,7 @@ ALTER TABLE estado_entrega ADD CONSTRAINT estado_entrega_pk PRIMARY KEY ( id_est
 
 CREATE TABLE forma_pago (
     id_forma_pago VARCHAR2(50 CHAR) NOT NULL,
-    descripciones VARCHAR2(400 CHAR) NOT NULL
+    descripcion VARCHAR2(400 CHAR) NOT NULL
 );
 
 ALTER TABLE forma_pago ADD CONSTRAINT forma_pago_pk PRIMARY KEY ( id_forma_pago );

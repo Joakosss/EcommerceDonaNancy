@@ -3,21 +3,21 @@ from database import engine
 from sqlmodel import Session, select
 
 class Modelo(SQLModel, table=True):
-    id_marca: str = Field(max_length=50, primary_key=True)
+    id_modelo: str = Field(max_length=50, primary_key=True)
     descripcion: str = Field(max_length=200, nullable=False)
 
 def crear_modelos():
     modelos = [
-        Modelo(id_marca="10", descripcion="Nuevo"),
-        Modelo(id_marca="11", descripcion="Usado"),
-        Modelo(id_marca="20", descripcion="Batería"),
-        Modelo(id_marca="21", descripcion="Cableado"),
-        Modelo(id_marca="30", descripcion="Moderno"),
-        Modelo(id_marca="31", descripcion="Retro"),
-        Modelo(id_marca="40", descripcion="Altos"),
-        Modelo(id_marca="41", descripcion="Bajos"),
-        Modelo(id_marca="50", descripcion="Transportes"),
-        Modelo(id_marca="51", descripcion="Extras")
+        Modelo(id_modelo="10", descripcion="Nuevo"),
+        Modelo(id_modelo="11", descripcion="Usado"),
+        Modelo(id_modelo="20", descripcion="Batería"),
+        Modelo(id_modelo="21", descripcion="Cableado"),
+        Modelo(id_modelo="30", descripcion="Moderno"),
+        Modelo(id_modelo="31", descripcion="Retro"),
+        Modelo(id_modelo="40", descripcion="Altos"),
+        Modelo(id_modelo="41", descripcion="Bajos"),
+        Modelo(id_modelo="50", descripcion="Transportes"),
+        Modelo(id_modelo="51", descripcion="Extras")
     ]
 
     with Session(engine) as sesion:

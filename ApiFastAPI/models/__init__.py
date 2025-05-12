@@ -8,3 +8,5 @@ from .estado_entrega import Estado_entrega, crear_estado_entrega
 from .tipo_entrega import Tipo_entrega, crear_tipo_entrega
 from .marca import Marca, crear_marcas
 from .modelo import Modelo, crear_modelos
+from .categoria import Categoria, crear_categorias
+from .producto import Producto

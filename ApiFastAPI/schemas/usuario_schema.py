@@ -15,9 +15,9 @@ class UsuarioCrear(BaseModel):
     id_perfil: str
 
 class UsuarioLeer(BaseModel):
+    #se puede leer todo menos la contraseña
     id_usuario: UUID
     nombre_usuario: str 
-    contrasenia: str
     run_usuario: str
     p_nombre: str
     s_nombre: str | None = None
@@ -32,7 +32,9 @@ class UsuarioLeer(BaseModel):
         from_attributes = True
 
 class UsuarioActualizar(BaseModel):
+    #se puede actualizar todo menos el id_usuario y run_usuario
     nombre_usuario: str | None = None
+    contrasenia: str | None = None
     p_nombre: str | None = None
     s_nombre: str | None = None
     p_apellido: str | None = None

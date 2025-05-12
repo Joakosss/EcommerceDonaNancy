@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select, or_
 from models import Usuario, crear_nombreUsuario, crear_correo
 from database import get_session
@@ -14,26 +14,38 @@ router = APIRouter(
 #petición get (requiere login)
 @router.get("/", response_model=list[UsuarioLeer])
 def get_buscar_usuarios(
-    id_usuario: Optional[str] = None,
-    id_perfil: Optional[str] = None,
-    p_nombre: Optional[str] = None,
+    id_usuario: Optional[str] = Query(None),
+    id_perfil: Optional[str] = Query(None),
+    p_nombre: Optional[str] = Query(None),
+    p_apellido: Optional[str] = Query(None),
     session: Session = Depends(get_session),
     usuario_actual: Usuario = Depends(obtener_usuario)
 ):
     try:
-        query = select(Usuario)
+        filtros = []
 
+        #se agregan los filtros a la lista si se ingresan en el endpoint 
         if id_usuario:
-            query = query.where(Usuario.id_usuario == id_usuario)
+            filtros.append(Usuario.id_usuario == id_usuario)
         if id_perfil:
-            query = query.where(Usuario.id_perfil == id_perfil)
+            filtros.append(Usuario.id_perfil == id_perfil)
         if p_nombre:
-            query = query.where(Usuario.p_nombre.ilike(f"%{p_nombre}%"))
+            filtros.append(Usuario.p_nombre.ilike(f"%{p_nombre}%"))
+        if p_apellido:
+            filtros.append(Usuario.p_apellido.ilike(f"%{p_apellido}%"))
 
+        #si existen filtros, se agregan a la consulta con el operador OR
+        #or_(*filtros) descompone la lista y la pasa como argumentos separados al operador OR
+        if filtros:
+            query = select(Usuario).where(or_(*filtros))  
+        #Si no se ingresan filtros, se devuelven todos los usuarios
+        else:
+            query = select(Usuario)
         usuarios = session.exec(query).all()
-        return usuarios   
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al buscar usuarios: {str(e)}")
+    return usuarios
 
 #obtener un usuario por id (requiere login)
 @router.get("/{id_usuario}", response_model=UsuarioLeer)
@@ -42,13 +54,13 @@ def get_usuario_id(
     usuario_actual: Usuario = Depends(obtener_usuario)
 ):
     try:
-        perfil = session.get(Usuario, id_usuario)
-        if not perfil:
+        usuario = session.get(Usuario, id_usuario)
+        if not usuario:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
-        return perfil
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener usuario {str(e)}")
+    return usuario
 
 #crear un usuario (no requiere login)
 @router.post("/", response_model=UsuarioLeer) 

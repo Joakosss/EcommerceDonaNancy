@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 from database import engine
-from models import *
-from endpoints import perfil_router, usuario_router, auth_router
+from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos, crear_categorias
+from endpoints import perfil_router, usuario_router, auth_router, producto_router
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title="API Boutique Doña Nancy",
-    description="API gestión de usuarios y perfiles (Por ahora :p)",
-    version="0.2.0",
+    description="API gestión de usuarios y productos :D",
+    version="1.0.0",
 )
 app.add_middleware(
     CORSMiddleware,
@@ -31,6 +31,7 @@ def crear_tablas():
             crear_tipo_entrega()
             crear_marcas()
             crear_modelos()
+            crear_categorias()
             print("Datos fijos creados correctamente")
         except Exception as e:
             print(f"Error al crear datos de prueba: {e}")
@@ -45,3 +46,4 @@ async def root():
 app.include_router(auth_router.router, prefix="/api", tags=["Autenticación"])
 app.include_router(perfil_router.router, prefix="/api", tags=["Perfiles"])
 app.include_router(usuario_router.router, prefix="/api", tags=["Usuarios"])
+app.include_router(producto_router.router, prefix="/api", tags=["Productos"])

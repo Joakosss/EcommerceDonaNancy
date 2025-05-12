@@ -1,9 +1,7 @@
 from . import SQLModel, Field, uuid
-from sqlmodel import Session, select
-from database import engine
 
 class Producto(SQLModel, table=True):
-    id_producto: str = Field(max_length=50, primary_key=True)
+    id_producto: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
     nombre: str = Field(max_length=200 , nullable=False)
     descripcion: str = Field(max_length=500 , nullable=False)
     link_foto: str = Field(max_length=500 , nullable=False)

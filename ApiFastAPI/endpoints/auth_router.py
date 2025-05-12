@@ -18,18 +18,20 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), sesion: Session = De
     if not usuario or not verificar_contrasenia(form_data.password, usuario.contrasenia):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")#401 credenciales invalidas
     
-    token = crear_token_acceso({"sub": usuario.nombre_usuario})#toma el payload y lo convierte en un token
-    refresh_token = crear_token_refresco({"sub": usuario.nombre_usuario})
+    token = crear_token_acceso({"sub": usuario.id_usuario})#toma el payload y lo convierte en un token
+    refresh_token = crear_token_refresco({"sub": usuario.id_usuario})
 
     return {
         "access_token": token, 
-        "refresh_token": refresh_token, 
-        "token_type": "bearer",#bearer es el tipo de token que se va a usar en la autenticacion
+        "refresh_token": refresh_token,
+        "id_usuario": str(usuario.id_usuario),
+        "nombre_usuario": usuario.nombre_usuario,
+        "perfil": usuario.id_perfil,
         "autorization":usuario.id_perfil
     }
 
 @router.post("/refresh")
-async def refresh_token(request: Request):
+async def refresh_token(request: Request, sesion: Session = Depends(get_session)):
     body = await request.json()
     refresh_token = body.get("refresh_token")
 
@@ -38,12 +40,18 @@ async def refresh_token(request: Request):
     
     try:
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
-        username = payload.get("sub")
-        if username is None:
+        id_usuario = payload.get("sub")
+
+        if id_usuario is None:
             raise HTTPException(status_code=401, detail="Token de refresco no válido")
         
-        nuevo_token = crear_token_acceso({"sub": username})
-        return {"access_token": nuevo_token, "token_type": "bearer"}
+        #Validar si el usuario existe en la BD
+        usuario = sesion.exec(select(Usuario).where(Usuario.id_usuario == id_usuario)).first()
+        if not usuario:
+            raise HTTPException(status_code=401, detail="Token de refresco no válido")
+        
+        nuevo_token = crear_token_acceso({"sub": id_usuario})
+        return {"access_token": nuevo_token}
     except Exception:
         raise HTTPException(status_code=401, detail="Token de refresco no válido")
     

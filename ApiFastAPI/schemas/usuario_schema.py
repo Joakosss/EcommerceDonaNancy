@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from uuid import UUID
 
 class UsuarioCrear(BaseModel):
-    nombre_usuario: str 
+    nombre_usuario: str |None = None
     contrasenia: str
     run_usuario: str
     p_nombre: str
@@ -10,7 +10,7 @@ class UsuarioCrear(BaseModel):
     p_apellido: str
     s_apellido: str
     telefono: int
-    correo: str
+    correo: str | None = None
     direccion: str | None = None
     id_perfil: str
 
@@ -33,7 +33,6 @@ class UsuarioLeer(BaseModel):
 
 class UsuarioActualizar(BaseModel):
     nombre_usuario: str | None = None
-    contrasenia: str | None = None
     p_nombre: str | None = None
     s_nombre: str | None = None
     p_apellido: str | None = None

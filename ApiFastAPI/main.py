@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 from database import engine
-from models import crear_perfil, crear_usuario
+from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos
 from endpoints import perfil_router, usuario_router, auth_router
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
@@ -26,6 +26,10 @@ def crear_tablas():
         try:
             crear_perfil()
             crear_usuario()
+            crear_estado_entrega()
+            crear_tipo_entrega()
+            crear_marcas()
+            crear_modelos()
             print("Datos fijos creados correctamente")
         except Exception as e:
             print(f"Error al crear datos de prueba: {e}")

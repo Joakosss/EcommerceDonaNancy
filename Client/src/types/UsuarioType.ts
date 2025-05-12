@@ -1,6 +1,6 @@
 export type UsuarioType = {
   id_usuario?: string;
-  nombre_usuario: string;
+  nombre_usuario?: string;
   contrasenia?: string;
   run_usuario:string;
   p_nombre: string;
@@ -8,7 +8,7 @@ export type UsuarioType = {
   p_apellido: string;
   s_apellido: string;
   telefono: number;
-  correo: string;
+  correo?: string;
   direccion?: string;
   id_perfil?: string;
 };

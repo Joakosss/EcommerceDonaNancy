@@ -8,7 +8,7 @@ import { UsuarioType } from "../../../types/UsuarioType";
 import CreateUser from "../Forms/User/CreateUser";
 import { userTypesConstants } from "../../../constants/userTypesConstants";
 import UpdateUser from "../Forms/User/UpdateUser";
-import useQueryGetUsers from "../../../hooks/NewQuerys/userQuerys/UseQueryGetUsers";
+import useQueryGetUsers from "../../../hooks/NewQuerys/userQuerys/useQueryGetUsers";
 
 type ModalState =
   | { type: "create" }
@@ -26,7 +26,7 @@ function ProductTable() {
     data: usuarios,
     isError,
     isLoading,
-  } = useQueryGetUsers({ id_perfil: isPerfilFilter, nombre: isNameFilter });
+  } = useQueryGetUsers({ id_perfil: isPerfilFilter, p_nombre: isNameFilter });
   const [modal, setModal] = useState<ModalState>({ type: null });
 
   /* UseEffect para no mandar consultas cada vez que modificamos el input */
@@ -47,7 +47,7 @@ function ProductTable() {
           Nuestros Usuarios
         </h2>
         <div className="flex justify-between">
-          <form className="flex items-center max-w-sm mx-auto">
+          <div className="flex items-center max-w-sm mx-auto">
             <label htmlFor="simple-search" className="sr-only">
               Buscar
             </label>
@@ -92,7 +92,7 @@ function ProductTable() {
               </svg>
               <span className="sr-only">Buscar</span>
             </button>
-          </form>
+          </div>
           <div className="flex gap-8">
             <Select
               onChange={(e) => setIsPerfilFilter(e.target.value)}

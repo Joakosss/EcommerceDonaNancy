@@ -1,12 +1,23 @@
 import { IconType } from "react-icons/lib";
 import { menuItems } from "../../constants/dashBoardMenuItems";
-
+import { FaSignOutAlt } from "react-icons/fa";
+import useAuthStore from "../../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 type Props = {
   isSidebarOpen: boolean;
   setIsSelected: (label: string) => void;
 };
 
 function SideBar({ isSidebarOpen, setIsSelected }: Props) {
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  //no se ejecuta navigate hasta que logout se ejecute
+  const handleLogOut = async () => {
+    await logout();
+    navigate("/");
+  };
+
   return (
     <aside
       id="logo-sidebar"
@@ -22,9 +33,15 @@ function SideBar({ isSidebarOpen, setIsSelected }: Props) {
               key={label}
               Icon={Icon}
               text={label}
-              onClick={()=>setIsSelected(label)}
+              onClick={() => setIsSelected(label)}
             />
           ))}
+          <OptionSideBar
+            key={"Logout"}
+            text="Cerrar sesión"
+            onClick={handleLogOut}
+            Icon={FaSignOutAlt}
+          />
         </ul>
       </div>
     </aside>
@@ -41,7 +58,7 @@ function OptionSideBar({ Icon, text, onClick }: OptionSideBarProps) {
   return (
     <li>
       <button
-        className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+        className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 cursor-pointer min-w-[13rem]"
         onClick={onClick}
       >
         <Icon

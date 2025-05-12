@@ -6,10 +6,12 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Modal from "../../../components/Modal";
 import { FaSearch } from "react-icons/fa";
 import CreateProduct from "../Forms/Product/CreateProduct";
-import { useGetQuery } from "../../../hooks/query/useGetQuery";
 import UpdateProduct from "../Forms/Product/UpdateProduct";
 import DeleteProduct from "../Forms/Product/DeleteProduct";
 import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
+import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryGetProduct";
+import { marcasConstants } from "../../../constants/marcasConstants";
+import { modelosConstants } from "../../../constants/modelosConstants";
 
 type ModalState =
   | { type: "create" }
@@ -19,7 +21,10 @@ type ModalState =
 
 function ProductTable() {
   const [isFilter, setIsFilter] = useState<string>("");
-  const {
+
+  const { data: productos, isLoading, isError } = useQueryGetProduct();
+
+  /*   const {
     // Trae los productos
     isLoading,
     isError,
@@ -30,7 +35,7 @@ function ProductTable() {
     {
       params: isFilter ? { id_categoria: isFilter } : {},
     }
-  );
+  ); */
 
   const [modal, setModal] = useState<ModalState>({ type: null });
 
@@ -80,8 +85,26 @@ function ProductTable() {
             </button>
           </form>
 
-          <div className="flex gap-8">
+          <div className="flex gap-2">
             <Select
+            mensaje="Filtrar modelos"
+              data={modelosConstants}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setIsFilter(e.target.value)
+              }
+              value={isFilter}
+            />
+            <Select
+            mensaje="Filtrar marcas"
+              data={marcasConstants}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setIsFilter(e.target.value)
+              }
+              value={isFilter}
+            />
+            <Select
+            mensaje="Filtrar categorias"
+              data={productCategoryTypesConstants}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setIsFilter(e.target.value)
               }
@@ -216,17 +239,27 @@ function Tr({
   );
 }
 
-function Select({ ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+type OptionItem = {
+  id: string | number;
+  descripcion: string;
+};
+
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  data: OptionItem[];
+  mensaje: string
+}
+
+function Select({mensaje, data, ...props }: SelectProps) {
   return (
     <div className="mt-3" id="tipoUsuarioSelect">
       <select
         {...props}
         className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 cursor-pointer outline-none"
       >
-        <option value="">Todos</option>
-        {productCategoryTypesConstants.map((productCategory) => (
-          <option key={productCategory.id} value={productCategory.id}>
-            {productCategory.descripcion}
+        <option value="">{mensaje}</option>
+        {data.map((object) => (
+          <option key={object.id} value={object.id}>
+            {object.descripcion}
           </option>
         ))}
       </select>

@@ -14,7 +14,6 @@ function useQueryGetUsers(filtros?: Record<string, string | number | boolean>) {
   return useQuery<UsuarioType[]>({
     queryKey: ["usuarios", filtros],
     queryFn: async () => {
-      console.log("iniciando");
       try {
         const response = await axios.get<UsuarioType[]>(
           "http://127.0.0.1:8000/api/usuarios",

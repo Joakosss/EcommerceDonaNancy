@@ -12,6 +12,7 @@ import MyPurchasesPage from "./UserPages/MyPurchasesPage/MyPurchasesPage";
 import DashBoard from "./DashBoard/DashBoard";
 import Page404 from "./Page404";
 import DashBoardGuard from "./Guards/DashBoardGuard";
+import ProfilePage from "./UserPages/ProfilePage";
 
 const router = createBrowserRouter([
   //por cada ruta un objeto
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "carrito/", element: <ShopingCartPage /> },
       { path: "misCompras/", element: <MyPurchasesPage /> },
       { path: "success/", element: <Success /> }, //esto es lo que sale despues de venta exitosa
+      { path: "miPerfil/:id", element: <ProfilePage /> }, 
       { path: "failure/:error", element: <Failure /> },
     ],
   },

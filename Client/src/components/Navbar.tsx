@@ -57,13 +57,19 @@ export default function Example() {
                     Icon={FaSignOutAlt}
                     onClick={logout}
                   />
+                  <OptionSideBar
+                    key={"miPerfil"}
+                    text="Mi Perfil"
+                    Icon={FaUser}
+                    onClick={() => alert("navigate perfil")}
+                  />
                 </ul>
               </div>
             ) : (
               <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
                 <ul className="space-y-2 font-medium">
-                  <OptionSideBar key={"Login"} text="Conectarse" Icon={FaSignInAlt} onClick={()=>navigate("login/")} />
-                  <OptionSideBar key={"Register"} text="Registrarse" Icon={FaUserPlus} onClick={()=>navigate("registro/")} />
+                  <OptionSideBar key={"Login"} text="Conectarse" Icon={FaSignInAlt} onClick={() => navigate("login/")} />
+                  <OptionSideBar key={"Register"} text="Registrarse" Icon={FaUserPlus} onClick={() => navigate("registro/")} />
                 </ul>
               </div>
             )}
@@ -102,30 +108,28 @@ export default function Example() {
               {/* Navbar pantalla completa validando si esta logeado o no */}
               <div className="ml-auto flex items-center">
                 {tokens ? (
-                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <button
-                      onClick={logout}
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800 cursor-pointer"
-                    >
-                      Cerrar sesión
-                    </button>
-                  </div>
+                  <>
+                    <NavbarItem key={"navLogout"} text="Cerrar Sesión" handleClick={logout} />
+                    <div className="ml-4 flow-root lg:ml-6">
+                      <a
+                        onClick={() => navigate("/")}
+                        href=""
+                        className="group -m-2 flex items-center p-2"
+                      >
+                        <FaUser
+                          aria-hidden="true"
+                          className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
+                        />
+
+                        <span className="sr-only">items in cart, view bag</span>
+                      </a>
+                    </div>
+                  </>
                 ) : (
                   /* No esta logeado */
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <Link
-                      to={"login/"}
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Conectarse
-                    </Link>
-                    <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                    <Link
-                      to={"registro/"}
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Registrarse
-                    </Link>
+                    <NavbarItem key={"navLogin"} text="Conectarse" handleClick={() => navigate("login/")} />
+                    <NavbarItem key={"navregister"} text="Registrarse" handleClick={() => navigate("registro/")} />
                   </div>
                 )}
                 {/* Search */}
@@ -174,20 +178,6 @@ export default function Example() {
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div>
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a
-                    onClick={() => navigate("/")}
-                    href=""
-                    className="group -m-2 flex items-center p-2"
-                  >
-                    <FaUser
-                      aria-hidden="true"
-                      className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
-                    />
-
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -195,4 +185,25 @@ export default function Example() {
       </header>
     </div>
   );
+}
+
+
+type NavbarItemProps = {
+  handleClick: () => void
+  text: string
+}
+function NavbarItem({ handleClick, text }: NavbarItemProps) {
+  return (
+    <>
+      <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+        <button
+          onClick={handleClick}
+          className="text-sm font-medium text-gray-700 hover:text-gray-800 cursor-pointer"
+        >
+          {text}
+        </button>
+      </div>
+    </>
+  )
+
 }

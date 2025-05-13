@@ -9,9 +9,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/NancySmall.svg";
 import useShoppingCartStore from "../store/useShoppingCartStore";
-import { FaMoneyBill } from "react-icons/fa";
+import { FaMoneyBill, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import useExchange from "../store/useExchangeStore";
 import useAuthStore from "../store/useAuthStore";
+import OptionSideBar from "./OptionSideBar";
+import { FaUser, FaUserPlus } from "react-icons/fa6";
 
 export default function Example() {
   const navigate = useNavigate();
@@ -47,34 +49,22 @@ export default function Example() {
             </div>
             {/* Muestra sidebar segun login o no */}
             {tokens ? (
-              <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                <div className="flow-root">
-                  <button
+              <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
+                <ul className="space-y-2 font-medium">
+                  <OptionSideBar
+                    key={"Logout"}
+                    text="Cerrar sesión"
+                    Icon={FaSignOutAlt}
                     onClick={logout}
-                    className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
+                  />
+                </ul>
               </div>
             ) : (
-              <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                <div className="flow-root">
-                  <Link
-                    to={"login/"}
-                    className="-m-2 block p-2 font-medium text-gray-900"
-                  >
-                    Conectarse
-                  </Link>
-                </div>
-                <div className="flow-root">
-                  <Link
-                    to={"registro/"}
-                    className="-m-2 block p-2 font-medium text-gray-900"
-                  >
-                    Registrarse
-                  </Link>
-                </div>
+              <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
+                <ul className="space-y-2 font-medium">
+                  <OptionSideBar key={"Login"} text="Conectarse" Icon={FaSignInAlt} onClick={()=>navigate("login/")} />
+                  <OptionSideBar key={"Register"} text="Registrarse" Icon={FaUserPlus} onClick={()=>navigate("registro/")} />
+                </ul>
               </div>
             )}
           </DialogPanel>
@@ -170,7 +160,7 @@ export default function Example() {
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
                   <a
-                    onClick={() => navigate("/carrito/")}
+                    onClick={() => navigate("carrito/")}
                     href=""
                     className="group -m-2 flex items-center p-2"
                   >
@@ -181,6 +171,20 @@ export default function Example() {
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
                       {counterItems < 99 ? counterItems : "+99"}
                     </span>
+                    <span className="sr-only">items in cart, view bag</span>
+                  </a>
+                </div>
+                <div className="ml-4 flow-root lg:ml-6">
+                  <a
+                    onClick={() => navigate("/")}
+                    href=""
+                    className="group -m-2 flex items-center p-2"
+                  >
+                    <FaUser
+                      aria-hidden="true"
+                      className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
+                    />
+
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div>

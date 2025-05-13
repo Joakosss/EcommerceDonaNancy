@@ -7,7 +7,7 @@ function useMutatePostLogin() {
     mutationFn: async (loginData: URLSearchParams) => {
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/auth/login",
+          "http://localhost:8000/api/auth/login",
           loginData
         );
         return response.data;

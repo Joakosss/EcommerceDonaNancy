@@ -1,0 +1,27 @@
+# Client/.dockerignore
+
+# Si tuvieras dist/build
+dist
+build
+
+# Archivos de editor, OS, etc.
+.vscode
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+.env.local
+
+__pycache__
+venv
+
+venv/
+__pycache__/
+
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env

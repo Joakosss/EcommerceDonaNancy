@@ -8,13 +8,11 @@ class Categoria(SQLModel, table=True):
 
 def crear_categorias():
     categorias = [
-        Categoria(id_categoria="0", descripcion="Electrodomésticos"),
-        Categoria(id_categoria="1", descripcion="Tecnología"),
-        Categoria(id_categoria="2", descripcion="Hogar"),
-        Categoria(id_categoria="3", descripcion="Ropa"),
-        Categoria(id_categoria="4", descripcion="Calzado"),
-        Categoria(id_categoria="5", descripcion="Accesorios"),
-        Categoria(id_categoria="6", descripcion="Otros")
+        Categoria(id_categoria="1", descripcion="Ropa"),
+        Categoria(id_categoria="2", descripcion="Electrónicos"),
+        Categoria(id_categoria="3", descripcion="Muebles"),
+        Categoria(id_categoria="4", descripcion="Zapatos"),
+        Categoria(id_categoria="5", descripcion="Varios")
     ]
 
     with Session(engine) as sesion:

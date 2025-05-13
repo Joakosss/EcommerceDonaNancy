@@ -44,6 +44,5 @@ async def root():
 
 #Importar enpoints
 app.include_router(auth_router.router, prefix="/api", tags=["Autenticación"])
-app.include_router(perfil_router.router, prefix="/api", tags=["Perfiles"])
 app.include_router(usuario_router.router, prefix="/api", tags=["Usuarios"])
 app.include_router(producto_router.router, prefix="/api", tags=["Productos"])

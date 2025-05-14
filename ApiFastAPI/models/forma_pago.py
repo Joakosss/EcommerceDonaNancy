@@ -3,10 +3,11 @@ from sqlmodel import Session, select
 from database import engine
 
 class Forma_pago(SQLModel, table=True):
-    id_forma_pago: str = Field(max_length=50, primary_key=True),
+    id_forma_pago: str = Field(max_length=50, primary_key=True)
     descripcion: str = Field(max_length=400, nullable=False)
 
-def crearFormaPago():
+
+def crear_formas_pago():
     formas_pago = [
         Forma_pago(id_forma_pago="0", descripcion="Tarjeta"),
         Forma_pago(id_forma_pago="1", descripcion="Debito"),
@@ -15,7 +16,7 @@ def crearFormaPago():
     ]
 
     with Session(engine) as sesion:
-        formas_existentes = exec(select(Forma_pago)).all()
+        formas_existentes = sesion.exec(select(Forma_pago)).all()
         if not formas_existentes:
             sesion.add_all(formas_pago)
             sesion.commit()

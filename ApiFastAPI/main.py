@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 from database import engine
-from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos, crear_categorias
-from endpoints import perfil_router, usuario_router, auth_router, producto_router
+from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos, crear_categorias, crear_estado_pedido, crear_formas_pago
+from endpoints import usuario_router, auth_router, producto_router
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title="API Boutique Doña Nancy",
@@ -32,6 +32,8 @@ def crear_tablas():
             crear_marcas()
             crear_modelos()
             crear_categorias()
+            crear_estado_pedido()
+            crear_formas_pago()
             print("Datos fijos creados correctamente")
         except Exception as e:
             print(f"Error al crear datos de prueba: {e}")

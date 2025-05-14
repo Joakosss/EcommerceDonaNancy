@@ -119,9 +119,14 @@ def patch_usuario(
         db_usuario = session.get(Usuario, id_usuario)
         if not db_usuario:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        
+        contrasenia = crear_contrasenia(usuario.contrasenia) if usuario.contrasenia else None
         usuario_data = usuario.model_dump(exclude_unset=True)#excluye los datos que no se han modificado
+        usuario_data["contrasenia"] = contrasenia
+
         for key, value in usuario_data.items():
             setattr(db_usuario, key, value)
+        
         session.add(db_usuario)
         session.commit()
         session.refresh(db_usuario)

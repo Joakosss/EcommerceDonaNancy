@@ -3,8 +3,9 @@ import { persist } from "zustand/middleware";
 
 export type TokenType = {
   access_token: string;
-  refresh_token: string;
   autorization: string;
+  refresh_token: string;
+  id_usuario: string;
 };
 
 type StoreAuthType = {
@@ -16,7 +17,7 @@ type StoreAuthType = {
 
 const useAuthStore = create<StoreAuthType>()(
   persist(
-    (set,get) => ({
+    (set, get) => ({
       tokens: null,
       setAuth: (tokens) => {
         set({ tokens: tokens });
@@ -27,7 +28,7 @@ const useAuthStore = create<StoreAuthType>()(
       isAuthenticate: () => {
         const token = localStorage.getItem("Tokens-store");
         return !!token; /* El dobler !! es para que si hay algo ahi lo transforma en booleano  */
-      }
+      },
     }),
     {
       name: "Tokens-store",

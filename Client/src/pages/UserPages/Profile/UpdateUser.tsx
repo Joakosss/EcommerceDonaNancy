@@ -1,68 +1,44 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { UsuarioType } from "../../../types/UsuarioType";
 import { useForm } from "react-hook-form";
+import useMutatePatchUser from "../../../hooks/NewQuerys/userQuerys/useMutatePatchUser";
 import { toast } from "react-toastify";
-import LoadingOverlay from "../../../../components/LoadingOverlay";
-import Input from "../../../../components/FormComponents/Input";
-import Select from "../../../../components/FormComponents/Select";
-import { UsuarioType } from "../../../../types/UsuarioType";
-import { userTypesConstants } from "../../../../constants/userTypesConstants";
-import useMutatePatchUser from "../../../../hooks/NewQuerys/userQuerys/useMutatePatchUser";
+import LoadingOverlay from "../../../components/LoadingOverlay";
+import Input from "../../../components/FormComponents/Input";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   user: UsuarioType;
   onClose: () => void;
 };
 type FormType = {
-  run_usuario: string;
   p_nombre: string;
+  s_nombre?: string;
   p_apellido: string;
   s_apellido: string;
   correo: string;
   telefono: number;
-  id_perfil: string;
+  direccion: string;
 };
 
 function UpdateUser({ user, onClose }: Props) {
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>({
     defaultValues: {
-      run_usuario: user.run_usuario,
       p_nombre: user.p_nombre,
+      s_nombre: user.s_nombre,
       p_apellido: user.p_apellido,
       s_apellido: user.s_apellido,
       correo: user.correo,
       telefono: user.telefono,
-      id_perfil: user.id_perfil,
+      direccion: user.direccion,
     },
   }); //Manejamos el formulario
 
   const { mutate, isPending } = useMutatePatchUser();
-
-  /*   const { mutate, isPending } = usePatchMutation<ProductType>(
-    `http://localhost:3000/Usuarios/${user.id_usuario}`,
-    {
-      onSuccess: () => {
-        toast.success("Usuario Modificado ", {
-          hideProgressBar: true,
-          position: "top-left",
-          autoClose: 1000,
-        });
-        queryClient.invalidateQueries({ queryKey: ["usuarios"] });
-        onClose();
-      },
-      onError: () => {
-        toast.error("Usuario no modificado", {
-          hideProgressBar: true,
-          position: "top-left",
-          autoClose: 1000,
-        });
-      },
-    }
-  ); */
 
   const onSubmit = (data: FormType) => {
     const id = user.id_usuario!;
@@ -71,16 +47,16 @@ function UpdateUser({ user, onClose }: Props) {
       { id, newUser },
       {
         onSuccess: async () => {
-          toast.success("Usuario Modificado ", {
+          toast.success("Tu usuario Modificado ", {
             hideProgressBar: true,
             position: "top-left",
             autoClose: 1000,
           });
-          await queryClient.invalidateQueries({ queryKey: ["usuarios"] });
+          await queryClient.invalidateQueries({ queryKey: ["usuarios"] })
           onClose();
         },
         onError: () => {
-          toast.error("Usuario no modificado", {
+          toast.error("Tu usuario no modificado", {
             hideProgressBar: true,
             position: "top-left",
             autoClose: 1000,
@@ -94,23 +70,9 @@ function UpdateUser({ user, onClose }: Props) {
     <>
       {isPending && <LoadingOverlay />}
       <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
-        Modificar un Usuario
+        Modificar Usuario
       </h1>
       <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          key={"runInput"}
-          label="Run* "
-          Placeholder="ej: 10100100-8"
-          typeInput="text"
-          error={errors.run_usuario}
-          {...register("run_usuario", {
-            required: "Es requerido",
-            pattern: {
-              value: /^\d{1,2}\d{3}\d{3}-[\dkK]$/,
-              message: "Rut no válido verifica guion y digito verificador",
-            },
-          })}
-        />
         <Input
           key={"nombreInput"}
           label="Primer Nombre* "
@@ -120,6 +82,14 @@ function UpdateUser({ user, onClose }: Props) {
           {...register("p_nombre", {
             required: "Es requerido",
           })}
+        />
+        <Input
+          key={"sNombreInput"}
+          label="Segundo Nombre* "
+          Placeholder="Tu segundo nombre"
+          typeInput="text"
+          error={errors.s_nombre}
+          {...register("s_nombre")}
         />
         <Input
           key={"pApellidoInput"}
@@ -166,17 +136,14 @@ function UpdateUser({ user, onClose }: Props) {
             required: "Es requerido",
           })}
         />
-        <Select
-          key={"tipoUsuarioSelect"}
-          label="Tipo de cuenta* "
-          options={userTypesConstants.filter(
-            (type) =>type.id !== "0"&&type.id !== "1"
-          )}
-          error={errors.id_perfil}
-          {...register("id_perfil", {
-            required: "Debes seleccionar una categoría",
-            validate: (value) =>
-              value !== "" || "Selecciona una categoría válida",
+        <Input
+          key={"direccionInput"}
+          label="Dirección* "
+          Placeholder="Tu dirección"
+          typeInput="text"
+          error={errors.direccion}
+          {...register("direccion", {
+            required: "Es requerido",
           })}
         />
         <button

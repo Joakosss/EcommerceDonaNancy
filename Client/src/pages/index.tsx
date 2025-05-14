@@ -12,7 +12,7 @@ import MyPurchasesPage from "./UserPages/MyPurchasesPage/MyPurchasesPage";
 import DashBoard from "./DashBoard/DashBoard";
 import Page404 from "./Page404";
 import DashBoardGuard from "./Guards/DashBoardGuard";
-import ProfilePage from "./UserPages/ProfilePage";
+import ProfilePage from "./UserPages/Profile/ProfilePage";
 
 const router = createBrowserRouter([
   //por cada ruta un objeto

@@ -36,6 +36,7 @@ function useQueryGetUsers(filtros?: Record<string, string | number | boolean>) {
               access_token: response.data.access_token,
               refresh_token: tokens!.refresh_token,
               autorization: tokens!.autorization,
+              id_usuario: tokens!.id_usuario,
             });
             /* Se realiza la consulta nuevamente con el nuevo auth */
             const retryResponse = await axios.get<UsuarioType[]>(
@@ -50,7 +51,7 @@ function useQueryGetUsers(filtros?: Record<string, string | number | boolean>) {
             return retryResponse.data;
           } catch (error: any) {
             logout();
-            navigate("/")
+            navigate("/");
             throw new Error(error.response?.data.detail || "Sesión expirada");
           }
         }

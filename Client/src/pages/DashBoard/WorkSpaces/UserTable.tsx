@@ -21,13 +21,13 @@ function ProductTable() {
   /* dos useState para filtrar el nombre */
   const [isPreNameFilter, setIsPreNameFilter] = useState<string>("");
   const [isNameFilter, setIsNameFilter] = useState<string>("");
+  const [modal, setModal] = useState<ModalState>({ type: null });
 
   const {
     data: usuarios,
     isError,
     isLoading,
   } = useQueryGetUsers({ id_perfil: isPerfilFilter, p_nombre: isNameFilter });
-  const [modal, setModal] = useState<ModalState>({ type: null });
 
   /* UseEffect para no mandar consultas cada vez que modificamos el input */
   useEffect(() => {
@@ -240,4 +240,3 @@ function Select({ ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
     </div>
   );
 }
-

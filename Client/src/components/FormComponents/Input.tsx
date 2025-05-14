@@ -4,7 +4,7 @@ type Props = {
   label: string;
   error?: FieldError;
   Placeholder: string;
-  typeInput: "text" | "number";
+  typeInput: "text" | "number"| "password";
 };
 
 function Input({ label, error, Placeholder, typeInput, ...props }: Props) {

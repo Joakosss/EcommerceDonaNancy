@@ -1,19 +1,11 @@
 import { useFormContext } from "react-hook-form";
 
-function Paso3({ onNext }: { onNext: () => void }) {
+function Paso3() {
   const {
     register,
     formState: { errors },
-    trigger,
     watch,
   } = useFormContext();
-
-  const handleNext = async () => {
-    const isValid = await trigger();
-    if (isValid) {
-      onNext(); // solo avanza si es válido
-    }
-  };
 
   const password = watch("contrasenia");
 

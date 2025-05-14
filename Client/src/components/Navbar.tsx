@@ -22,6 +22,11 @@ export default function Example() {
   const { exchange, setExchange } = useExchange();
   const { tokens, logout } = useAuthStore();
 
+  /* function logOut */
+  const handleLogOut = async () => {
+    await logout();
+    navigate("/");
+  };
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -55,21 +60,32 @@ export default function Example() {
                     key={"Logout"}
                     text="Cerrar sesión"
                     Icon={FaSignOutAlt}
-                    onClick={logout}
+                    onClick={handleLogOut}
                   />
                   <OptionSideBar
                     key={"miPerfil"}
                     text="Mi Perfil"
                     Icon={FaUser}
-                    onClick={() => alert("navigate perfil")}
+                    onClick={() => navigate(`/miPerfil/${tokens.id_usuario}`)}
                   />
                 </ul>
               </div>
             ) : (
+              /* Sin login */
               <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
                 <ul className="space-y-2 font-medium">
-                  <OptionSideBar key={"Login"} text="Conectarse" Icon={FaSignInAlt} onClick={() => navigate("login/")} />
-                  <OptionSideBar key={"Register"} text="Registrarse" Icon={FaUserPlus} onClick={() => navigate("registro/")} />
+                  <OptionSideBar
+                    key={"Login"}
+                    text="Conectarse"
+                    Icon={FaSignInAlt}
+                    onClick={() => navigate("login/")}
+                  />
+                  <OptionSideBar
+                    key={"Register"}
+                    text="Registrarse"
+                    Icon={FaUserPlus}
+                    onClick={() => navigate("registro/")}
+                  />
                 </ul>
               </div>
             )}
@@ -109,11 +125,14 @@ export default function Example() {
               <div className="ml-auto flex items-center">
                 {tokens ? (
                   <>
-                    <NavbarItem key={"navLogout"} text="Cerrar Sesión" handleClick={logout} />
+                    <NavbarItem
+                      key={"navLogout"}
+                      text="Cerrar Sesión"
+                      handleClick={handleLogOut}
+                    />
                     <div className="ml-4 flow-root lg:ml-6">
-                      <a
-                        onClick={() => navigate("/")}
-                        href=""
+                      <Link
+                        to={`/miPerfil/${tokens.id_usuario}`}
                         className="group -m-2 flex items-center p-2"
                       >
                         <FaUser
@@ -122,14 +141,22 @@ export default function Example() {
                         />
 
                         <span className="sr-only">items in cart, view bag</span>
-                      </a>
+                      </Link>
                     </div>
                   </>
                 ) : (
                   /* No esta logeado */
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <NavbarItem key={"navLogin"} text="Conectarse" handleClick={() => navigate("login/")} />
-                    <NavbarItem key={"navregister"} text="Registrarse" handleClick={() => navigate("registro/")} />
+                    <NavbarItem
+                      key={"navLogin"}
+                      text="Conectarse"
+                      handleClick={() => navigate("login/")}
+                    />
+                    <NavbarItem
+                      key={"navregister"}
+                      text="Registrarse"
+                      handleClick={() => navigate("registro/")}
+                    />
                   </div>
                 )}
                 {/* Search */}
@@ -187,11 +214,10 @@ export default function Example() {
   );
 }
 
-
 type NavbarItemProps = {
-  handleClick: () => void
-  text: string
-}
+  handleClick: () => void;
+  text: string;
+};
 function NavbarItem({ handleClick, text }: NavbarItemProps) {
   return (
     <>
@@ -204,6 +230,5 @@ function NavbarItem({ handleClick, text }: NavbarItemProps) {
         </button>
       </div>
     </>
-  )
-
+  );
 }

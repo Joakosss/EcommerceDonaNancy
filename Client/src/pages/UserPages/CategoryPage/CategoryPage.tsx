@@ -2,23 +2,13 @@ import ProductCard from "./ProductCard";
 import { useState } from "react";
 import { ProductType } from "../../../types/ProductType";
 import ProductCardSkeleton from "./ProductCardSkeleton";
-import { useGetQuery } from "../../../hooks/query/useGetQuery";
+import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryGetProduct";
 type Props = {};
 
 function CategoryPage({}: Props) {
   /* Hooks que trae los productos */
   const [filter, setFilter] = useState<string>("");
-  const {
-    isLoading,
-    isError,
-    data: productos,
-  } = useGetQuery<ProductType>(
-    ["productos", filter],
-    "http://localhost:3000/productos",
-    {
-      params: filter ? { id_categoria: filter } : {}, // aplica filtro o no segun corresponda
-    }
-  );
+  const {data:productos,isLoading,isError} = useQueryGetProduct();
 
   const handleFilter = (newFilter: string) => {
     setFilter(newFilter);

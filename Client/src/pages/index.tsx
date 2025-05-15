@@ -14,6 +14,9 @@ import Page404 from "./Page404";
 import DashBoardGuard from "./Guards/DashBoardGuard";
 import ProfilePage from "./UserPages/Profile/ProfilePage";
 import UpdatePass from "./DashBoard/UpdatePass";
+import UserTable from "./DashBoard/WorkSpaces/UserTable";
+import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
+import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
 
 const router = createBrowserRouter([
   //por cada ruta un objeto
@@ -37,9 +40,14 @@ const router = createBrowserRouter([
     element: <DashBoardGuard />,
     children: [
       {
-        path: "DashBoard/", element: <DashBoard />, children: [
+        path: "DashBoard/",
+        element: <DashBoard />,
+        children: [
+          { path: "usuarios/", element: <UserTable /> },
+          { path: "productos/", element: <ProductTable /> },
+          { path: "pedidos/", element: <OrdersTable /> },
           { path: "cambiar_clave/", element: <UpdatePass /> },
-        ]
+        ],
       },
       { path: "Administrador/", element: <Layout />, children: [] },
       { path: "Vendedor/", element: <Layout />, children: [] },

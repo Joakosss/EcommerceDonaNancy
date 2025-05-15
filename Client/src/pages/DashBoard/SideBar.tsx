@@ -37,16 +37,16 @@ function SideBar({ isSidebarOpen, setIsSelected }: Props) {
             />
           ))}
           <OptionSideBar
+            key={"ModPassword"}
+            text="Cambiar clave"
+            onClick={() => navigate("cambiar_clave/")}
+            Icon={FaKey}
+          />
+          <OptionSideBar
             key={"Logout"}
             text="Cerrar sesión"
             onClick={handleLogOut}
             Icon={FaSignOutAlt}
-          />
-          <OptionSideBar
-            key={"ModPassword"}
-            text="Cambiar clave"
-            onClick={()=>navigate("cambiar_clave/")}
-            Icon={FaKey}
           />
         </ul>
       </div>

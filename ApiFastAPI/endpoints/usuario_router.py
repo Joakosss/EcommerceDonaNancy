@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, or_
 from models import Usuario, crear_nombreUsuario, crear_correo
 from database import get_session
@@ -90,7 +91,13 @@ def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session))
             errores.append("El correo a registrar ya existe")
         
         if errores:
-            raise HTTPException(status_code=400, detail=errores)
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "mensaje": "Error al crear usuario",
+                    "errores": errores
+                }
+            )
         #Guarda el usuario en bd
         db_usuario = Usuario(**usuario.model_dump())
         db_usuario.contrasenia = crear_contrasenia(usuario.contrasenia) #encripta la contraseña
@@ -112,9 +119,14 @@ def patch_usuario(
         db_usuario = session.get(Usuario, id_usuario)
         if not db_usuario:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        
+        contrasenia = crear_contrasenia(usuario.contrasenia) if usuario.contrasenia else None
         usuario_data = usuario.model_dump(exclude_unset=True)#excluye los datos que no se han modificado
+        usuario_data["contrasenia"] = contrasenia
+
         for key, value in usuario_data.items():
             setattr(db_usuario, key, value)
+        
         session.add(db_usuario)
         session.commit()
         session.refresh(db_usuario)

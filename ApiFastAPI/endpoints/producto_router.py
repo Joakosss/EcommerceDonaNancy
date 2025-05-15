@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from sqlmodel import Session, select
 from models import Producto, Categoria, Marca, Modelo
 from database import get_session
@@ -19,8 +20,7 @@ def get_buscar_productos(
     id_marca: Optional[str] = None,
     id_modelo: Optional[str] = None,
     nombre: Optional[str] = None,
-    sesion: Session = Depends(get_session),
-    usuario_actual: Producto = Depends(obtener_usuario)
+    sesion: Session = Depends(get_session)
 ):
     try:
         filtros = []
@@ -52,8 +52,7 @@ def get_buscar_productos(
 #obtener un producto por id (requiere login)
 @router.get("/{id_producto}", response_model=ProductoLeer)
 def get_producto_id(
-    id_producto: str, sesion: Session = Depends(get_session),
-    usuario_actual: Producto = Depends(obtener_usuario)
+    id_producto: str, sesion: Session = Depends(get_session)
 ):
     try:
         producto = sesion.get(Producto, id_producto)
@@ -61,35 +60,54 @@ def get_producto_id(
             raise HTTPException(status_code=404, detail="Producto no encontrado")
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener producto {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail={
+                "mensaje": "Error al obtener producto",
+                "error": [str(e)]
+            }
+        )
     return producto
 
 #crear un producto (requiere login)    
 @router.post("/", response_model=ProductoLeer)
-def post_producto(producto: ProductoCrear, sesion: Session = Depends(get_session)):
+def post_producto(
+    producto: ProductoCrear, 
+    sesion: Session = Depends(get_session),
+    usuario_actual: Producto = Depends(obtener_usuario)
+):
     try:
-        #agregué algunas validaciones 
+        errores = []     
         if producto.stock < 0:
-            raise HTTPException(status_code=400, detail="El stock no puede ser menor a 0")
+            errores.append("El stock no puede ser menor a 0")
         if producto.precio < 0:
-            raise HTTPException(status_code=400, detail="El precio no puede ser menor a 0")
+            errores.append("El precio no puede ser menor a 0")
         
         #Validaciones de claves foraneas
         if not sesion.get(Categoria, producto.id_categoria):
-            raise HTTPException(status_code=400, detail="La id de categoria ingresada no existe")
+            errores.append("La id de categoria ingresada no existe")
         if not sesion.get(Marca, producto.id_marca):
-            raise HTTPException(status_code=400, detail="La id de marca ingresada no existe")
+            errores.append("La id de marca ingresada no existe")
         if not sesion.get(Modelo, producto.id_modelo):
-            raise HTTPException(status_code=400, detail="la id de modelo ingresado no existe")
-
+            errores.append("la id de modelo ingresado no existe")
+        
+        if errores:
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "mensaje": "Error al crear producto",
+                    "errores": errores
+                }
+            )
+        
         db_producto = Producto(**producto.model_dump()) #Crea un diccionario con los datos del producto
         sesion.add(db_producto) #Agregar el producto a la sesión
         sesion.commit() #Guardar los cambios en la base de datos
         sesion.refresh(db_producto)
-        
+        return ProductoLeer.model_validate(db_producto) #devuelve el producto creado
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al crear producto {str(e)}")
-    return db_producto
 
 #actualizar un producto (requiere login)
 @router.patch("/{id_producto}", response_model=ProductoLeer)

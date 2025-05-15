@@ -5,6 +5,7 @@ from sqlmodel import Session, select
 class Marca(SQLModel, table=True):
     id_marca: str = Field(max_length=50, primary_key=True)
     descripcion: str = Field(max_length=200, nullable = False)
+    id_modelo: str = Field(max_length=50, foreign_key="modelo.id_modelo", nullable = False)
 
 def crear_marcas():
     marcas = [

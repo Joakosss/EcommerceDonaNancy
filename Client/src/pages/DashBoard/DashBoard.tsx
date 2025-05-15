@@ -1,6 +1,6 @@
 import { useState } from "react";
 import NancySmall from "../../images/NancySmall.svg";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import SideBar from "./SideBar";
 import ProductTable from "./WorkSpaces/ProductTable";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -70,6 +70,7 @@ function DashBoard() {
             {isSelected === "Pedidos" && <UserTable key={"Pedidos"} />}
             {isSelected === "Productos" && <ProductTable key={"Productos"} />}
             {isSelected === "Usuarios" && <UserTable key={"Usuarios"} />}
+            <Outlet/>
           </div>
         </div>
       </div>

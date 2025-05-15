@@ -38,9 +38,9 @@ const router = createBrowserRouter([
     children: [
       {
         path: "DashBoard/", element: <DashBoard />, children: [
+          { path: "cambiar_clave/", element: <UpdatePass /> },
         ]
       },
-      { path: "cambiar_clave/", element: <UpdatePass /> },
       { path: "Administrador/", element: <Layout />, children: [] },
       { path: "Vendedor/", element: <Layout />, children: [] },
       { path: "Bodeguero/", element: <Layout />, children: [] },

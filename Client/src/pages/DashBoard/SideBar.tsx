@@ -45,7 +45,7 @@ function SideBar({ isSidebarOpen, setIsSelected }: Props) {
           <OptionSideBar
             key={"ModPassword"}
             text="Cambiar clave"
-            onClick={()=>navigate("/cambiar_clave/")}
+            onClick={()=>navigate("cambiar_clave/")}
             Icon={FaKey}
           />
         </ul>

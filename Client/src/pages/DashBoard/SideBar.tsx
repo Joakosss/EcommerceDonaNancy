@@ -1,5 +1,5 @@
 import { menuItems } from "../../constants/dashBoardMenuItems";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaKey, FaSignOutAlt } from "react-icons/fa";
 import useAuthStore from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import OptionSideBar from "../../components/OptionSideBar";
@@ -41,6 +41,12 @@ function SideBar({ isSidebarOpen, setIsSelected }: Props) {
             text="Cerrar sesión"
             onClick={handleLogOut}
             Icon={FaSignOutAlt}
+          />
+          <OptionSideBar
+            key={"ModPassword"}
+            text="Cambiar clave"
+            onClick={()=>navigate("cambiar_clave/")}
+            Icon={FaKey}
           />
         </ul>
       </div>

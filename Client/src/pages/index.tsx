@@ -13,6 +13,7 @@ import DashBoard from "./DashBoard/DashBoard";
 import Page404 from "./Page404";
 import DashBoardGuard from "./Guards/DashBoardGuard";
 import ProfilePage from "./UserPages/Profile/ProfilePage";
+import UpdatePass from "./DashBoard/UpdatePass";
 
 const router = createBrowserRouter([
   //por cada ruta un objeto
@@ -28,14 +29,18 @@ const router = createBrowserRouter([
       { path: "carrito/", element: <ShopingCartPage /> },
       { path: "misCompras/", element: <MyPurchasesPage /> },
       { path: "success/", element: <Success /> }, //esto es lo que sale despues de venta exitosa
-      { path: "miPerfil/:id", element: <ProfilePage /> }, 
+      { path: "miPerfil/:id", element: <ProfilePage /> },
       { path: "failure/:error", element: <Failure /> },
     ],
   },
   {
     element: <DashBoardGuard />,
     children: [
-      { path: "DashBoard/", element: <DashBoard />, children: [] },
+      {
+        path: "DashBoard/", element: <DashBoard />, children: [
+          { path: "cambiar_clave/", element: <UpdatePass /> },
+        ]
+      },
       { path: "Administrador/", element: <Layout />, children: [] },
       { path: "Vendedor/", element: <Layout />, children: [] },
       { path: "Bodeguero/", element: <Layout />, children: [] },

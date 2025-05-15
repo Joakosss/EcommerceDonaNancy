@@ -1,12 +1,13 @@
 import { useState } from "react";
 import NancySmall from "../../images/NancySmall.svg";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import SideBar from "./SideBar";
 import ProductTable from "./WorkSpaces/ProductTable";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ToastContainer } from "react-toastify";
 import UserTable from "./WorkSpaces/UserTable";
 import { menuItems } from "../../constants/dashBoardMenuItems";
+import { FaBars } from "react-icons/fa6";
 
 function DashBoard() {
 
@@ -69,6 +70,7 @@ function DashBoard() {
             {isSelected === "Pedidos" && <UserTable key={"Pedidos"} />}
             {isSelected === "Productos" && <ProductTable key={"Productos"} />}
             {isSelected === "Usuarios" && <UserTable key={"Usuarios"} />}
+            <Outlet/>
           </div>
         </div>
       </div>
@@ -104,22 +106,10 @@ function NavbarDashBoard({
                 setIsSidebarOpen(!isSidebarOpen);
               }}
               type="button"
-              className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer"
             >
               <span className="sr-only">Abrir sideBar</span>
-              <svg
-                className="w-6 h-6"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clipRule="evenodd"
-                  fillRule="evenodd"
-                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-                ></path>
-              </svg>
+              <FaBars size={20}/>
             </button>
             {/* Logo */}
             <Link to={"/dashBoard"} className="flex ms-2 md:me-24">

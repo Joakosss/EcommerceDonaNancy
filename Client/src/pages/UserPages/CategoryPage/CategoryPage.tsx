@@ -1,19 +1,31 @@
-import ProductCard from "./ProductCard";
-import { useState } from "react";
-import { ProductType } from "../../../types/ProductType";
-import ProductCardSkeleton from "./ProductCardSkeleton";
 import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryGetProduct";
-type Props = {};
+import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
+import { Navigate, useParams } from "react-router-dom";
+import OptionBar from "./OptionBar";
+import ProductCardSkeleton from "./ProductCardSkeleton";
+import ListProduct from "./ListProduct";
 
-function CategoryPage({}: Props) {
+function CategoryPage() {
+  const { category } = useParams();
+  const categoryId = productCategoryTypesConstants.find(
+    (cat) => cat.slug === category
+  )?.id;
+
+  /* Si categoria no existe redirecciona a error */
+  if (!categoryId) return <Navigate to={"*"} />;
+
   /* Hooks que trae los productos */
-  const [filter, setFilter] = useState<string>("");
-  const {data:productos,isLoading,isError} = useQueryGetProduct();
+  const {
+    data: productos,
+    isLoading,
+    isError,
+  } = useQueryGetProduct({ id_categoria: categoryId });
 
-  const handleFilter = (newFilter: string) => {
+  /*   const handleFilter = (newFilter: string) => {
     setFilter(newFilter);
-  };
+  }; */
 
+  /* Si existe se ejecuta normalmente */
   return (
     <section className="bg-gray-50 py-8 antialiased">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -23,37 +35,31 @@ function CategoryPage({}: Props) {
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
               Productos
             </h1>
-            <form className="max-w-sm">
-              <select
-                onChange={(e) => handleFilter(e.target.value)}
-                id="countries"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option value="" selected>
-                  Filtrar
-                </option>
-                <option value="1">Ropa</option>
-                <option value="2">Electrónicos</option>
-                <option value="3">Muebles</option>
-                <option value="4">Zapatos</option>
-                <option value="5">Varios</option>
-              </select>
-            </form>
           </div>
         </main>
 
-        {/* Aqui van los productos */}
-        <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          {isLoading || isError
-            ? Array.from({ length: 8 }).map((_, i) => (
-                <ProductCardSkeleton key={i}></ProductCardSkeleton>
-              ))
-            : productos!.map((producto: ProductType) => (
-                <ProductCard key={producto.id} product={producto} />
+        <div className="grid grid-cols-6 gap-10">
+          <div className="col-span-1">
+            <OptionBar key={"optionBar"} categoryId={categoryId} />
+          </div>
+          <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4  col-start-2 col-end-7">
+            {/* Si carga */}
+            {isLoading &&
+              Array.from({ length: 6 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
               ))}
+            {/* Si es error */}
+            {isError && <div>Error :C</div>}
+            {/* Si no es cargando ni es error y si hay productos */}
+            {!isLoading && !isError && productos && (
+              <ListProduct key={"lista"} products={productos} />
+            )}
+            {/* Si todo va bien pero no hay productos */}
+            {!isLoading && !isError && !productos && <p>No hay productos :C</p>}
+          </div>
         </div>
 
-        
+        {/* Aqui van los productos */}
       </div>
     </section>
   );

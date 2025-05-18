@@ -17,7 +17,6 @@ import UpdatePass from "./DashBoard/UpdatePass";
 import UserTable from "./DashBoard/WorkSpaces/UserTable";
 import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
 import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
-
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -28,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <FrontPage /> },
       { path: "producto/:id/:slug", element: <ProductPage /> },
-      { path: "productos/", element: <CategoryPage /> },
+      { path: "Productos/:category/", element: <CategoryPage /> },
       { path: "carrito/", element: <ShopingCartPage /> },
       { path: "misCompras/", element: <MyPurchasesPage /> },
       { path: "success/", element: <Success /> }, //esto es lo que sale despues de venta exitosa

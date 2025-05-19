@@ -8,4 +8,8 @@ Unidecode==1.4.0
 uvicorn
 oracledb
 python-multipart
+<<<<<<< HEAD
 bcrypt
+=======
+bcrypt
+>>>>>>> 3ac1dff40afbf5228cdea7695f48b068b0f3fdc5

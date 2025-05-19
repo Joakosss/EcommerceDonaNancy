@@ -7,18 +7,16 @@ class ProductoCrear(BaseModel):
     link_foto: str
     precio: int
     stock: int
-    id_categoria: str
     id_marca: str
     id_modelo: str
 
 class ProductoLeer(BaseModel):
-    id_producto: UUID
+    id_producto: str
     nombre: str 
     descripcion: str
     link_foto: str
     precio: int
     stock: int
-    id_categoria: str
     id_marca: str
     id_modelo: str
 
@@ -31,6 +29,5 @@ class ProductoActualizar(BaseModel):
     link_foto: str | None = None
     precio: int | None = None
     stock: int | None = None
-    id_categoria: str | None = None
     id_marca: str | None = None
     id_modelo: str | None = None

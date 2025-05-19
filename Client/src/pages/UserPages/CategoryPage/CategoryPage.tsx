@@ -5,6 +5,7 @@ import OptionBar from "./OptionBar";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import ListProduct from "./ListProduct";
 import { useEffect, useState } from "react";
+import ProductCard from "./ProductCard";
 
 function CategoryPage() {
   const { category } = useParams();
@@ -64,9 +65,12 @@ function CategoryPage() {
             {/* Si es error */}
             {isError && <div>Error :C</div>}
             {/* Si no es cargando ni es error y si hay productos */}
-            {!isLoading && !isError && productos && (
-              <ListProduct key={"lista"} products={productos} />
-            )}
+            {!isLoading &&
+              !isError &&
+              productos &&
+              productos.map((product) => (
+                <ProductCard key={product.id_producto} product={product} />
+              ))}
             {/* Si todo va bien pero no hay productos */}
             {!isLoading && !isError && !productos && <p>No hay productos :C</p>}
           </div>

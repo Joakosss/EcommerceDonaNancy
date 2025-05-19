@@ -22,7 +22,7 @@ function OptionBar({
   };
 
   return (
-    <div>
+    <>
       <div className="m-1 flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <h3 className="text-base sm:text-lg font-medium flex flex-col">
@@ -61,6 +61,7 @@ function OptionBar({
             <label
               htmlFor={marca.descripcion}
               className="text-gray-700 text-sm sm:text-base flex items-center"
+              key={`label${marca.descripcion}`}
             >
               <input
                 type="radio"
@@ -99,6 +100,7 @@ function OptionBar({
               <label
                 htmlFor={modelo.descripcion}
                 className="text-gray-700 text-sm sm:text-base flex items-center"
+                key={`label${modelo.descripcion}`}
               >
                 <input
                   type="radio"
@@ -113,7 +115,7 @@ function OptionBar({
             ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

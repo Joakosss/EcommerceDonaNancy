@@ -4,7 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import OptionBar from "./OptionBar";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import ListProduct from "./ListProduct";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function CategoryPage() {
   const { category } = useParams();
@@ -18,6 +18,10 @@ function CategoryPage() {
   /* Si categoria no existe redirecciona a error */
   if (!categoryId) return <Navigate to={"*"} />;
 
+  useEffect(() => {
+    setIsModeloFilter("");
+  }, [category]);
+
   /* Hooks que trae los productos */
   const {
     data: productos,
@@ -28,10 +32,6 @@ function CategoryPage() {
     id_modelo: isModeloFilter,
     id_marca: isMarcaFilter,
   });
-  console.log(productos);
-  /*   const handleFilter = (newFilter: string) => {
-    setFilter(newFilter);
-  }; */
 
   /* Si existe se ejecuta normalmente */
   return (

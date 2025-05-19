@@ -30,7 +30,7 @@ function ShopingCartPage({}: Props) {
           {step === 1 ? (
             shoppingCart.length > 0 ? (
               shoppingCart.map((product) => (
-                <ItemList key={product.product.id} product={product} />
+                <ItemList key={product.product.id_producto} product={product} />
               ))
             ) : (
               <div className="grid place-items-center">

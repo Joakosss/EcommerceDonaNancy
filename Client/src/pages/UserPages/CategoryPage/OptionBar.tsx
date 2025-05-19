@@ -5,8 +5,8 @@ import { productCategoryTypesConstants } from "../../../constants/productCategor
 
 type OptionBarProps = {
   categoryId: number;
-  setIsModeloFilter: (id:string) => void;
-  setIsMarcaFilter: (id:string) => void;
+  setIsModeloFilter: (id: string) => void;
+  setIsMarcaFilter: (id: string) => void;
 };
 
 function OptionBar({
@@ -14,14 +14,12 @@ function OptionBar({
   setIsMarcaFilter,
   setIsModeloFilter,
 }: OptionBarProps) {
-
-  const handleMarcaChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-    setIsMarcaFilter(e.target.value)
-  }
-  const handleModeloChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-    setIsModeloFilter(e.target.value)
-  }
-
+  const handleMarcaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsMarcaFilter(e.target.value);
+  };
+  const handleModeloChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsModeloFilter(e.target.value);
+  };
 
   return (
     <div>
@@ -76,7 +74,7 @@ function OptionBar({
             </label>
           ))}
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1" key={categoryId}>
           <h3 className="text-base sm:text-lg font-medium flex flex-col">
             Modelos
           </h3>
@@ -87,7 +85,7 @@ function OptionBar({
             <input
               defaultChecked
               type="radio"
-              name="modelo"
+              name={`modelo${categoryId}`}
               id="modelo"
               value=""
               className="w-4 h-4 cursor-pointer"
@@ -104,7 +102,7 @@ function OptionBar({
               >
                 <input
                   type="radio"
-                  name="modelo"
+                  name={`modelo${categoryId}`}
                   id={modelo.descripcion}
                   value={modelo.id}
                   className="w-4 h-4 cursor-pointer"

@@ -1,7 +1,7 @@
 import { FaHouse, FaIdCard, FaUser } from "react-icons/fa6";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useQueryGetUsers from "../../../hooks/NewQuerys/userQuerys/useQueryGetUsers";
-import { FaEdit, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaBox, FaEdit, FaEnvelope, FaPhone } from "react-icons/fa";
 import { ReactNode, useState } from "react";
 import { IconType } from "react-icons/lib";
 import Modal from "../../../components/Modal";
@@ -50,6 +50,13 @@ function ProfilePage() {
                   </p>
                 </div>
               </div>
+                <Link
+                  className="inline-flex w-full items-center justify-center rounded-lg border-2 border-primary px-5 py-2.5 text-sm font-medium text-primary hover:border-primary/60  sm:w-auto"
+                  to={"/misCompras"}
+                >
+                  <FaBox />
+                  Mis compras
+                </Link>
             </div>
             <div className="space-y-4">
               <ItemProfile key="idCard" text="Rut" icon={FaIdCard}>

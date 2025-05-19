@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, or_
-from models import Pedido, EstadoPedido, FormaPago, Entrega
-from schemas import PedidoCrear, PedidoLeer, PedidoActualizar
+from models import Pedido, Estado_pedido, Forma_pago, Entrega
+from schemas import PedidoLeer, PedidoActualizar
 from database import get_session
 from auth import obtener_usuario
 from typing import Optional
@@ -47,29 +47,39 @@ def get_buscar_pedidos(
         raise HTTPException(status_code=500, detail=f"Error al buscar pedidos: {str(e)}")
     return pedidos
 
-#hacer pedido (requiere login)
-@router.post("/", response_model=PedidoLeer)
-def post_crear_pedido(
-    pedido: PedidoCrear,
+#modificar pedido (requiere login)
+@router.patch("/{id_pedido}", response_model=PedidoLeer)
+def patch_pedido(
+    id_pedido: str,
+    pedido: PedidoActualizar,
     sesion: Session = Depends(get_session),
-    usuario_actual: str = Depends(obtener_usuario)
+    usuario_actual: Pedido = Depends(obtener_usuario)
 ):
     try:
-        #guardar la fecha actual de pedido
-        pedido.fecha = date.today()
-
-        #validar que haya un link de comprobante de pago si es que elige transferencia
-        forma_pago = pedido.id_forma_pago
-        if forma_pago == "3":
-            if not pedido.comprobante_pago:
-                raise HTTPException(status_code=400, detail="Se requiere comprobante de pago para transferencia")
-        
-        db_pedido = Pedido(**pedido.model_dump())
+        db_pedido = sesion.get(Pedido, id_pedido)
+        if not db_pedido:
+            raise HTTPException(status_code=404, detail="Pedido no encontrado")
+        pedido_data = pedido.model_dump(exclude_unset=True)
+        for key, value in pedido_data.items():
+            setattr(db_pedido, key, value)
         sesion.add(db_pedido)
         sesion.commit()
         sesion.refresh(db_pedido)
-        return PedidoLeer.model_validate(db_pedido)
-
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al crear pedido: {str(e)}")
-    
+        raise HTTPException(status_code=500, detail=f"Error al modificar el pedido: {str(e)}")
+    return pedido
+
+@router.delete("/{id_pedido}")
+def delete_pedido(
+    id_pedido: str,
+    sesion: Session = Depends(get_session),
+    usuario_actual: Pedido = Depends(obtener_usuario)
+):
+    try:
+        pedido = sesion.get(Pedido, id_pedido)
+        if not pedido:
+            raise HTTPException(status_code=404, detail="Pedido no encontrado")
+        sesion.delete(pedido)
+        sesion.commit()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al eliminar el pedido: {str(e)}")

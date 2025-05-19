@@ -11,7 +11,6 @@ class PedidoProductoCrear(BaseModel):
     id_producto: str
 
 class PedidoProductoLeer(BaseModel):
-    id_pedido_producto: UUID
     cantidad: int
     fecha: date
     valor_unidad: int

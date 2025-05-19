@@ -14,7 +14,7 @@ class PedidoCrear(BaseModel):
     id_entrega: str
 
 class PedidoLeer(BaseModel):
-    id_pedido: UUID
+    id_pedido: str
     fecha: date
     total: int
     comprobante_pago: str
@@ -26,10 +26,8 @@ class PedidoLeer(BaseModel):
     class Config:
         from_attributes = True
 
-class PedidoLeerProductos(BaseModel):
-    id_pedido: UUID
+class PedidoCrearDetalle(BaseModel):
     fecha: date
-    total: int
     comprobante_pago: str
     id_estado_pedido: str
     id_usuario: str

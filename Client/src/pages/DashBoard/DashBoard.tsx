@@ -97,7 +97,7 @@ function MenuDashBoard() {
             className="text-2xl text-gray-400 flex items-center justify-center flex-col"
             onMouseEnter={() => setIsHovered(label)}
             onMouseLeave={() => setIsHovered(null)}
-            onClick={() => navigate(`${label}/`)}
+            onClick={() => navigate(`${label.toLowerCase()}/`)}
           >
             <Icon
               className={

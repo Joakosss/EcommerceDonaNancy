@@ -44,14 +44,11 @@ const router = createBrowserRouter([
         children: [
           { path: "usuarios/", element: <UserTable /> },
           { path: "productos/", element: <ProductTable /> },
+          { path: "informes/", element: <ProductTable /> },
           { path: "pedidos/", element: <OrdersTable /> },
           { path: "cambiar_clave/", element: <UpdatePass /> },
         ],
-      },
-      { path: "Administrador/", element: <Layout />, children: [] },
-      { path: "Vendedor/", element: <Layout />, children: [] },
-      { path: "Bodeguero/", element: <Layout />, children: [] },
-      { path: "Contador/", element: <Layout />, children: [] },
+      }
     ],
   },
   { path: "*", element: <Page404 /> },

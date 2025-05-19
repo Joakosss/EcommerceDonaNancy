@@ -107,7 +107,8 @@ def post_producto(
 #actualizar un producto (requiere login)
 @router.patch("/{id_producto}", response_model=ProductoLeer)
 def patch_producto(
-    id_producto: str, producto: ProductoActualizar, sesion: Session = Depends(get_session),
+    id_producto: str, producto: ProductoActualizar, 
+    sesion: Session = Depends(get_session),
     usuario_actual: Producto = Depends(obtener_usuario)
 ):
     try:
@@ -127,7 +128,8 @@ def patch_producto(
 #eliminar un producto (requiere login)
 @router.delete("/{id_producto}")
 def delete_producto(
-    id_producto: str, sesion: Session = Depends(get_session),
+    id_producto: str, 
+    sesion: Session = Depends(get_session),
     usuario_actual: Producto = Depends(obtener_usuario)
 ):
     try:

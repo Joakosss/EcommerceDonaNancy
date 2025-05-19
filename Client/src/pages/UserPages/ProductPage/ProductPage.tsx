@@ -1,27 +1,26 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import TrendingProducts from "../../../components/TrendingProducts";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
-import { useGetQuery } from "../../../hooks/query/useGetQuery";
-import { ProductType } from "../../../types/ProductType";
 import { useQueryClient } from "@tanstack/react-query";
 import useExchange from "../../../store/useExchangeStore";
+import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryGetProduct";
 type Props = {};
 
 function ProductPage({}: Props) {
   const queryClient = useQueryClient();
   const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
   const { exchange } = useExchange();
-
   const { id } = useParams();
-  const { data, isLoading, isError } = useGetQuery<ProductType[]>(
-    ["producto", id],
-    "http://localhost:3000/productos",
-    {
-      params: { id: id }, // aplica filtro o no segun corresponda
-    }
-  );
+
+  if (!id)
+    return (
+      <Navigate key={"errorc:"} to={"*"} />
+    ); /* Error de no le pasaron un id c: */
+
+  const { data, isLoading, isError } = useQueryGetProduct({ id_productos: id });
+
   const product = data?.[0];
   const { add } = useShoppingCartStore();
   const handleAddProductCart = () => {
@@ -36,12 +35,12 @@ function ProductPage({}: Props) {
             <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
               <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
                 <div className="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                  <img className="w-full " src={product?.link_foto} alt="" />
+                  <img className="w-full " src={product.link_foto} alt="" />
                 </div>
 
                 <div className="mt-6 sm:mt-8 lg:mt-0">
                   <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-                    {product?.nombre}
+                    {product.nombre}
                   </h1>
                   <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
                     <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
@@ -54,6 +53,8 @@ function ProductPage({}: Props) {
                     </p>
                   </div>
 
+                  <hr className="my-6 md:my-8 border-gray-200" />
+                  <p className="mb-6 text-gray-500">{product?.descripcion}</p>
                   <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
                     <MyButton
                       type="button"
@@ -62,8 +63,6 @@ function ProductPage({}: Props) {
                       preBuildChildren="shopingCart"
                     ></MyButton>
                   </div>
-                  <hr className="my-6 md:my-8 border-gray-200" />
-                  <p className="mb-6 text-gray-500">{product?.descripcion}</p>
                 </div>
               </div>
             </div>

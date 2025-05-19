@@ -5,9 +5,24 @@ import { productCategoryTypesConstants } from "../../../constants/productCategor
 
 type OptionBarProps = {
   categoryId: number;
+  setIsModeloFilter: (id:string) => void;
+  setIsMarcaFilter: (id:string) => void;
 };
 
-function OptionBar({ categoryId }: OptionBarProps) {
+function OptionBar({
+  categoryId,
+  setIsMarcaFilter,
+  setIsModeloFilter,
+}: OptionBarProps) {
+
+  const handleMarcaChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    setIsMarcaFilter(e.target.value)
+  }
+  const handleModeloChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    setIsModeloFilter(e.target.value)
+  }
+
+
   return (
     <div>
       <div className="m-1 flex flex-col gap-3">
@@ -40,6 +55,7 @@ function OptionBar({ categoryId }: OptionBarProps) {
               id="todasMarca"
               value=""
               className="w-4 h-4 cursor-pointer"
+              onChange={handleMarcaChange}
             />
             Todas
           </label>
@@ -54,6 +70,7 @@ function OptionBar({ categoryId }: OptionBarProps) {
                 id={marca.descripcion}
                 value={marca.id}
                 className="w-4 h-4 cursor-pointer"
+                onChange={handleMarcaChange}
               />
               {marca.descripcion}
             </label>
@@ -74,6 +91,7 @@ function OptionBar({ categoryId }: OptionBarProps) {
               id="modelo"
               value=""
               className="w-4 h-4 cursor-pointer"
+              onChange={handleModeloChange}
             />
             Todas
           </label>
@@ -90,6 +108,7 @@ function OptionBar({ categoryId }: OptionBarProps) {
                   id={modelo.descripcion}
                   value={modelo.id}
                   className="w-4 h-4 cursor-pointer"
+                  onChange={handleModeloChange}
                 />
                 {modelo.descripcion}
               </label>

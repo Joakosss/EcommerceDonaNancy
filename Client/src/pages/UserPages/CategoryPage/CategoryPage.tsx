@@ -4,12 +4,16 @@ import { Navigate, useParams } from "react-router-dom";
 import OptionBar from "./OptionBar";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import ListProduct from "./ListProduct";
+import { useState } from "react";
 
 function CategoryPage() {
   const { category } = useParams();
   const categoryId = productCategoryTypesConstants.find(
     (cat) => cat.slug === category
   )?.id;
+
+  const [isModeloFilter, setIsModeloFilter] = useState<string | "">("");
+  const [isMarcaFilter, setIsMarcaFilter] = useState<string | "">("");
 
   /* Si categoria no existe redirecciona a error */
   if (!categoryId) return <Navigate to={"*"} />;
@@ -19,8 +23,12 @@ function CategoryPage() {
     data: productos,
     isLoading,
     isError,
-  } = useQueryGetProduct({ id_categoria: categoryId });
-
+  } = useQueryGetProduct({
+    id_categoria: categoryId,
+    id_modelo: isModeloFilter,
+    id_marca: isMarcaFilter,
+  });
+  console.log(productos);
   /*   const handleFilter = (newFilter: string) => {
     setFilter(newFilter);
   }; */
@@ -30,7 +38,7 @@ function CategoryPage() {
     <section className="bg-gray-50 py-8 antialiased">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         {/* <!-- Heading & Filters --> */}
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-7xl">
           <div className="flex items-baseline justify-between pb-6">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
               Productos
@@ -40,7 +48,12 @@ function CategoryPage() {
 
         <div className="grid grid-cols-6 gap-10">
           <div className="col-span-1">
-            <OptionBar key={"optionBar"} categoryId={categoryId} />
+            <OptionBar
+              key={"optionBar"}
+              categoryId={categoryId}
+              setIsMarcaFilter={setIsMarcaFilter}
+              setIsModeloFilter={setIsModeloFilter}
+            />
           </div>
           <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4  col-start-2 col-end-7">
             {/* Si carga */}

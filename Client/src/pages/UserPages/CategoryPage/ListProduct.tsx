@@ -1,28 +1,16 @@
 import { ProductType } from "../../../types/ProductType";
-import ProductCardSkeleton from "./ProductCardSkeleton";
+import ProductCard from "./ProductCard";
 
 type Props = {
   products: ProductType[];
 };
 
-function ListProduct({}: Props) {
+function ListProduct({ products }: Props) {
   return (
     <>
-      {/* Borrar */}
-      <ProductCardSkeleton></ProductCardSkeleton>
-      <ProductCardSkeleton></ProductCardSkeleton>
-      <ProductCardSkeleton></ProductCardSkeleton>
-      <ProductCardSkeleton></ProductCardSkeleton>
-      <ProductCardSkeleton></ProductCardSkeleton>
-      <ProductCardSkeleton></ProductCardSkeleton>
-      {/* Borrar fin */}
-      {/*       {isLoading || isError
-        ? Array.from({ length: 8 }).map((_, i) => (
-          <ProductCardSkeleton key={i}></ProductCardSkeleton>
-          ))
-          : productos!.map((producto: ProductType) => (
-            <ProductCard key={producto.id} product={producto} />
-            ))} */}
+      {products.map((product) => (
+        <ProductCard key={product.id_categoria} product={product} />
+      ))}
     </>
   );
 }

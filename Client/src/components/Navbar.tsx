@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import {
   Bars3Icon,
-  MagnifyingGlassIcon,
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -14,6 +13,7 @@ import useExchange from "../store/useExchangeStore";
 import useAuthStore from "../store/useAuthStore";
 import OptionSideBar from "./OptionSideBar";
 import { FaUser, FaUserPlus } from "react-icons/fa6";
+import { productCategoryTypesConstants } from "../constants/productCategoryTypesConstants";
 
 export default function Example() {
   const navigate = useNavigate();
@@ -53,42 +53,48 @@ export default function Example() {
               </button>
             </div>
             {/* Muestra sidebar segun login o no */}
-            {tokens ? (
-              <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
-                <ul className="space-y-2 font-medium">
-                  <OptionSideBar
-                    key={"Logout"}
-                    text="Cerrar sesión"
-                    Icon={FaSignOutAlt}
-                    onClick={handleLogOut}
-                  />
-                  <OptionSideBar
-                    key={"miPerfil"}
-                    text="Mi Perfil"
-                    Icon={FaUser}
-                    onClick={() => navigate(`/miPerfil/${tokens.id_usuario}`)}
-                  />
-                </ul>
-              </div>
-            ) : (
-              /* Sin login */
-              <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
-                <ul className="space-y-2 font-medium">
-                  <OptionSideBar
-                    key={"Login"}
-                    text="Conectarse"
-                    Icon={FaSignInAlt}
-                    onClick={() => navigate("login/")}
-                  />
-                  <OptionSideBar
-                    key={"Register"}
-                    text="Registrarse"
-                    Icon={FaUserPlus}
-                    onClick={() => navigate("registro/")}
-                  />
-                </ul>
-              </div>
-            )}
+            <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
+              <ul className="space-y-1 font-medium">
+
+                {productCategoryTypesConstants.map((category)=>(
+                  <OptionSideBar key={category.slug} text={category.descripcion} onClick={() => {navigate(`productos/${category.slug}`)}} />
+                ))}
+
+                <hr className="text-primary" />
+                {tokens ? (
+                  <>
+                    <OptionSideBar
+                      key={"Logout"}
+                      text="Cerrar sesión"
+                      Icon={FaSignOutAlt}
+                      onClick={handleLogOut}
+                    />
+                    <OptionSideBar
+                      key={"miPerfil"}
+                      text="Mi Perfil"
+                      Icon={FaUser}
+                      onClick={() => navigate(`/miPerfil/${tokens.id_usuario}`)}
+                    />
+                  </>
+                ) : (
+                  /* Sin login */
+                  <>
+                    <OptionSideBar
+                      key={"Login"}
+                      text="Conectarse"
+                      Icon={FaSignInAlt}
+                      onClick={() => navigate("login/")}
+                    />
+                    <OptionSideBar
+                      key={"Register"}
+                      text="Registrarse"
+                      Icon={FaUserPlus}
+                      onClick={() => navigate("registro/")}
+                    />
+                  </>
+                )}
+              </ul>
+            </div>
           </DialogPanel>
         </div>
       </Dialog>
@@ -122,56 +128,59 @@ export default function Example() {
                 </Link>
               </div>
               {/* Navbar pantalla completa validando si esta logeado o no */}
-              <div className="ml-auto flex items-center">
-                {tokens ? (
-                  <>
+              <div className="ml-auto flex">
+                <div className="hidden lg:flex lg:items-center lg:text-center lg:space-x-3">
+                  {productCategoryTypesConstants.map((categoria) => (
                     <NavbarItem
-                      key={"navLogout"}
-                      text="Cerrar Sesión"
-                      handleClick={handleLogOut}
-                    />
-                    <div className="ml-4 flow-root lg:ml-6">
-                      <Link
-                        to={`/miPerfil/${tokens.id_usuario}`}
-                        className="group -m-2 flex items-center p-2"
-                      >
-                        <FaUser
-                          aria-hidden="true"
-                          className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
-                        />
+                      key={categoria.slug}
+                      text={categoria.descripcion}
+                      handleClick={() =>
+                        navigate(`productos/${categoria.slug}`)
+                      }
+                    ></NavbarItem>
+                  ))}
 
-                        <span className="sr-only">items in cart, view bag</span>
-                      </Link>
-                    </div>
-                  </>
-                ) : (
-                  /* No esta logeado */
-                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <NavbarItem
-                      key={"navLogin"}
-                      text="Conectarse"
-                      handleClick={() => navigate("login/")}
-                    />
-                    <NavbarItem
-                      key={"navregister"}
-                      text="Registrarse"
-                      handleClick={() => navigate("registro/")}
-                    />
-                  </div>
-                )}
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <a
-                    href=""
-                    onClick={() => navigate("/productos/")}
-                    className="p-2 text-gray-400 hover:text-gray-500"
-                  >
-                    <span className="sr-only">Buscar</span>
-                    <MagnifyingGlassIcon
-                      aria-hidden="true"
-                      className="size-6"
-                    />
-                  </a>
+                  {tokens ? (
+                    <>
+                      <NavbarItem
+                        key={"navLogout"}
+                        text="Cerrar Sesión"
+                        font="bold"
+                        handleClick={handleLogOut}
+                      />
+                      <div className="ml-4 flow-root lg:ml-6">
+                        <Link
+                          to={`/miPerfil/${tokens.id_usuario}`}
+                          className="group -m-2 flex items-center p-2"
+                        >
+                          <FaUser
+                            aria-hidden="true"
+                            className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
+                          />
+
+                          <span className="sr-only">
+                            items in cart, view bag
+                          </span>
+                        </Link>
+                      </div>
+                    </>
+                  ) : (
+                    /* No esta logeado */
+                    <>
+                      <NavbarItem
+                        font="bold"
+                        key={"navLogin"}
+                        text="Conectarse"
+                        handleClick={() => navigate("login/")}
+                      />
+                      <NavbarItem
+                        font="bold"
+                        key={"navregister"}
+                        text="Registrarse"
+                        handleClick={() => navigate("registro/")}
+                      />
+                    </>
+                  )}
                 </div>
                 {/* Tipo dinero */}
                 <div className="ml-4 flow-root lg:ml-6">
@@ -217,18 +226,15 @@ export default function Example() {
 type NavbarItemProps = {
   handleClick: () => void;
   text: string;
+  font?: "medium" | "bold";
 };
-function NavbarItem({ handleClick, text }: NavbarItemProps) {
+function NavbarItem({ handleClick, text, font = "medium" }: NavbarItemProps) {
   return (
-    <>
-      <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-        <button
-          onClick={handleClick}
-          className="text-sm font-medium text-gray-700 hover:text-gray-800 cursor-pointer"
-        >
-          {text}
-        </button>
-      </div>
-    </>
+    <button
+      onClick={handleClick}
+      className={`text-sm font-${font} text-gray-700 hover:text-gray-900 cursor-pointer`}
+    >
+      {text}
+    </button>
   );
 }

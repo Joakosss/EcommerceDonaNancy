@@ -3,7 +3,6 @@ import { productCategoryTypesConstants } from "../../../constants/productCategor
 import { Navigate, useParams } from "react-router-dom";
 import OptionBar from "./OptionBar";
 import ProductCardSkeleton from "./ProductCardSkeleton";
-import ListProduct from "./ListProduct";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 

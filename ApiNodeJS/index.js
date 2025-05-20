@@ -3,7 +3,8 @@ import morgan from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { v4 } from "uuid"; // generador de ids v4
-
+import oracledb from "oracledb";
+import oracleConfig from "./config/oracleConfig.js";
 import getDate from "./utils/date.js";
 import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion de webpay
 import db from "./config/posgresConfig.js"; //importamos la configuracion de la bd
@@ -20,8 +21,24 @@ app.use(bodyParser.json());
 app.set("view engine", "ejs"); // Requiere que tengas EJS instalado o puedes reemplazar por res.send
 
 app.post("/webpay/create", async (req, res) => {
+  let cone;
   const { amount, products } = req.body; // rescatamos todo lo que biene en el body del metodo post
-  const id = v4(); //creamos una id para el pago
+  try {
+    const id = v4(); //creamos una id para el pago
+    cone = await oracledb.getConnection(oracleConfig);
+    await cone.execute(
+      "INSERT INTO PEDIDO (ID_PEDIDO,FECHA,TOTAL,COMPROBANTE,ID_ESTADO_PEDIDO,ID_USUARIO,ID_FORMA_PAGO,ID_ENTREGA) VALUES (${id},${fecha},${total},${comprobante},${id_estado_pedido},${id_usuario},${id_forma_pago},${id_entrega})",
+      {id_pedido:id,
+        fecha:getDate(),
+        total:amount, 
+        comprobante:null,
+        id_estado_pedido:0,
+        id_usuario:1, //debemos tener el id del usuario
+        id_forma_pago:0, 
+        id_entrega:id, // se supone debemos crear entrega cuando ya se pague por ende debemos modificar la bd para que sea null
+      }
+    );
+  } catch (error) {}
   //primero creamos el pedido con el estado en pendiente de pago
   await db.none(
     "INSERT INTO PEDIDO (id,fecha,total,comprobante,id_estado_boleta) VALUES (${id},${fecha},${total},${comprobante},$(id_estado_boleta))",
@@ -116,7 +133,7 @@ app.get("/webpay/commit", async (req, res) => {
 });
 
 app.post("/prueba", async (req, res) => {
-  const {compra} = req.body;
+  const { compra } = req.body;
   try {
     const id = await db.one(
       "INSERT INTO PEDIDO (id,fecha,total,comprobante,id_estado_boleta) VALUES ($(id),$(fecha),$(total),$(comprobante),$(id_estado_boleta)) RETURNING id",
@@ -138,6 +155,24 @@ app.post("/prueba", async (req, res) => {
   }
 });
 
+/* Borrar */
+app.get("/", async (req, res) => {
+  let cone;
+  try {
+    cone = await oracledb.getConnection(oracleConfig);
+    const response = await cone.execute("SELECT * FROM producto");
+    res.status(200).json(
+      response.rows.map((row) => ({
+        nombre: row[1],
+      }))
+    );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (cone) cone.close();
+  }
+});
+/* Borrar */
 app.listen(4000, () => {
   console.log("Server ejecutandose en puerto 4000");
 });

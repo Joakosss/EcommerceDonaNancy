@@ -28,28 +28,21 @@ app.post("/webpay/create", async (req, res) => {
     cone = await oracledb.getConnection(oracleConfig);
     await cone.execute(
       "INSERT INTO PEDIDO (ID_PEDIDO,FECHA,TOTAL,COMPROBANTE,ID_ESTADO_PEDIDO,ID_USUARIO,ID_FORMA_PAGO,ID_ENTREGA) VALUES (${id},${fecha},${total},${comprobante},${id_estado_pedido},${id_usuario},${id_forma_pago},${id_entrega})",
-      {id_pedido:id,
-        fecha:getDate(),
-        total:amount, 
-        comprobante:null,
-        id_estado_pedido:0,
-        id_usuario:1, //debemos tener el id del usuario
-        id_forma_pago:0, 
-        id_entrega:id, // se supone debemos crear entrega cuando ya se pague por ende debemos modificar la bd para que sea null
+      {
+        id_pedido: id,
+        fecha: getDate(),
+        total: amount,
+        comprobante: null,
+        id_estado_pedido: 0,
+        id_usuario: 1, //debemos tener el id del usuario
+        id_forma_pago: 0,
+        id_entrega: id, // se supone debemos crear entrega cuando ya se pague por ende debemos modificar la bd para que sea null
       }
     );
-  } catch (error) {}
+  } catch (error) { }
+  finally { cone.close() }
   //primero creamos el pedido con el estado en pendiente de pago
-  await db.none(
-    "INSERT INTO PEDIDO (id,fecha,total,comprobante,id_estado_boleta) VALUES (${id},${fecha},${total},${comprobante},$(id_estado_boleta))",
-    {
-      id: id,
-      fecha: getDate(),
-      total: 10000,
-      comprobante: null,
-      id_estado_boleta: "1",
-    }
-  );
+
 
   const sessionId = "SES-" + Math.floor(Math.random() * 100000); //id unica para la session
   const returnUrl = `${req.protocol}://${req.get("host")}/webpay/commit`;

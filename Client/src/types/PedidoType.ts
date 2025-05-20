@@ -1,26 +1,10 @@
 export type PedidoType = {
-  id: string;
-  fecha_pedido: Date | string;
+  id_pedido: string;
+  fecha: Date | string;
   total: number;
-  comprobante?: string | null;
-  cliente_id: string;
-  Productos: PedidoProducto[];
-  Entrega: PedidoEntrega;
-  estado_boleta: string;
-  forma_pago: string;
-};
-
-type PedidoProducto = {
-  id: string;
-  nombre: string;
-  cantidad: number;
-  precio_unitario: number;
-  link_foto: string;
-};
-
-type PedidoEntrega = {
-  id: string;
-  direccion: string;
-  fecha_entrega: Date | string;
-  estado_entrega: string;
+  comprobante_pago?: string | null;
+  id_estado_pedido: string;
+  id_usuario: string;
+  id_forma_pago: string;
+  id_entrega: string;
 };

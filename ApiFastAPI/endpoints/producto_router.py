@@ -46,6 +46,18 @@ def get_buscar_productos(
         raise HTTPException(status_code=500, detail=f"Error al buscar productos: {str(e)}")
     return productos
     
+#Petición get para los 4 productos mas vendidos
+@router.get("/populares", response_model=list[ProductoLeer])
+def get_productos_populares(
+    sesion: Session = Depends(get_session)
+):
+    try:
+        productos = select(Producto).order_by(Producto.stock.desc()).limit(4)
+        productos = sesion.exec(productos).all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al buscar productos: {str(e)}")
+    return productos
+
 #obtener un producto por id (requiere login)
 @router.get("/{id_producto}", response_model=ProductoLeer)
 def get_producto_id(

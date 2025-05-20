@@ -18,32 +18,16 @@ type ModalState =
   | { type: null };
 type Props = {};
 
-function OrdersTable({ }: Props) {
-  const { data: pedidos, isError, isLoading } = useQueryGetPedidos()
-
-
+function OrdersTable({}: Props) {
+  const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
   const [isFilter, setIsFilter] = useState<string>("");
-/*   const {
-    // Trae los productos
-    isLoading,
-    isError,
-    data: productos,
-  } = useGetQuery<ProductType[]>(
-    ["productos", isFilter],
-    "http://localhost:3000/PEDIDOS",
-    {
-      params: isFilter ? { id_categoria: isFilter } : {},
-    }
-  ); */
 
   const [modal, setModal] = useState<ModalState>({ type: null });
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
       <div className="p-5">
-        <h2 className="font-bold text-2xl text-primary ml-1">
-          Pedidos
-        </h2>
+        <h2 className="font-bold text-2xl text-primary ml-1">Pedidos</h2>
         <div className="flex justify-between">
           <form className="flex items-center max-w-sm mx-auto">
             <label htmlFor="simple-search" className="sr-only">
@@ -137,9 +121,7 @@ function OrdersTable({ }: Props) {
                 <Tr
                   key={pedido.id_pedido}
                   pedido={pedido}
-                  UpdateModal={() =>
-                    setModal({ type: "update", data: pedido })
-                  }
+                  UpdateModal={() => setModal({ type: "update", data: pedido })}
                   deleteModal={() =>
                     setModal({ type: "delete", data: pedido.id_pedido })
                   }
@@ -195,7 +177,9 @@ function Tr({
         {pedido.fecha.toString()}
       </th>
       <td className="px-6 py-4">${generateChileanPrice(pedido.total)}</td>
-      <td className="px-6 py-4">{pedido.comprobante_pago || "Sin Comprobante" }</td>
+      <td className="px-6 py-4">
+        {pedido.comprobante_pago || "Sin Comprobante"}
+      </td>
       <td className="px-6 py-4">{pedido.id_estado_pedido}</td>
       <td className="px-6 py-4">{pedido.id_usuario}</td>
       <td className="px-6 py-4">{pedido.id_forma_pago}</td>

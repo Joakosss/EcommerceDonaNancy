@@ -15,12 +15,13 @@ type Props = {
   onClose: () => void;
 };
 type FormType = {
-  nombre: string;
-  descripcion: string;
-  link_foto?: string;
-  precio: number;
-  stock: number;
-  id_categoria: string;
+  fecha: Date;
+  total: number;
+  comprobante_pago?: string | null;
+  id_estado_pedido: string;
+  id_usuario: string;
+  id_forma_pago: string;
+  id_entrega: string;
 };
 
 function UpdatePedido({ pedido, onClose }: Props) {
@@ -31,11 +32,13 @@ function UpdatePedido({ pedido, onClose }: Props) {
     formState: { errors },
   } = useForm<FormType>({
     defaultValues: {
-      nombre: product.nombre,
-      descripcion: product.descripcion,
-      link_foto: product.link_foto,
-      precio: product.precio,
-      stock: product.stock,
+      fecha: new Date(pedido.fecha),
+      total: pedido.total,
+      comprobante_pago: pedido.comprobante_pago,
+      id_estado_pedido: pedido.id_estado_pedido,
+      id_usuario: pedido.id_usuario,
+      id_forma_pago: pedido.id_forma_pago,
+      id_entrega: pedido.id_entrega,
     },
   }); //Manejamos el formulario
 

@@ -2,7 +2,7 @@ import ItemList from "./ItemList";
 import PayZone from "./PayZone";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import cartC from "../../../images/CartC.svg";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import PayFormPage from "./PayFormPage";
 import LoadingOverlay from "../../../components/LoadingOverlay";
 import useAuthStore from "../../../store/useAuthStore";
@@ -49,6 +49,14 @@ function ShopingCartPage() {
   const { mutate, isPending } = usePay();
 
   const handleSend = async (data: CheckoutFormType) => {
+    const products: { id_producto: string; cantidad: number }[] = [];
+    for (const item of shoppingCart) {
+      products.push({
+        id_producto: item.product.id_producto!,
+        cantidad: item.quantity,
+      });
+    }
+    console.log(products)
     if (methodPayment === "0") {
       //pago con webpay
       const entrega: EntregaType = {
@@ -67,17 +75,18 @@ function ShopingCartPage() {
       };
       mutate(
         {
-          products: shoppingCart,
+          products,
           entrega,
           pedido,
         },
         {
           onSuccess: (data) => {
-            alert("entraste")
+            alert("entraste");
             redirectToWebPay(data.token, data.url);
-          },onError:(err)=>{
-            alert(err)
-          }
+          },
+          onError: (err) => {
+            alert(err);
+          },
         }
       );
     }

@@ -27,7 +27,6 @@ app.set("view engine", "ejs"); // Requiere que tengas EJS instalado o puedes ree
 app.post("/webpay/create", verifyToken, async (req, res) => {
   let cone;
   const { products, entrega } = req.body; // rescatamos todo lo que biene en el body del metodo post
-
   try {
     const id = v4(); //creamos una id para todo
     cone = await oracledb.getConnection(oracleConfig);
@@ -46,7 +45,7 @@ app.post("/webpay/create", verifyToken, async (req, res) => {
       amount,
       id_usuario: req.user.id_usuario,
     });
-    await InsertPedidoProducto({ cone, productDetails });
+    await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
 
     await cone.execute("COMMIT"); //si todo sale bien commit
 

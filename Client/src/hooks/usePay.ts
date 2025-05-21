@@ -4,16 +4,15 @@ import { EntregaType } from "../types/EntregaType";
 import { PedidoType } from "../types/PedidoType";
 import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
-import { ProductCartType } from "../store/useShoppingCartStore";
 
 type usePayProps = {
-  products: ProductCartType[];
+  products: { id_producto: string; cantidad: number }[];
   entrega: EntregaType;
   pedido: PedidoType;
 };
 
 const paymentRequest = async (
-  products: ProductCartType[],
+  products: { id_producto: string; cantidad: number }[],
   entrega: EntregaType,
   pedido: PedidoType,
   accessToken: string

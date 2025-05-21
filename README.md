@@ -30,5 +30,16 @@ Base de datos: OracleSql – para gestionar datos de usuarios, productos y órde
   pip install -r requirements.txt
   uvicorn main:app
 ```
-    
-
+### Client(react):
+```bash
+  cd client
+  npm install -g pnpm
+  pnpm install
+  pnpm run dev
+```    
+### ApiNodeJS:
+```bash
+  cd ApiNodeJS
+  pnpm install
+  pnpm run dev
+```    

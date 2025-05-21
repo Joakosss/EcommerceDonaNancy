@@ -15,5 +15,5 @@ from .entrega import Entrega
 from .estado_pedido import Estado_pedido, crear_estado_pedido
 from .pedido import Pedido
 from .pedido_producto import Pedido_producto
-from .sucursal import Sucursal
+from .sucursal import Sucursal, crear_sucursales
 from .producto import Producto, crear_productos

@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from uuid import UUID
 from datetime import date
 from typing import Optional
 from schemas.pedido_producto_schema import PedidoProductoLeer
@@ -7,32 +6,32 @@ from schemas.pedido_producto_schema import PedidoProductoLeer
 class PedidoCrear(BaseModel):
     fecha: date
     total: int
-    comprobante_pago: str
+    comprobante_pago: str | None = None
     id_estado_pedido: str
     id_usuario: str
     id_forma_pago: str
-    id_entrega: str
+    id_entrega: str | None = None
 
 class PedidoLeer(BaseModel):
     id_pedido: str
     fecha: date
     total: int
-    comprobante_pago: str
+    comprobante_pago: str | None = None
     id_estado_pedido: str
     id_usuario: str
     id_forma_pago: str
-    id_entrega: str
+    id_entrega: str | None = None
 
     class Config:
         from_attributes = True
 
 class PedidoCrearDetalle(BaseModel):
     fecha: date
-    comprobante_pago: str
+    comprobante_pago: str | None = None
     id_estado_pedido: str
     id_usuario: str
     id_forma_pago: str
-    id_entrega: str
+    id_entrega: str | None = None
     productos: list[PedidoProductoLeer]
 
     class Config:

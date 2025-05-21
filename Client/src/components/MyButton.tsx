@@ -4,17 +4,16 @@ type MyBotonProps = {
   variant?: "primary" | "secondary" | "secondaryFull";
   children?: ReactNode;
   type?: "button" | "submit" | "reset";
-  onClick: () => void;
+  onClick?: () => void;
   preBuildChildren?: "shopingCart" | undefined;
 };
 
 function MyButton({
   variant = "primary",
-  onClick,
+  onClick = () => {},
   children,
   preBuildChildren,
 }: MyBotonProps) {
-
   const styles = {
     primary:
       "inline-flex whitespace-nowrap items-center justify-center text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-slate-800 hover:bg-slate-900 text-white rounded-md",

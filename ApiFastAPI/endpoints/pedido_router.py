@@ -47,6 +47,19 @@ def get_buscar_pedidos(
         raise HTTPException(status_code=500, detail=f"Error al buscar pedidos: {str(e)}")
     return pedidos
 
+#petición get por "mis pedidos" (requiere login)
+@router.get("/mis-pedidos", response_model=list[PedidoLeer])
+def get_mis_pedidos(
+    sesion: Session = Depends(get_session),
+    usuario_actual: Pedido = Depends(obtener_usuario)
+):
+    try:
+        query = select(Pedido).where(Pedido.id_usuario == usuario_actual.id_usuario)
+        pedidos = sesion.exec(query).all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al buscar mis pedidos: {str(e)}")
+    return pedidos
+
 #modificar pedido (requiere login)
 @router.patch("/{id_pedido}", response_model=PedidoLeer)
 def patch_pedido(

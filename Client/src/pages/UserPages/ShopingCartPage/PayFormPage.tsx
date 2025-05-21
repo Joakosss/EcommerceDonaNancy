@@ -2,6 +2,8 @@ import { useFormContext } from "react-hook-form";
 import { methodPaymentConstants } from "../../../constants/methodPaymentConstants";
 import { tipoEntregaConstants } from "../../../constants/tipoEntregaConstants";
 import { CheckoutFormType } from "./ShopingCartPage";
+import { SucursalType } from "../../../types/SucursalType";
+import { getSucursales } from "../../../hooks/getSucursales";
 
 type PayFormPageProps = {
   methodPayment: string;
@@ -18,23 +20,11 @@ function PayFormPage({
 }: PayFormPageProps) {
   const {
     register,
-    setValue,
     formState: { errors },
   } = useFormContext<CheckoutFormType>();
 
-  const handleDeliveryChange = (value: string) => {
-    handleDeliveryChange(value);
-    setValue("entrega.id_tipo_entrega", value);
-    if (value === "0") {
-      setValue("entrega.direccion_entrega", undefined);
-    } else {
-      setValue("entrega.id_sucursal", undefined);
-    }
-  };
-  const handlePaymentMethodChange = (value: string) => {
-    handleSetMethodPayment(value);
-    setValue("pedido.id_forma_pago", value);
-  };
+  const sucursales = getSucursales();
+
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <div className="lg:flex lg:items-start lg:gap-12 xl:gap-16">
@@ -101,11 +91,11 @@ function PayFormPage({
                         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
                         defaultValue={""}
                       >
-                        <option value={""}>San Francisco</option>
-                        <option value="NY">New York</option>
-                        <option value="LA">Los Angeles</option>
-                        <option value="CH">Chicago</option>
-                        <option value="HU">Houston</option>
+                        <option value="">Selecciona</option>
+                        {sucursales.data &&
+                          sucursales.data.map((sucursal: SucursalType) => (
+                            <option key={sucursal.nombre} value={sucursal.id}>{sucursal.nombre}</option>
+                          ))}
                       </select>
                     </div>
                   </>

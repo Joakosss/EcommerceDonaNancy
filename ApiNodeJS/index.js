@@ -8,6 +8,8 @@ import oracleConfig from "./config/oracleConfig.js";
 import getDate from "./utils/date.js";
 import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion de webpay
 import db from "./config/posgresConfig.js"; //importamos la configuracion de la bd
+import { verifyToken } from "./middleware/authMiddleware.js";
+import createOrden from "./services/createOrden.js";
 
 const app = express();
 
@@ -20,46 +22,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs"); // Requiere que tengas EJS instalado o puedes reemplazar por res.send
 
-app.post("/webpay/create", async (req, res) => {
+app.post("/webpay/create", verifyToken, async (req, res) => {
   let cone;
-  const { amount, products } = req.body; // rescatamos todo lo que biene en el body del metodo post
+  const { amount, products, entrega } = req.body; // rescatamos todo lo que biene en el body del metodo post
+
   try {
-    const id = v4(); //creamos una id para el pago
+    const id = v4(); //creamos una id para todo
     cone = await oracledb.getConnection(oracleConfig);
-    await cone.execute(
-      "INSERT INTO PEDIDO (ID_PEDIDO,FECHA,TOTAL,COMPROBANTE,ID_ESTADO_PEDIDO,ID_USUARIO,ID_FORMA_PAGO,ID_ENTREGA) VALUES (${id},${fecha},${total},${comprobante},${id_estado_pedido},${id_usuario},${id_forma_pago},${id_entrega})",
-      {
-        id_pedido: id,
-        fecha: getDate(),
-        total: amount,
-        comprobante: null,
-        id_estado_pedido: 0,
-        id_usuario: 1, //debemos tener el id del usuario
-        id_forma_pago: 0,
-        id_entrega: id, // se supone debemos crear entrega cuando ya se pague por ende debemos modificar la bd para que sea null
-      }
-    );
-  } catch (error) { }
-  finally { cone.close() }
-  //primero creamos el pedido con el estado en pendiente de pago
 
+    //hacemos las inserciones sql
+    await createOrden({
+      cone,
+      id,
+      entrega,
+      amount,
+      id_usuario: req.user.id_usuario,
+    });
 
-  const sessionId = "SES-" + Math.floor(Math.random() * 100000); //id unica para la session
-  const returnUrl = `${req.protocol}://${req.get("host")}/webpay/commit`;
+    await cone.execute("COMMIT"); //si todo sale bien commit
 
-  /* Consulta de los productos a la bd */
-  const ids = products.map((product) => product.id).join(",");
-  console.log(`http://localhost:3000/products/?id_producto=${ids}`);
-  //console.log(productsResponse);
-  /*   try {
-    const productsResponse = await axios.get(
-      `http://localhost:3000/products/?id_producto=${ids}`
-    );
-  } catch (error) {
-    console.log("error aqui")
-  } */
+    const returnUrl = `${req.protocol}://${req.get("host")}/webpay/commit`;
+    const sessionId = "SES-" + id.substring(0, 8); //id unica para la session con parte de mi id
+    const buyOrder = `OC-${id.substring(0, 8)}`; // Usamos el id para el buyOrder
 
-  try {
     const { token, url } = await new WebpayPlus.Transaction().create(
       buyOrder,
       sessionId,
@@ -69,8 +54,17 @@ app.post("/webpay/create", async (req, res) => {
     // Redirige al formulario de pago
     res.json({ url: url, token: token });
   } catch (error) {
+    if (cone) {
+      try {
+        await cone.execute("ROLLBACK");
+      } catch (rollbackerror) {
+        console.error("Error en rollback:", rollbackError);
+      }
+    }
     console.error("Error creando transacción:", error);
     res.status(500).send("Error al crear transacción");
+  } finally {
+    cone.close();
   }
 });
 

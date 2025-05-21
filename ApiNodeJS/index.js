@@ -6,11 +6,11 @@ import { v4 } from "uuid"; // generador de ids v4
 import oracledb from "oracledb";
 import oracleConfig from "./config/oracleConfig.js";
 import getDate from "./utils/date.js";
-import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion de webpay
 import db from "./config/posgresConfig.js"; //importamos la configuracion de la bd
 import { verifyToken } from "./middleware/authMiddleware.js";
 import createOrden from "./services/createOrden.js";
-
+import createWebpayTransaction from "./services/createWebpayTransaction.js";
+import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion de webpay
 const app = express();
 
 app.use(morgan("dev"));
@@ -41,18 +41,11 @@ app.post("/webpay/create", verifyToken, async (req, res) => {
 
     await cone.execute("COMMIT"); //si todo sale bien commit
 
-    const returnUrl = `${req.protocol}://${req.get("host")}/webpay/commit`;
-    const sessionId = "SES-" + id.substring(0, 8); //id unica para la session con parte de mi id
-    const buyOrder = `OC-${id.substring(0, 8)}`; // Usamos el id para el buyOrder
+    //hacemos el link en webpay
+    const webpayResponse = await createWebpayTransaction({ req, id, amount });
 
-    const { token, url } = await new WebpayPlus.Transaction().create(
-      buyOrder,
-      sessionId,
-      amount,
-      returnUrl
-    );
     // Redirige al formulario de pago
-    res.json({ url: url, token: token });
+    res.json({ url: webpayResponse.url, token: webpayResponse.token });
   } catch (error) {
     if (cone) {
       try {

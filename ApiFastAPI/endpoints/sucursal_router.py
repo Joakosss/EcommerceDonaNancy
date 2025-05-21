@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from models import Sucursal
+from auth import obtener_usuario
 from database import get_session
 from schemas import SucursalLeer
 
@@ -12,7 +13,8 @@ router = APIRouter(
 #petición get (requiere login)
 @router.get("/", response_model=list[SucursalLeer])
 def get_sucursales(
-    sesion: Session = Depends(get_session)
+    sesion: Session = Depends(get_session),
+    usuario_actual: Sucursal = Depends(obtener_usuario)
 ):
     try:
         query = select(Sucursal)

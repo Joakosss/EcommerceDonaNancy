@@ -37,10 +37,13 @@ def get_buscar_pedidos(
         if id_entrega:
             filtros.append(Pedido.id_entrega == id_entrega)
         
+        query = select(Pedido)
+
         if filtros:
-            query = select(Pedido).where(or_(*filtros))
-        else:
-            query = select(Pedido)
+            query = query.where(or_(*filtros))
+        
+        #ordena por estado de pedido y fecha
+        query.order_by((Pedido.id_estado_pedido == "0").desc(),  Pedido.fecha.desc())
         pedidos = sesion.exec(query).all()
 
     except Exception as e:

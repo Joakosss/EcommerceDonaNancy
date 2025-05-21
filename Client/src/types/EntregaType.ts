@@ -5,5 +5,5 @@ export type EntregaType = {
   id_pedido?: string;
   sucursal?: string;
   estado_entrega?: string;
-  tipo_entrega: string;
+  id_tipo_entrega: string;
 };

@@ -53,7 +53,7 @@ function ShopingCartPage() {
       //pago con webpay
       const entrega: EntregaType = {
         fecha_entrega: data.entrega.fecha_entrega,
-        tipo_entrega: data.entrega.id_tipo_entrega,
+        id_tipo_entrega: isMethodDelivery,
       };
       if (isMethodDelivery === "0") {
         //si es con retiro

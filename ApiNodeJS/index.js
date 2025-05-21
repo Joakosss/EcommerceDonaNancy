@@ -11,6 +11,8 @@ import { verifyToken } from "./middleware/authMiddleware.js";
 import createOrden from "./services/createOrden.js";
 import createWebpayTransaction from "./services/createWebpayTransaction.js";
 import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion de webpay
+import createPedidoProducto from "./services/createPedidoProducto.js";
+import InsertPedidoProducto from "./services/InsertPedidoProducto.js";
 const app = express();
 
 app.use(morgan("dev"));
@@ -24,11 +26,17 @@ app.set("view engine", "ejs"); // Requiere que tengas EJS instalado o puedes ree
 
 app.post("/webpay/create", verifyToken, async (req, res) => {
   let cone;
-  const { amount, products, entrega } = req.body; // rescatamos todo lo que biene en el body del metodo post
+  const { products, entrega } = req.body; // rescatamos todo lo que biene en el body del metodo post
 
   try {
     const id = v4(); //creamos una id para todo
     cone = await oracledb.getConnection(oracleConfig);
+
+    //creamos el array con los productos extraidos desde la bd
+    const { amount, productDetails } = await createPedidoProducto({
+      cone,
+      products,
+    });
 
     //hacemos las inserciones sql
     await createOrden({
@@ -38,6 +46,7 @@ app.post("/webpay/create", verifyToken, async (req, res) => {
       amount,
       id_usuario: req.user.id_usuario,
     });
+    await InsertPedidoProducto({ cone, productDetails });
 
     await cone.execute("COMMIT"); //si todo sale bien commit
 

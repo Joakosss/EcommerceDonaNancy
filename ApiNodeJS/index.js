@@ -14,6 +14,7 @@ import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion
 import createPedidoProducto from "./services/createPedidoProducto.js";
 import InsertPedidoProducto from "./services/InsertPedidoProducto.js";
 import deletePedidoCascade from "./services/deletePedidoCascade.js";
+import updatePedido from "./services/updatePedido.js";
 const app = express();
 
 app.use(morgan("dev"));
@@ -33,10 +34,16 @@ app.post("/webpay/create", verifyToken, async (req, res) => {
     cone = await oracledb.getConnection(oracleConfig);
 
     //creamos el array con los productos extraidos desde la bd
-    const { amount, productDetails } = await createPedidoProducto({
+    const {
+      amount: preAmount,
+      productDetails,
+      counter,
+    } = await createPedidoProducto({
       cone,
       products,
     });
+    let amount = preAmount;
+    if (counter >= 4) amount = Math.round(amount * 0.75);
 
     //hacemos las inserciones sql
     await createOrden({
@@ -85,12 +92,17 @@ app.get("/webpay/commit", async (req, res) => {
       const commitResponse = await new WebpayPlus.Transaction().commit(
         token_ws
       );
-      const { status } = commitResponse;
+      const { status, buy_order } = commitResponse;
       // Flujo 1: Éxito
 
       if (status === "AUTHORIZED") {
+        await updatePedido({
+          cone,
+          TBK_ORDEN_COMPRA: buy_order,
+          id_estado_pedido: 3,
+        });
         console.log("✅ Transacción aprobada.");
-        res.redirect("http://localhost:5173/success");
+        res.redirect(`http://localhost:5173/success/${buy_order}`);
         return;
       }
       if (status === "FAILED") {
@@ -120,7 +132,7 @@ app.get("/webpay/commit", async (req, res) => {
     }
   } catch (error) {
     console.error("Error en commit:", error);
-    res.status(500).send("Error al confirmar transacción");
+    res.redirect("http://localhost:5173/failure/error");
   } finally {
     cone.close();
   }

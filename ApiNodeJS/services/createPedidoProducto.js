@@ -1,6 +1,7 @@
 async function createPedidoProducto({ cone, products }) {
   const productDetails = [];
   let amount = 0; // Inicializamos el monto total
+  let counter = 0;
 
   for (const item of products) {
     const result = await cone.execute(
@@ -10,14 +11,14 @@ async function createPedidoProducto({ cone, products }) {
     if (result.rows.length === 0) {
       throw new Error(`Producto con ID ${item.id_producto} no encontrado`);
     }
-    
+
     const product = result.rows[0];
 
     // Verificamos si hay suficiente stock
     if (product[3] < item.cantidad) {
       throw new Error(`Stock insuficiente para el producto ${product[1]}`);
     }
-
+    counter += item.cantidad;
     const subtotal = product[2] * item.cantidad;
     amount += subtotal;
 
@@ -29,7 +30,7 @@ async function createPedidoProducto({ cone, products }) {
       subtotal,
     });
   }
-  return { productDetails, amount };
+  return { productDetails, amount , counter};
 }
 
 export default createPedidoProducto;

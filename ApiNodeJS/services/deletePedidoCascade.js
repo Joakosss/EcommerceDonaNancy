@@ -11,7 +11,6 @@ async function deletePedidoCascade({ cone, TBK_ORDEN_COMPRA }) {
     await cone.execute("DELETE FROM pedido WHERE id_pedido LIKE :id_compra", {
       id_compra: `${TBK_ORDEN_COMPRA}%`,
     });
-
     // 2. Luego eliminamos las entregas
     await cone.execute("DELETE FROM entrega WHERE id_entrega LIKE :id_compra", {
       id_compra: `${TBK_ORDEN_COMPRA}%`,

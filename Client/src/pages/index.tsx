@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { path: "Productos/:category/", element: <CategoryPage /> },
       { path: "carrito/", element: <ShopingCartPage /> },
       { path: "misCompras/", element: <MyPurchasesPage /> },
-      { path: "success/", element: <Success /> }, //esto es lo que sale despues de venta exitosa
+      { path: "success/:idOrden", element: <Success /> }, //esto es lo que sale despues de venta exitosa
       { path: "miPerfil/:id", element: <ProfilePage /> },
       { path: "failure/:error", element: <Failure /> },
     ],

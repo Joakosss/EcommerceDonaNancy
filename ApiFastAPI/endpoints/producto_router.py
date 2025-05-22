@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
-from sqlmodel import Session, select, or_
+from sqlmodel import Session, select, and_
 from models import Producto, Marca, Modelo
 from database import get_session
 from schemas import ProductoCrear, ProductoLeer, ProductoActualizar
@@ -19,6 +19,7 @@ def get_buscar_productos(
     id_marca: Optional[str] = None,
     id_modelo: Optional[str] = None,
     nombre: Optional[str] = None,
+    id_categoria: Optional[str] = None,
     sesion: Session = Depends(get_session)
 ):
     try:
@@ -33,11 +34,14 @@ def get_buscar_productos(
             filtros.append(Producto.id_modelo == id_modelo)
         if nombre:
             filtros.append(Producto.nombre.ilike(f"%{nombre}%"))
+        if id_categoria:
+            filtros.append(Modelo.id_categoria == id_categoria)
+            join = True
 
-        #si existen filtros, se agregan a la consulta con OR
-        #or_(*filtros) descompone la lista y la pasa como argumentos separados al operador OR
         if filtros:
-            query = select(Producto).where(or_(*filtros))
+            if join:
+                query = select(Producto).join(Modelo)
+            query = query.where(and_(*filtros))
         else:
             query = select(Producto)
         productos = sesion.exec(query).all()

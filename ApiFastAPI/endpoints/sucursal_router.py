@@ -13,8 +13,7 @@ router = APIRouter(
 #petición get (requiere login)
 @router.get("/", response_model=list[SucursalLeer])
 def get_sucursales(
-    sesion: Session = Depends(get_session),
-    usuario_actual: Sucursal = Depends(obtener_usuario)
+    sesion: Session = Depends(get_session)
 ):
     try:
         query = select(Sucursal)

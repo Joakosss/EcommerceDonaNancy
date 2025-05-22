@@ -30,7 +30,10 @@ async function createPedidoProducto({ cone, products }) {
       subtotal,
     });
   }
-  return { productDetails, amount , counter};
+
+  if (counter >= 4) amount = Math.round(amount * 0.75);
+
+  return { productDetails, amount };
 }
 
 export default createPedidoProducto;

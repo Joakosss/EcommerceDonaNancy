@@ -13,6 +13,7 @@ import createWebpayTransaction from "./services/createWebpayTransaction.js";
 import WebpayPlus from "./config/webpayConfig.js"; //importamos la configuracion de webpay
 import createPedidoProducto from "./services/createPedidoProducto.js";
 import InsertPedidoProducto from "./services/InsertPedidoProducto.js";
+import deletePedidoCascade from "./services/deletePedidoCascade.js";
 const app = express();
 
 app.use(morgan("dev"));
@@ -72,13 +73,14 @@ app.post("/webpay/create", verifyToken, async (req, res) => {
 // Ruta para recibir el retorno del formulario Webpay
 app.get("/webpay/commit", async (req, res) => {
   const { token_ws, TBK_TOKEN, TBK_ORDEN_COMPRA, TBK_ID_SESION } = req.query;
+  let cone;
   //token_ws	        Token generado al crear la transacción (si fue exitosa).
   //TBK_TOKEN	        Token usado en transacciones canceladas.
-  //TBK_ORDEN_COMPRA	Código de la orden de compra en caso de cancelación.
+  //TBK_ORDEN_COMPRA	Código de la orden de compra en caso de cancelación.          usar este para eliminar
   //TBK_ID_SESION	    ID de sesión en caso de cancelación o timeout.
-  console.log("orden de compra")
-  console.log(TBK_ORDEN_COMPRA)
+
   try {
+    cone = await oracledb.getConnection(oracleConfig);
     if (token_ws && !TBK_TOKEN) {
       const commitResponse = await new WebpayPlus.Transaction().commit(
         token_ws
@@ -92,6 +94,7 @@ app.get("/webpay/commit", async (req, res) => {
         return;
       }
       if (status === "FAILED") {
+        await deletePedidoCascade({ cone, TBK_ORDEN_COMPRA });
         console.log("❌ Medio de pago rechazado.");
         res.redirect("http://localhost:5173/failure/pagoRechazado");
         return;
@@ -100,14 +103,17 @@ app.get("/webpay/commit", async (req, res) => {
       res.redirect("http://localhost:5173/failure/error");
       return;
     } else if (!token_ws && !TBK_TOKEN) {
+      await deletePedidoCascade({ cone, TBK_ORDEN_COMPRA });
       mensaje = "⌛ El pago fue anulado por tiempo de espera.";
       res.redirect("http://localhost:5173/failure/pagoAbandonado");
       return;
     } else if (!token_ws && TBK_TOKEN) {
+      await deletePedidoCascade({ cone, TBK_ORDEN_COMPRA });
       console.log("❌ El pago fue cancelado por el usuario.");
       res.redirect("http://localhost:5173/failure/pagoAbandonado");
       return;
     } else {
+      await deletePedidoCascade({ cone, TBK_ORDEN_COMPRA });
       console.log("⚠️ Transacción inválida o abandonada.");
       res.redirect("http://localhost:5173/failure/pagoAbandonado");
       return;
@@ -115,6 +121,8 @@ app.get("/webpay/commit", async (req, res) => {
   } catch (error) {
     console.error("Error en commit:", error);
     res.status(500).send("Error al confirmar transacción");
+  } finally {
+    cone.close();
   }
 });
 

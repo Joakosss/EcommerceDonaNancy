@@ -2,7 +2,7 @@ import ItemList from "./ItemList";
 import PayZone from "./PayZone";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import cartC from "../../../images/CartC.svg";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import PayFormPage from "./PayFormPage";
 import LoadingOverlay from "../../../components/LoadingOverlay";
 import useAuthStore from "../../../store/useAuthStore";

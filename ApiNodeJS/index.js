@@ -76,14 +76,15 @@ app.get("/webpay/commit", async (req, res) => {
   //TBK_TOKEN	        Token usado en transacciones canceladas.
   //TBK_ORDEN_COMPRA	Código de la orden de compra en caso de cancelación.
   //TBK_ID_SESION	    ID de sesión en caso de cancelación o timeout.
-
+  console.log("orden de compra")
+  console.log(TBK_ORDEN_COMPRA)
   try {
     if (token_ws && !TBK_TOKEN) {
-      // Flujo 1: Éxito
       const commitResponse = await new WebpayPlus.Transaction().commit(
         token_ws
       );
       const { status } = commitResponse;
+      // Flujo 1: Éxito
 
       if (status === "AUTHORIZED") {
         console.log("✅ Transacción aprobada.");
@@ -99,17 +100,14 @@ app.get("/webpay/commit", async (req, res) => {
       res.redirect("http://localhost:5173/failure/error");
       return;
     } else if (!token_ws && !TBK_TOKEN) {
-      // Flujo 2: Timeout
       mensaje = "⌛ El pago fue anulado por tiempo de espera.";
       res.redirect("http://localhost:5173/failure/pagoAbandonado");
       return;
     } else if (!token_ws && TBK_TOKEN) {
-      // Flujo 3: Usuario canceló
       console.log("❌ El pago fue cancelado por el usuario.");
       res.redirect("http://localhost:5173/failure/pagoAbandonado");
       return;
     } else {
-      // Flujo 4: Pago inválido
       console.log("⚠️ Transacción inválida o abandonada.");
       res.redirect("http://localhost:5173/failure/pagoAbandonado");
       return;
@@ -120,47 +118,6 @@ app.get("/webpay/commit", async (req, res) => {
   }
 });
 
-app.post("/prueba", async (req, res) => {
-  const { compra } = req.body;
-  try {
-    const id = await db.one(
-      "INSERT INTO PEDIDO (id,fecha,total,comprobante,id_estado_boleta) VALUES ($(id),$(fecha),$(total),$(comprobante),$(id_estado_boleta)) RETURNING id",
-      {
-        id: id,
-        fecha: getDate(),
-        total: 10000,
-        comprobante: null,
-        id_estado_boleta: "1",
-      }
-    );
-
-    console.log(response);
-
-    res.status(201).send({ message: "creado con exito" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: "Hubo un error" });
-  }
-});
-
-/* Borrar */
-app.get("/", async (req, res) => {
-  let cone;
-  try {
-    cone = await oracledb.getConnection(oracleConfig);
-    const response = await cone.execute("SELECT * FROM producto");
-    res.status(200).json(
-      response.rows.map((row) => ({
-        nombre: row[1],
-      }))
-    );
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  } finally {
-    if (cone) cone.close();
-  }
-});
-/* Borrar */
 app.listen(4000, () => {
   console.log("Server ejecutandose en puerto 4000");
 });

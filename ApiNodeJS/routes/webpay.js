@@ -15,7 +15,7 @@ const router = Router();
 
 router.post("/create", verifyToken, async (req, res) => {
   let cone;
-  const { products, entrega } = req.body; // rescatamos todo lo que biene en el body del metodo post
+  const { products, entrega, pedido } = req.body; // rescatamos todo lo que biene en el body del metodo post
   try {
     const id = v4(); //creamos una id para todo
     cone = await oracledb.getConnection(oracleConfig);
@@ -33,6 +33,7 @@ router.post("/create", verifyToken, async (req, res) => {
       entrega,
       amount,
       id_usuario: req.user.id_usuario,
+      pedido,
     });
     await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
 

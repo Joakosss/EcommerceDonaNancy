@@ -52,29 +52,29 @@ function PayFormPage({
                 Preparemos tu compra
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="fecha_entrega"
+                    className="mb-2 block text-sm font-medium text-gray-900 "
+                  >
+                    Fecha Entrega*
+                  </label>
+                  {errors.entrega?.direccion_entrega && (
+                    <p className="mt-1 text-xs text-red-600">
+                      {errors.entrega.direccion_entrega.message}
+                    </p>
+                  )}
+                  <input
+                    type="date"
+                    id="fecha_entrega"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
+                    {...register("entrega.fecha_entrega", {
+                      required: "Es requerido",
+                    })}
+                  />
+                </div>
                 {isMethodDelivery === "0" && (
                   <>
-                    <div>
-                      <label
-                        htmlFor="fecha_entrega"
-                        className="mb-2 block text-sm font-medium text-gray-900 "
-                      >
-                        Fecha Entrega*
-                      </label>
-                      {errors.entrega?.direccion_entrega && (
-                        <p className="mt-1 text-xs text-red-600">
-                          {errors.entrega.direccion_entrega.message}
-                        </p>
-                      )}
-                      <input
-                        type="date"
-                        id="fecha_entrega"
-                        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
-                        {...register("entrega.fecha_entrega", {
-                          required: "Es requerido",
-                        })}
-                      />
-                    </div>
                     <div>
                       <div className="mb-2 flex items-center gap-2">
                         <label

@@ -7,7 +7,7 @@ async function createOrden({ cone, id, entrega, amount, id_usuario, comprobante_
     "INSERT INTO entrega (id_entrega,fecha_entrega,direccion_entrega,id_sucursal,id_estado_entrega,id_tipo_entrega) VALUES (:id_entrega,:fecha_entrega,:direccion_entrega,:id_sucursal,:id_estado_entrega,:id_tipo_entrega)",
     {
       id_entrega: id,
-      fecha_entrega: new Date(),
+      fecha_entrega: new Date(entrega.fecha_entrega),
       direccion_entrega: entrega.direccion_entrega,
       id_sucursal: "1", //sucursal cambiar
       id_estado_entrega: "1", //en proceso

@@ -125,13 +125,4 @@ router.get("/commit", async (req, res) => {
   }
 });
 
-/* router.post("/prueba", upload.single("comprobante"), async (req, res) => {
-  const {products,entrega,pedido} = req.body
-  console.log("products ",products)
-  console.log("entrega ",entrega)
-  console.log("pedido ",pedido)
-
-  res.status(200).json({ message: "Prueba recibida", body: req.body });
-}); */
-
 export default router;

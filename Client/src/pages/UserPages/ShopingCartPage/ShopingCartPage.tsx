@@ -86,7 +86,7 @@ function ShopingCartPage() {
       //webpay
       mutate(
         {
-          formData
+          formData,
         },
         {
           onSuccess: (data) => {
@@ -99,11 +99,25 @@ function ShopingCartPage() {
         }
       );
     } else {
-      if (!comprobante) {
+      if (!data.comprobante) {
         alert("Falta comprobante");
         return;
       }
-      mutateTransf(formData);
+      if (!data.entrega.id_sucursal) {
+        alert("Falta sucursal");
+        return;
+      }
+      mutateTransf(
+        { formData },
+        {
+          onSuccess: (data) => {
+            navigate(`/processPay/${data.pedido}`);
+          },
+          onError: (err) => {
+            alert(err.message);
+          },
+        }
+      );
     }
   };
 

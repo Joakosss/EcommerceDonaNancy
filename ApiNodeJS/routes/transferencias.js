@@ -9,30 +9,6 @@ import InsertPedidoProducto from "../services/InsertPedidoProducto.js";
 import { v4 } from "uuid";
 const router = Router();
 
-//subir la imagen
-router.post("/comprobantes", upload.single("comprobante"), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({
-        error: "No se recibio archivo :C",
-      });
-    }
-    //ubicacion de la imagen en los datos c:
-    const comprobanteUrl = `/uploads/comprobantes/${req.file.filename}`;
-
-    res.json({
-      message: "Comprobante subido exitosamente",
-      url: comprobanteUrl,
-      nombreArchivo: req.file.filename,
-    });
-  } catch (error) {
-    console.error("Error al subir imagen:", error);
-    res.status(500).json({
-      error: "Error interno del servidor",
-    });
-  }
-});
-
 //Crear pedido
 router.post(
   "/compraComprobante",
@@ -124,10 +100,5 @@ router.get(
     }
   }
 );
-
-router.post("/prueba", upload.single("comprobante"), async (req, res) => {
-  console.log(req.body);
-  res.status(200).json({ message: "Prueba recibida", body: req.body });
-});
 
 export default router;

@@ -93,6 +93,12 @@ function PayFormPage({
                         id="select-city-input-3"
                         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
                         defaultValue={""}
+                        {...register("entrega.id_sucursal", {
+                          required: {
+                            value: isMethodDelivery === "0",
+                            message: "Debe seleccionar sucursal",
+                          },
+                        })}
                       >
                         <option value="">Selecciona</option>
                         {sucursales.data &&

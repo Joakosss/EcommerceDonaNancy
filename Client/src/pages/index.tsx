@@ -17,6 +17,7 @@ import UpdatePass from "./DashBoard/UpdatePass";
 import UserTable from "./DashBoard/WorkSpaces/UserTable";
 import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
 import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
+import ProcessPay from "./UserPages/reponseShopping/processPay";
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: "carrito/", element: <ShopingCartPage /> },
       { path: "misCompras/", element: <MyPurchasesPage /> },
       { path: "success/:idOrden", element: <Success /> }, //esto es lo que sale despues de venta exitosa
+      { path: "processPay/:idPedido", element: <ProcessPay /> }, //esto es lo que sale despues de venta exitosa con transferencia
       { path: "miPerfil/:id", element: <ProfilePage /> },
       { path: "failure/:error", element: <Failure /> },
     ],

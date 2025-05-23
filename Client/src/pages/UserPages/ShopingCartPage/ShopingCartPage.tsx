@@ -10,8 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { ProductType } from "../../../types/ProductType";
 import { FormProvider, useForm } from "react-hook-form";
 import usePay from "../../../hooks/usePay";
-import { EntregaType } from "../../../types/EntregaType";
-import { PedidoType } from "../../../types/PedidoType";
+import usePayTransf from "../../../hooks/usePayTransf";
 
 export type CheckoutFormType = {
   products: ProductType[];
@@ -22,9 +21,9 @@ export type CheckoutFormType = {
     id_tipo_entrega: string;
   };
   pedido: {
-    comprobante_pago?: string;
     id_forma_pago: string;
   };
+  comprobante?: File;
 };
 
 function ShopingCartPage() {
@@ -47,37 +46,47 @@ function ShopingCartPage() {
   /* Formulario y mutate */
   const methods = useForm<CheckoutFormType>();
   const { mutate, isPending } = usePay();
+  const { mutate: mutateTransf, isPending: isPendingTransf } = usePayTransf();
 
   const handleSend = async (data: CheckoutFormType) => {
-    const products: { id_producto: string; cantidad: number }[] = [];
-    for (const item of shoppingCart) {
-      products.push({
-        id_producto: item.product.id_producto!,
-        cantidad: item.quantity,
-      });
+    const formData = new FormData();
+
+    shoppingCart.forEach((item, idex) => {
+      formData.append(
+        `products[${idex}][id_producto]`,
+        item.product.id_producto!
+      );
+      formData.append(`products[${idex}][cantidad]`, item.quantity.toString());
+    });
+
+    formData.append(
+      "entrega[fecha_entrega]",
+      data.entrega.fecha_entrega.toString()
+    );
+    formData.append("entrega[id_tipo_entrega]", isMethodDelivery);
+
+    if (isMethodDelivery === "0") {
+      //con retiro en tienda
+      formData.append("entrega[sucursal]", data.entrega.id_sucursal || "0");
+    } else {
+      //con envio a domicilio
+      formData.append(
+        "entrega[direccion_entrega]",
+        data.entrega.direccion_entrega || ""
+      );
     }
-    console.log(products)
+
+    formData.append("pedido[id_forma_pago]", methodPayment);
+
+    if (methodPayment === "3") {
+      formData.append("comprobante", data.comprobante[0]);
+    }
+
     if (methodPayment === "0") {
-      //pago con webpay
-      const entrega: EntregaType = {
-        fecha_entrega: data.entrega.fecha_entrega,
-        id_tipo_entrega: isMethodDelivery,
-      };
-      if (isMethodDelivery === "0") {
-        //si es con retiro
-        entrega.sucursal = data.entrega.id_sucursal;
-      } else {
-        //si es con envio
-        entrega.direccion_entrega = data.entrega.direccion_entrega;
-      }
-      const pedido: PedidoType = {
-        id_forma_pago: methodPayment,
-      };
+      //webpay
       mutate(
         {
-          products,
-          entrega,
-          pedido,
+          formData
         },
         {
           onSuccess: (data) => {
@@ -89,6 +98,12 @@ function ShopingCartPage() {
           },
         }
       );
+    } else {
+      if (!comprobante) {
+        alert("Falta comprobante");
+        return;
+      }
+      mutateTransf(formData);
     }
   };
 
@@ -107,7 +122,7 @@ function ShopingCartPage() {
 
   return (
     <div className="h-full flex flex-col max-w-5xl max-md:max-w-xl mx-auto p-4 ">
-      {isPending && <LoadingOverlay />}
+      {isPending || (isPendingTransf && <LoadingOverlay />)}
       <h1 className="text-2xl font-bold text-slate-900">Tu carrito</h1>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSend)}>

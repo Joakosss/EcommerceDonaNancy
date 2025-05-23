@@ -34,51 +34,72 @@ router.post("/comprobantes", upload.single("comprobante"), (req, res) => {
 });
 
 //Crear pedido
-router.post("/compraComprobante", verifyToken, async (req, res) => {
-  let cone;
-  const { products, entrega } = req.body;
-  try {
-    cone = await oracledb.getConnection(oracleConfig);
-    const id = v4(); //creamos una id para todo
+router.post(
+  "/compraComprobante",
+  verifyToken,
+  upload.single("comprobante"),
+  async (req, res) => {
+    let cone;
+    const { products, entrega } = req.body;
 
-    //creamos el array con los productos extraidos desde la bd
-    const { amount, productDetails } = await createPedidoProducto({
-      cone,
-      products,
-    });
+    try {
+      if (!req.file) {
+        console.log("No se recibió el comprobante de pago");
+        return res.status(400).json({
+          error: "No se recibió el comprobante de pago",
+        });
+      }
+      const comprobanteUrl = `/uploads/comprobantes/${req.file.filename}`;
 
-    //hacemos las inserciones sql
-    await createOrden({
-      cone,
-      id,
-      entrega,
-      amount,
-      id_usuario: req.user.id_usuario,
-    });
+      cone = await oracledb.getConnection(oracleConfig);
+      const id = v4(); //creamos una id para todo
+      //creamos el array con los productos extraidos desde la bd
+      const { amount, productDetails } = await createPedidoProducto({
+        cone,
+        products,
+      });
 
-    //insertamos los productos comprados
-    await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
+      //hacemos las inserciones sql
+      await createOrden({
+        cone,
+        id,
+        entrega,
+        amount,
+        id_usuario: req.user.id_usuario,
+        comprobante_url: comprobanteUrl,
+      });
 
-    await cone.execute("COMMIT"); //si todo sale bien commit
+      //insertamos los productos comprados
+      await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
 
-    res.json({
-      mensaje: "Compra solicitada exitosamente",
-      pedido: id,
-    });
-  } catch (error) {
-    if (cone) {
-      try {
-        await cone.execute("ROLLBACK");
-      } catch (rollbackError) {
-        console.error("Error en rollback:", rollbackError);
+      await cone.execute("COMMIT"); //si todo sale bien commit
+
+      res.json({
+        mensaje: "Compra solicitada exitosamente",
+        pedido: id,
+      });
+    } catch (error) {
+      if (cone) {
+        try {
+          await cone.execute("ROLLBACK");
+        } catch (rollbackError) {
+          console.error("Error en rollback:", rollbackError);
+        }
+      }
+      console.error("Error creando transacción:", error);
+      res.status(500).send("Error al crear transacción");
+    } finally {
+      if (cone) {
+        // Verificar si la conexión existe
+        try {
+          await cone.close();
+        } catch (closeError) {
+          console.error("Error cerrando la conexión:", closeError);
+        }
       }
     }
-    console.error("Error creando transacción:", error);
-    res.status(500).send("Error al crear transacción");
-  } finally {
-    await cone.close();
   }
-});
+);
 
 router.get(
   ["/compraComprobante", "/compraComprobante/:id_usuario"],
@@ -103,5 +124,10 @@ router.get(
     }
   }
 );
+
+router.post("/prueba", upload.single("comprobante"), async (req, res) => {
+  console.log(req.body);
+  res.status(200).json({ message: "Prueba recibida", body: req.body });
+});
 
 export default router;

@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs"); // Requiere que tengas EJS instalado o puedes reemplazar por res.send
+
 app.use("/api/comprobantes", express.static("files/comprobantes"));
 
 //Routes c:

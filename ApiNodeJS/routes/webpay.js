@@ -10,54 +10,59 @@ import createPedidoProducto from "../services/createPedidoProducto.js";
 import InsertPedidoProducto from "../services/InsertPedidoProducto.js";
 import deletePedidoCascade from "../services/deletePedidoCascade.js";
 import updatePedido from "../services/updatePedido.js";
-
+import upload from "../middleware/filesStorage.js";
 const router = Router();
 
-router.post("/create", verifyToken, async (req, res) => {
-  let cone;
-  const { products, entrega, pedido } = req.body; // rescatamos todo lo que biene en el body del metodo post
-  try {
-    const id = v4(); //creamos una id para todo
-    cone = await oracledb.getConnection(oracleConfig);
+router.post(
+  "/create",
+  verifyToken,
+  upload.single("comprobante"),
+  async (req, res) => {
+    let cone;
+    const { products, entrega, pedido } = req.body; // rescatamos todo lo que biene en el body del metodo post
+    try {
+      const id = v4(); //creamos una id para todo
+      cone = await oracledb.getConnection(oracleConfig);
 
-    //creamos el array con los productos extraidos desde la bd
-    const { amount, productDetails } = await createPedidoProducto({
-      cone,
-      products,
-    });
+      //creamos el array con los productos extraidos desde la bd
+      const { amount, productDetails } = await createPedidoProducto({
+        cone,
+        products,
+      });
 
-    //hacemos las inserciones sql
-    await createOrden({
-      cone,
-      id,
-      entrega,
-      amount,
-      id_usuario: req.user.id_usuario,
-      pedido,
-    });
-    await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
+      //hacemos las inserciones sql
+      await createOrden({
+        cone,
+        id,
+        entrega,
+        amount,
+        id_usuario: req.user.id_usuario,
+        pedido,
+      });
+      await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
 
-    await cone.execute("COMMIT"); //si todo sale bien commit
+      await cone.execute("COMMIT"); //si todo sale bien commit
 
-    //hacemos el link en webpay
-    const webpayResponse = await createWebpayTransaction({ req, id, amount });
+      //hacemos el link en webpay
+      const webpayResponse = await createWebpayTransaction({ req, id, amount });
 
-    // Redirige al formulario de pago
-    res.json({ url: webpayResponse.url, token: webpayResponse.token });
-  } catch (error) {
-    if (cone) {
-      try {
-        await cone.execute("ROLLBACK");
-      } catch (rollbackError) {
-        console.error("Error en rollback:", rollbackError);
+      // Redirige al formulario de pago
+      res.json({ url: webpayResponse.url, token: webpayResponse.token });
+    } catch (error) {
+      if (cone) {
+        try {
+          await cone.execute("ROLLBACK");
+        } catch (rollbackError) {
+          console.error("Error en rollback:", rollbackError);
+        }
       }
+      console.error("Error creando transacción:", error);
+      res.status(500).send("Error al crear transacción");
+    } finally {
+      cone.close();
     }
-    console.error("Error creando transacción:", error);
-    res.status(500).send("Error al crear transacción");
-  } finally {
-    cone.close();
   }
-});
+);
 
 // Ruta para recibir el retorno del formulario Webpay
 router.get("/commit", async (req, res) => {
@@ -120,4 +125,12 @@ router.get("/commit", async (req, res) => {
   }
 });
 
+/* router.post("/prueba", upload.single("comprobante"), async (req, res) => {
+  const {products,entrega,pedido} = req.body
+  console.log("products ",products)
+  console.log("entrega ",entrega)
+  console.log("pedido ",pedido)
+
+  res.status(200).json({ message: "Prueba recibida", body: req.body });
+}); */
 export default router;

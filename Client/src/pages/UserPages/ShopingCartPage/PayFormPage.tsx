@@ -4,6 +4,8 @@ import { tipoEntregaConstants } from "../../../constants/tipoEntregaConstants";
 import { CheckoutFormType } from "./ShopingCartPage";
 import { SucursalType } from "../../../types/SucursalType";
 import { getSucursales } from "../../../hooks/getSucursales";
+import { useState } from "react";
+import Modal from "../../../components/Modal";
 
 type PayFormPageProps = {
   methodPayment: string;
@@ -24,6 +26,7 @@ function PayFormPage({
   } = useFormContext<CheckoutFormType>();
 
   const sucursales = getSucursales();
+  const [isModalTransf, setIsModalTransf] = useState<boolean>(false);
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -94,7 +97,9 @@ function PayFormPage({
                         <option value="">Selecciona</option>
                         {sucursales.data &&
                           sucursales.data.map((sucursal: SucursalType) => (
-                            <option key={sucursal.nombre} value={sucursal.id}>{sucursal.nombre}</option>
+                            <option key={sucursal.nombre} value={sucursal.id}>
+                              {sucursal.nombre}
+                            </option>
                           ))}
                       </select>
                     </div>
@@ -126,6 +131,39 @@ function PayFormPage({
                     </div>
                   </>
                 )}
+                {methodPayment === "3" && (
+                  <div>
+                    <label
+                      htmlFor="fileTransferencia"
+                      className="mb-2 block text-sm font-medium text-gray-900 "
+                    >
+                      Comprobante de Pago*{" "}
+                      <button
+                        className="text-primary hover:text-red-700 cursor-pointer"
+                        onClick={() => setIsModalTransf(true)}
+                      >
+                        {" "}
+                        Datos
+                      </button>
+                    </label>
+                    {errors.entrega?.direccion_entrega && (
+                      <p className="mt-1 text-xs text-red-600">
+                        {errors.comprobante?.message}
+                      </p>
+                    )}
+                    <input
+                      type="file"
+                      id="fileTransferencia"
+                      accept="image/jpeg, image/png, image/gif"
+                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
+                      {...register("comprobante")}
+                    />
+                    <small className="text-gray-500 text-sm">
+                      Formatos: JPG, PNG, GIF. Máximo 5MB.
+                    </small>
+                    {/* Example popover using React state */}
+                  </div>
+                )}
               </div>
             </div>
             <div className="space-y-4">
@@ -149,6 +187,44 @@ function PayFormPage({
           </div>
         </div>
       </div>
+      <Modal
+        key="datosTransferencias"
+        isOpen={isModalTransf}
+        onClose={() => {
+          setIsModalTransf(false);
+        }}
+      >
+        <div>
+          <h3 className="text-lg font-semibold text-primary mb-2">
+            Pago por Transferencia Bancaria
+          </h3>
+          <div className="bg-white p-4 rounded border">
+            <h4 className="font-medium text-gray-900 mb-3">
+              Datos para transferencia:
+            </h4>
+            <div className="space-y-2 text-sm text-gray-700">
+              <p>
+                <strong>Banco:</strong> Banco Estado
+              </p>
+              <p>
+                <strong>Tipo de cuenta:</strong> Cuenta Corriente
+              </p>
+              <p>
+                <strong>Número de cuenta:</strong> 100100100
+              </p>
+              <p>
+                <strong>RUT:</strong> 100100100-1
+              </p>
+              <p>
+                <strong>Nombre:</strong> Dona Nancy
+              </p>
+              <p>
+                <strong>Email:</strong> DonaNancy@DonaNancy.cl
+              </p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
@@ -207,46 +283,3 @@ function MethodSelector({
     </div>
   );
 }
-
-/* function PaymentInput() {
-  return (
-    <>
-      <div>
-        <label
-          htmlFor="fecha_entrega"
-          className="mb-2 block text-sm font-medium text-gray-900 "
-        >
-          Fecha Entrega*
-        </label>
-        <input
-          type="date"
-          id="fecha_entrega"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
-          {...register("fecha_entrega", { required: "Es requerido" })}
-        />
-      </div>
-      <div>
-        <div className="mb-2 flex items-center gap-2">
-          <label
-            htmlFor="select-city-input-3"
-            className="block text-sm font-medium text-gray-900"
-          >
-            Sucursal Entrega*
-          </label>
-        </div>
-        <select
-          id="select-city-input-3"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  "
-          defaultValue={""}
-        >
-          <option value={""}>San Francisco</option>
-          <option value="NY">New York</option>
-          <option value="LA">Los Angeles</option>
-          <option value="CH">Chicago</option>
-          <option value="HU">Houston</option>
-        </select>
-      </div>
-    </>
-  );
-}
- */

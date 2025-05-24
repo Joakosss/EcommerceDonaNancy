@@ -1,6 +1,7 @@
 from . import SQLModel, Field, uuid
-from sqlmodel import Relationship
+from sqlmodel import Relationship, Session, select
 from typing import TYPE_CHECKING, List, Optional
+from database import engine
 import datetime
 
 if TYPE_CHECKING:
@@ -29,3 +30,19 @@ class Pedido(SQLModel, table=True):
     entrega: Optional["Entrega"] = Relationship(
         back_populates="pedido"
     )
+
+def crear_pedidos():
+    pedidos = [
+        Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1a", fecha=datetime.date.today(), total=10000, comprobante_pago="linkcomprobante.jpg", id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc8", id_forma_pago="1", id_entrega="1"),
+        Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1b", fecha=datetime.date.today(), total=5000, comprobante_pago=None, id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="1", id_entrega=None),
+    ]
+
+    with Session(engine) as sesion:
+        pedidos_existentes = sesion.exec(select(Pedido)).all()
+        if not pedidos_existentes:
+            sesion.add_all(pedidos)
+            sesion.commit()
+            print("Pedidos creados")
+        else:
+            print("Pedidos ya existentes en BD")
+

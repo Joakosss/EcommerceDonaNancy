@@ -6,6 +6,7 @@ import datetime
 
 if TYPE_CHECKING:
     from .pedido import Pedido
+    from .sucursal import Sucursal
 
 class Entrega(SQLModel, table=True):
     id_entrega: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
@@ -17,6 +18,8 @@ class Entrega(SQLModel, table=True):
 
     #uno a muchos con pedido
     pedido: Optional["Pedido"] = Relationship(back_populates="entrega")
+    #uno a muchos con sucursal
+    sucursal: Optional["Sucursal"] = Relationship(back_populates="entrega")
 
 def crear_entregas():
     entregas =[

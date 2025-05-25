@@ -6,6 +6,7 @@ import datetime
 
 if TYPE_CHECKING:
     from .pedido import Pedido
+    from .producto import Producto
 
 class Pedido_producto(SQLModel, table=True):
     id_pedido_producto: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length=50, primary_key=True)
@@ -17,6 +18,7 @@ class Pedido_producto(SQLModel, table=True):
     #agregar relacion, para que se borren los productos si se borra el pedido
 
     pedido: Optional["Pedido"] = Relationship(back_populates="productos")
+    producto: Optional["Producto"] = Relationship(back_populates="pedido_productos")
 
 def crear_pedido_productos():
     pedido_productos = [

@@ -1,12 +1,19 @@
 from . import SQLModel, Field
-from sqlmodel import Session, select
+from sqlmodel import Session, select, Relationship
 from database import engine
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .entrega import Entrega
 
 class Sucursal(SQLModel, table=True):
     id_sucursal: str = Field(max_length=50, primary_key=True)
     nombre: str = Field(max_length=200, nullable=False)
     direccion: str = Field(max_length=400, nullable=False)
     telefono: int = Field(nullable=False)
+
+    # Relación con Entrega
+    entrega: Optional["Entrega"] = Relationship(back_populates="sucursal")
 
 def crear_sucursales():
     sucursales = [

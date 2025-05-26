@@ -6,5 +6,6 @@ export type ProductType = {
   link_foto: string;
   precio: number;
   stock: number;
-  id_categoria: string;
+  id_marca: string;
+  id_modelo: string;
 };

@@ -24,19 +24,6 @@ function ProductTable() {
 
   const { data: productos, isLoading, isError } = useQueryGetProduct();
 
-  /*   const {
-    // Trae los productos
-    isLoading,
-    isError,
-    data: productos,
-  } = useGetQuery<ProductType[]>(
-    ["productos", isFilter],
-    "http://localhost:3000/productos",
-    {
-      params: isFilter ? { id_categoria: isFilter } : {},
-    }
-  ); */
-
   const [modal, setModal] = useState<ModalState>({ type: null });
 
   return (
@@ -87,7 +74,7 @@ function ProductTable() {
 
           <div className="flex gap-2">
             <Select
-            mensaje="Filtrar modelos"
+              mensaje="Filtrar modelos"
               data={modelosConstants}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setIsFilter(e.target.value)
@@ -95,7 +82,7 @@ function ProductTable() {
               value={isFilter}
             />
             <Select
-            mensaje="Filtrar marcas"
+              mensaje="Filtrar marcas"
               data={marcasConstants}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setIsFilter(e.target.value)
@@ -103,7 +90,7 @@ function ProductTable() {
               value={isFilter}
             />
             <Select
-            mensaje="Filtrar categorias"
+              mensaje="Filtrar categorias"
               data={productCategoryTypesConstants}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setIsFilter(e.target.value)
@@ -155,13 +142,13 @@ function ProductTable() {
             <tbody>
               {productos?.map((producto: ProductType) => (
                 <Tr
-                  key={producto.id}
+                  key={producto.id_producto}
                   producto={producto}
                   UpdateModal={() =>
                     setModal({ type: "update", data: producto })
                   }
                   deleteModal={() =>
-                    setModal({ type: "delete", data: producto.id! })
+                    setModal({ type: "delete", data: producto.id_producto! })
                   }
                 />
               ))}
@@ -229,7 +216,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            deleteModal(producto.id!);
+            deleteModal(producto.id_producto!);
           }}
         >
           Eliminar
@@ -246,10 +233,10 @@ type OptionItem = {
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   data: OptionItem[];
-  mensaje: string
+  mensaje: string;
 }
 
-function Select({mensaje, data, ...props }: SelectProps) {
+function Select({ mensaje, data, ...props }: SelectProps) {
   return (
     <div className="mt-3" id="tipoUsuarioSelect">
       <select

@@ -16,10 +16,13 @@ function useQueryGetProduct(
           }
         );
         return response.data;
-      } catch (error: any) {
-        throw new Error(
-          error.response?.data.detail || "La solicitud de login falló"
-        );
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+          throw new Error(
+            error.response.data.detail || "La solicitud de login falló"
+          );
+        }
+        throw new Error("La solicitud de login falló");
       }
     },
   });

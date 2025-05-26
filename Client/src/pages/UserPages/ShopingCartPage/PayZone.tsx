@@ -2,20 +2,16 @@ import { useNavigate } from "react-router-dom";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
-import { useFormContext } from "react-hook-form";
 
 type PayZoneProps = {
   handleNextPage: () => void;
   step: 1 | 2;
-  methodPayment: string;
 };
 
-function PayZone({ handleNextPage, step, methodPayment }: PayZoneProps) {
+function PayZone({ handleNextPage, step }: PayZoneProps) {
   const navigate = useNavigate();
   const { totalPrice, counterItems } = useShoppingCartStore();
   const discount = counterItems >= 4 ? totalPrice * 0.25 : 0;
-
-  const { handleSubmit } = useFormContext();
 
   return (
     <>
@@ -58,10 +54,7 @@ function PayZone({ handleNextPage, step, methodPayment }: PayZoneProps) {
               Seguir con el pago
             </MyButton>
           ) : (
-            <MyButton
-              variant="primary"
-              type="submit"
-            >
+            <MyButton variant="primary" type="submit">
               Pagar
             </MyButton>
           )}

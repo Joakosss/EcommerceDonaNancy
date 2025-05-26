@@ -173,7 +173,6 @@ function ShopingCartPage() {
             <PayZone
               handleNextPage={handleNextPage}
               step={step}
-              methodPayment={methodPayment}
             />
           </div>
         </form>

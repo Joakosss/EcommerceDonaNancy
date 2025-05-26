@@ -3,9 +3,9 @@ import { methodPaymentConstants } from "../../../constants/methodPaymentConstant
 import { tipoEntregaConstants } from "../../../constants/tipoEntregaConstants";
 import { CheckoutFormType } from "./ShopingCartPage";
 import { SucursalType } from "../../../types/SucursalType";
-import { getSucursales } from "../../../hooks/getSucursales";
 import { useState } from "react";
 import Modal from "../../../components/Modal";
+import useQueryGetSucursal from "../../../hooks/NewQuerys/useQueryGetSucursal";
 
 type PayFormPageProps = {
   methodPayment: string;
@@ -25,7 +25,7 @@ function PayFormPage({
     formState: { errors },
   } = useFormContext<CheckoutFormType>();
 
-  const sucursales = getSucursales();
+  const sucursales = useQueryGetSucursal();
   const [isModalTransf, setIsModalTransf] = useState<boolean>(false);
 
   return (

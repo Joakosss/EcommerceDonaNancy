@@ -13,7 +13,7 @@ function useQueryGetSucursal() {
         return response.data;
       } catch (error: any) {
         throw new Error(
-          error.response?.data.detail || "La solicitud de login falló"
+          error.response?.data.detail || "La solicitud de sucursales falló"
         );
       }
     },

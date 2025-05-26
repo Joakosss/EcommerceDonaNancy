@@ -16,11 +16,11 @@ function MyButton({
 }: MyBotonProps) {
   const styles = {
     primary:
-      "inline-flex whitespace-nowrap items-center justify-center text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-slate-800 hover:bg-slate-900 text-white rounded-md",
+      "cursor-pointer inline-flex whitespace-nowrap items-center justify-center text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-slate-800 hover:bg-slate-900 text-white rounded-md",
     secondaryFull:
-      "inline-flex whitespace-nowrap items-center justify-center text-sm py-2.5 px-4 w-full font-semibold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700",
+      "cursor-pointer inline-flex whitespace-nowrap items-center justify-center text-sm py-2.5 px-4 w-full font-semibold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700",
     secondary:
-      "inline-flex whitespace-nowrap items-center justify-center text-sm py-2.5 px-4 w-auto font-semibold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700",
+      "cursor-pointer inline-flex whitespace-nowrap items-center justify-center text-sm py-2.5 px-4 w-auto font-semibold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-primary-700",
   };
   const preBuilds = {
     shopingCart: (

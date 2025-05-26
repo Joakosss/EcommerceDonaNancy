@@ -5,24 +5,22 @@ import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
 import { useQueryClient } from "@tanstack/react-query";
 import useExchange from "../../../store/useExchangeStore";
-import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryGetProduct";
-type Props = {};
+import useQueryGetProductByID from "../../../hooks/NewQuerys/productQuerys/useQueryGetProductById";
 
-function ProductPage({}: Props) {
+function ProductPage() {
   const queryClient = useQueryClient();
   const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
   const { exchange } = useExchange();
   const { id } = useParams();
+  const { add } = useShoppingCartStore();
 
   if (!id)
     return (
       <Navigate key={"errorc:"} to={"*"} />
     ); /* Error de no le pasaron un id c: */
 
-  const { data, isLoading, isError } = useQueryGetProduct({ id_productos: id });
+  const { data: product, isLoading, isError } = useQueryGetProductByID(id);
 
-  const product = data?.[0];
-  const { add } = useShoppingCartStore();
   const handleAddProductCart = () => {
     add(product!);
   };

@@ -22,6 +22,7 @@ function useQueryGetPedidos(filtros?: Record<string, string | number | boolean>)
             headers: { Authorization: `Bearer ${tokens?.access_token}` },
           }
         );
+        console.log(response)
         return response.data;
       } catch (error: any) {
         const errorAxios = error as AxiosError;

@@ -23,6 +23,8 @@ class SucursalLeer(BaseModel):
     
 class EntregaLeer(BaseModel):
     id_entrega: str
+    id_tipo_entrega: str
+    id_estado_entrega: str
     fecha_entrega: date
     direccion_entrega: str | None = None
     sucursal: Optional["SucursalLeer"]
@@ -36,6 +38,7 @@ class ProductoLeer(BaseModel):
     id_producto: str
     nombre: str
     precio: int
+    link_foto: str | None = None
 
     class Config:
         from_attributes = True
@@ -44,6 +47,7 @@ class PedidoProductoLeer(BaseModel):
     id_pedido_producto: str
     id_producto: str
     cantidad: int
+    valor_unidad: int
     producto: Optional[ProductoLeer]
 
     class Config:

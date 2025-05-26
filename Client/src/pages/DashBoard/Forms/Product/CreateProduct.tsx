@@ -42,7 +42,8 @@ function CreateProduct({ onClose }: { onClose: () => void }) {
         queryClient.invalidateQueries({ queryKey: ["productos"] });
         onClose();
       },
-      onError: () => {
+      onError: (error) => {
+        console.log(error.stack);
         toast.error("Producto no registrado", {
           hideProgressBar: true,
           position: "top-left",
@@ -58,7 +59,7 @@ function CreateProduct({ onClose }: { onClose: () => void }) {
       <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
         Registrando un producto
       </h1>
-      <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           key={"nombreInput"}
           label="Nombre* "

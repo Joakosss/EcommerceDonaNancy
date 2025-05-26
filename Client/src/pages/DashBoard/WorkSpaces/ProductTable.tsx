@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../../../components/Spinner";
 import { ProductType } from "../../../types/ProductType";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
@@ -8,10 +8,10 @@ import { FaSearch } from "react-icons/fa";
 import CreateProduct from "../Forms/Product/CreateProduct";
 import UpdateProduct from "../Forms/Product/UpdateProduct";
 import DeleteProduct from "../Forms/Product/DeleteProduct";
-import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
 import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryGetProduct";
 import { marcasConstants } from "../../../constants/marcasConstants";
 import { modelosConstants } from "../../../constants/modelosConstants";
+import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
 
 type ModalState =
   | { type: "create" }
@@ -20,11 +20,34 @@ type ModalState =
   | { type: null };
 
 function ProductTable() {
-  const [isFilter, setIsFilter] = useState<string>("");
-
-  const { data: productos, isLoading, isError } = useQueryGetProduct();
+  const [isModeloFilter, setIsModeloFilter] = useState<string | "">("");
+  const [isMarcaFilter, setIsMarcaFilter] = useState<string | "">("");
+  const [isCategoriaFilter, setIsCategoriaFilter] = useState<string | "">("");
+  const [isPreNameFilter, setIsPreNameFilter] = useState<string>("");
+  const [isNameFilter, setIsNameFilter] = useState<string>("");
+  const {
+    data: productos,
+    isLoading,
+    isError,
+  } = useQueryGetProduct({
+    id_categoria: isCategoriaFilter,
+    id_modelo: isModeloFilter,
+    id_marca: isMarcaFilter,
+    nombre: isNameFilter,
+  });
 
   const [modal, setModal] = useState<ModalState>({ type: null });
+
+  /* UseEffect para no mandar consultas cada vez que modificamos el input */
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setIsNameFilter(isPreNameFilter);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  });
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
@@ -33,7 +56,7 @@ function ProductTable() {
           Nuestros Productos
         </h2>
         <div className="flex justify-between">
-          <form className="flex items-center max-w-sm mx-auto">
+          <div className="flex items-center max-w-sm mx-auto">
             <label htmlFor="simple-search" className="sr-only">
               Buscar
             </label>
@@ -46,12 +69,20 @@ function ProductTable() {
                 id="simple-search"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                 placeholder="Buscar por nombre"
-                required
+                onChange={(e) => setIsPreNameFilter(e.target.value)}
+                value={isPreNameFilter}
               />
             </div>
             <button
-              type="submit"
+              type="button"
               className="p-2.5 ms-2 text-sm font-medium text-white bg-primary rounded-lg border  hover:bg-primary/80 focus:ring-4 cursor-pointer"
+              onClick={
+                isPreNameFilter !== "" && isPreNameFilter !== isNameFilter
+                  ? () => {
+                      setIsNameFilter(isPreNameFilter);
+                    }
+                  : () => {}
+              }
             >
               <svg
                 className="w-4 h-4"
@@ -70,32 +101,32 @@ function ProductTable() {
               </svg>
               <span className="sr-only">Buscar</span>
             </button>
-          </form>
+          </div>
 
           <div className="flex gap-2">
+            <Select
+              mensaje="Filtrar categoria"
+              data={productCategoryTypesConstants}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setIsCategoriaFilter(e.target.value)
+              }
+              value={isCategoriaFilter}
+            />
             <Select
               mensaje="Filtrar modelos"
               data={modelosConstants}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setIsFilter(e.target.value)
+                setIsModeloFilter(e.target.value)
               }
-              value={isFilter}
+              value={isModeloFilter}
             />
             <Select
               mensaje="Filtrar marcas"
               data={marcasConstants}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setIsFilter(e.target.value)
+                setIsMarcaFilter(e.target.value)
               }
-              value={isFilter}
-            />
-            <Select
-              mensaje="Filtrar categorias"
-              data={productCategoryTypesConstants}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setIsFilter(e.target.value)
-              }
-              value={isFilter}
+              value={isMarcaFilter}
             />
             <button
               className="m-1 flex items-center justify-center flex-col"

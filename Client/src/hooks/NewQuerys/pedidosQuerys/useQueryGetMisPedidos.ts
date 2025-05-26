@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import useAuthStore from "../../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
-import { PedidoType } from "../../../types/PedidoType";
+import { ComprasType } from "../../../types/ComprasType";
 /* 
     Funcion para traer los usuarios desde la BD, espera que lo llames y puedes pasarle los filtros asi:
     const {data} = useGetUsersQuery({id_perfil:"1"})
@@ -23,7 +23,7 @@ function useQueryGetMisPedidos(
 ) {
   const { tokens, setAuth, logout } = useAuthStore();
   const navigate = useNavigate();
-  return useQuery<PedidoType[]>({
+  return useQuery<[ComprasType]>({
     queryKey: ["misPedidos", filtros],
     queryFn: async () => {
       if (!tokens || !tokens.access_token || !tokens.refresh_token) {

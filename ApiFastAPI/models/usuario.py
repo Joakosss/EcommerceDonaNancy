@@ -19,7 +19,7 @@ class Usuario(SQLModel, table=True):
 
 def crear_usuario():
     usuarios = [
-    
+        #Administrador
         Usuario(
             id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc6",
             nombre_usuario="NancyDiaz",
@@ -34,6 +34,7 @@ def crear_usuario():
             direccion="Las Parras 0350",
             id_perfil="0"
         ),
+        #Cliente
         Usuario(
             id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7",
             nombre_usuario="JuanPerez",
@@ -44,13 +45,73 @@ def crear_usuario():
             p_apellido="Pérez",
             s_apellido="Gonzalez",
             telefono=912341234,
-            correo="juan.perez@btnancy.cl",
-            direccion="Las Parras 0350",
+            correo="juan.perez@gmail.cl",
+            direccion="Calle 123",
             id_perfil="1"
+        ),
+        Usuario(
+            id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc0",
+            nombre_usuario="AnaGonzalez",
+            contrasenia="$2b$12$L/KK5SnXRVZUiG77mMoQGOqf4j2raFialEpj9/qGUNvEdkjBkt3pa",
+            run_usuario="18225225-2",
+            p_nombre="Ana",
+            s_nombre="Maria",
+            p_apellido="Gonzalez",
+            s_apellido="Fernandez",
+            telefono=912341234,
+            correo="mari.gonza@gmail.com",
+            direccion="Calle 456",
+            id_perfil="1"
+        ),
+        #Vendedor
+        Usuario(
+            id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc8",
+            nombre_usuario="MariaLopez",
+            contrasenia="$2b$12$L/KK5SnXRVZUiG77mMoQGOqf4j2raFialEpj9/qGUNvEdkjBkt3pa",
+            run_usuario="18225225-2",
+            p_nombre="María",
+            s_nombre="Jose",
+            p_apellido="Lopez",
+            s_apellido="Martinez",
+            telefono=912341234,
+            correo="mar.lopez@btnancy.cl",
+            direccion="Calle 456",
+            id_perfil="2"
+        ),
+        #Bodeguero
+        Usuario(
+            id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc9",
+            nombre_usuario="PedroGonzalez",
+            contrasenia="$2b$12$L/KK5SnXRVZUiG77mMoQGOqf4j2raFialEpj9/qGUNvEdkjBkt3pa",
+            run_usuario="18225225-3",
+            p_nombre="Pedro",
+            s_nombre="Pablo",
+            p_apellido="Gonzalez",
+            s_apellido="Fernandez",
+            telefono=912341234,
+            correo="pedro.gonz@btnancy.cl",
+            direccion="Calle 789",
+            id_perfil="3"
+        ),
+        #Contador
+        Usuario(
+            id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffca",
+            nombre_usuario="AnaFernandez",
+            contrasenia="$2b$12$L/KK5SnXRVZUiG77mMoQGOqf4j2raFialEpj9/qGUNvEdkjBkt3pa",
+            run_usuario="18225225-4",
+            p_nombre="Ana",
+            s_nombre="Maria",
+            p_apellido="Fernandez",
+            s_apellido="Lopez",
+            telefono=912341234,
+            correo="ana.fern@btnancy.cl",
+            direccion="Calle 101",
+            id_perfil="4"
         )
     ]
+
+    #Validación para que no creen los usuarios si ya existen:
     with Session(engine) as sesion:
-        #Validación para que no creen los usuarios si ya existen:
         usuarios_existentes = sesion.exec(select(Usuario)).all()
         if not usuarios_existentes:
             sesion.add_all(usuarios)
@@ -94,7 +155,7 @@ def crear_correo(nombre: str, apellido: str) -> str:
 
     raise Exception("No se pudo generar un correo único.")
 
-
+#Funciones para validar si el username y el correo ya existen en BD
 def existe_username(username: str) -> bool:
     with Session(engine) as sesion:
         usuario = sesion.exec(select(Usuario).where(Usuario.nombre_usuario == username)).first()

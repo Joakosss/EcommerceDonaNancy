@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse
-from sqlmodel import Session, select, or_
-from models import Pedido, Estado_pedido, Forma_pago, Entrega
+from sqlmodel import Session, select, and_
+from sqlalchemy.orm import selectinload
+from models import Pedido, Estado_pedido, Forma_pago, Entrega, Pedido_producto
 from schemas import PedidoLeer, PedidoActualizar
 from database import get_session
 from auth import obtener_usuario
@@ -37,10 +38,15 @@ def get_buscar_pedidos(
         if id_entrega:
             filtros.append(Pedido.id_entrega == id_entrega)
         
-        query = select(Pedido)
+        #Carga las relaciones
+        query = select(Pedido).options(
+            selectinload(Pedido.productos).selectinload(Pedido_producto.producto),
+            selectinload(Pedido.entrega).selectinload(Entrega.sucursal),
+            selectinload(Pedido.forma_pago)
+        )
 
         if filtros:
-            query = query.where(or_(*filtros))
+            query = query.where(and_(*filtros))
         
         #ordena por estado de pedido y fecha
         query.order_by((Pedido.id_estado_pedido == "0").desc(),  Pedido.fecha.desc())
@@ -57,7 +63,13 @@ def get_mis_pedidos(
     usuario_actual: Pedido = Depends(obtener_usuario)
 ):
     try:
-        query = select(Pedido).where(Pedido.id_usuario == usuario_actual.id_usuario)
+        query = select(Pedido).where(
+            Pedido.id_usuario == usuario_actual.id_usuario
+        ).options(
+            selectinload(Pedido.entrega).selectinload(Entrega.sucursal),
+            selectinload(Pedido.productos).selectinload(Pedido_producto.producto)
+        )
+
         pedidos = sesion.exec(query).all()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al buscar mis pedidos: {str(e)}")

@@ -1,6 +1,10 @@
 from . import SQLModel, Field
-from sqlmodel import Session, select
+from sqlmodel import Session, select, Relationship
 from database import engine
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .pedido_producto import Pedido_producto
 
 class Producto(SQLModel, table=True):
     id_producto: str = Field(max_length=50, primary_key=True)
@@ -11,6 +15,8 @@ class Producto(SQLModel, table=True):
     stock: int = Field(nullable=False)
     id_modelo: str = Field(max_length=50, foreign_key="modelo.id_modelo", nullable=False)
     id_marca: str = Field(max_length=50, foreign_key="marca.id_marca", nullable=False)
+
+    pedido_productos: list["Pedido_producto"] = Relationship(back_populates="producto")
 
 def crear_productos():
     productos = [

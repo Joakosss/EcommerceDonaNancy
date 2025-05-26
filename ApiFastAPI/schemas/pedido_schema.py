@@ -12,6 +12,43 @@ class PedidoCrear(BaseModel):
     id_forma_pago: str
     id_entrega: str | None = None
 
+class SucursalLeer(BaseModel):
+    id_sucursal: str
+    nombre: str
+    direccion: str
+    telefono: int
+
+    class Config:
+        from_attributes = True
+    
+class EntregaLeer(BaseModel):
+    id_entrega: str
+    fecha_entrega: date
+    direccion_entrega: str | None = None
+    sucursal: Optional["SucursalLeer"]
+
+    class Config:
+        from_attributes = True
+
+EntregaLeer.model_rebuild()
+
+class ProductoLeer(BaseModel):
+    id_producto: str
+    nombre: str
+    precio: int
+
+    class Config:
+        from_attributes = True
+
+class PedidoProductoLeer(BaseModel):
+    id_pedido_producto: str
+    id_producto: str
+    cantidad: int
+    producto: Optional[ProductoLeer]
+
+    class Config:
+        from_attributes = True
+
 class PedidoLeer(BaseModel):
     id_pedido: str
     fecha: date
@@ -21,18 +58,8 @@ class PedidoLeer(BaseModel):
     id_usuario: str
     id_forma_pago: str
     id_entrega: str | None = None
-
-    class Config:
-        from_attributes = True
-
-class PedidoCrearDetalle(BaseModel):
-    fecha: date
-    comprobante_pago: str | None = None
-    id_estado_pedido: str
-    id_usuario: str
-    id_forma_pago: str
-    id_entrega: str | None = None
-    productos: list[PedidoProductoLeer]
+    entrega: Optional[EntregaLeer]
+    productos: list[PedidoProductoLeer] = []
 
     class Config:
         from_attributes = True

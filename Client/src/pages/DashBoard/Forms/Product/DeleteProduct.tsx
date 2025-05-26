@@ -1,6 +1,6 @@
-import { useDeleteMutation } from "../../../../hooks/mutation/useDeleteMutation";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import useMutateDeleteProduct from "../../../../hooks/NewQuerys/productQuerys/useMutateDeleteProduct";
 
 type Props = {
   idProduct: string;
@@ -9,10 +9,10 @@ type Props = {
 
 function DeleteProduct({ idProduct, onClose }: Props) {
   const queryClient = useQueryClient();
-  
-  const { mutate, isPending } = useDeleteMutation(
-    `http://localhost:3000/productos/${idProduct}`,
-    {
+  const { mutate, isPending } = useMutateDeleteProduct();
+
+  const handleDelete = () => {
+    mutate(idProduct, {
       onSuccess: () => {
         toast.success("Producto eliminado ", {
           hideProgressBar: true,
@@ -22,15 +22,17 @@ function DeleteProduct({ idProduct, onClose }: Props) {
         queryClient.invalidateQueries({ queryKey: ["productos"] });
         onClose();
       },
-      onError: () => {
+      onError: (error) => {
+        console.log(error.message)
         toast.error("Producto no eliminado", {
           hideProgressBar: true,
           position: "top-left",
           autoClose: 1000,
         });
       },
-    }
-  );
+    });
+  };
+
   return (
     <div className="relative p-4 text-center bg-white rounded-lg shadow  sm:p-5">
       <svg
@@ -61,7 +63,7 @@ function DeleteProduct({ idProduct, onClose }: Props) {
         <button
           type="submit"
           className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300   "
-          onClick={() => mutate()}
+          onClick={() => handleDelete()}
         >
           Sí, Estoy seguro
         </button>

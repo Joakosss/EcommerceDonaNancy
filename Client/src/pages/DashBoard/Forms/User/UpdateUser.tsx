@@ -42,28 +42,6 @@ function UpdateUser({ user, onClose }: Props) {
 
   const { mutate, isPending } = useMutatePatchUser();
 
-  /*   const { mutate, isPending } = usePatchMutation<ProductType>(
-    `http://localhost:3000/Usuarios/${user.id_usuario}`,
-    {
-      onSuccess: () => {
-        toast.success("Usuario Modificado ", {
-          hideProgressBar: true,
-          position: "top-left",
-          autoClose: 1000,
-        });
-        queryClient.invalidateQueries({ queryKey: ["usuarios"] });
-        onClose();
-      },
-      onError: () => {
-        toast.error("Usuario no modificado", {
-          hideProgressBar: true,
-          position: "top-left",
-          autoClose: 1000,
-        });
-      },
-    }
-  ); */
-
   const onSubmit = (data: FormType) => {
     const id = user.id_usuario!;
     const newUser = data;

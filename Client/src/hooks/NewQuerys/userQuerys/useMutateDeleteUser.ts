@@ -29,6 +29,7 @@ function useMutateDeleteUser() {
               access_token: response.data.access_token,
               refresh_token: tokens!.refresh_token,
               autorization: tokens!.autorization,
+              id_usuario: tokens!.id_usuario,
             });
             /* Se realiza la consulta nuevamente con el nuevo auth */
             const retryResponse = await axios.delete(
@@ -55,4 +56,3 @@ function useMutateDeleteUser() {
 }
 
 export default useMutateDeleteUser;
-

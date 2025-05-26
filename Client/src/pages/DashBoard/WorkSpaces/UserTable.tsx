@@ -190,6 +190,12 @@ function Tr({
   UpdateModal: (arg: UsuarioType) => void;
   deleteModal: (arg: string) => void;
 }) {
+  const UserTypeSearch = (id_tipo_cuenta: string) => {
+    return userTypesConstants.find(
+      (userType) => userType.id === id_tipo_cuenta
+    );
+  };
+
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
       <th
@@ -200,7 +206,11 @@ function Tr({
       </th>
       <td className="px-6 py-4">{usuario.correo}</td>
       <td className="px-6 py-4">{usuario.telefono}</td>
-      <td className="px-6 py-4">{usuario.id_perfil}</td>
+      <td className="px-6 py-4">
+        {usuario.id_perfil
+          ? UserTypeSearch(usuario.id_perfil)?.descripcion ?? "Desconocido"
+          : "Desconocido"}
+      </td>
       <td className="px-6 py-4 flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"

@@ -80,3 +80,14 @@ def crear_productos():
             print("Productos creados")
         else:
             print("Productos ya existen")
+
+def crear_id_producto(sesion: Session) -> str:
+    productos = sesion.exec(select(Producto)).all()
+    ids = []
+
+    for producto in productos:
+        if producto.id_producto and producto.id_producto.isdigit():
+            ids.append(int(producto.id_producto))
+
+    max_id = max(ids, default=0) + 1
+    return str(max_id)

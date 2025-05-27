@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, and_
-from models import Producto, Marca, Modelo
+from models import Producto, Marca, Modelo, crear_id_producto
 from database import get_session
 from schemas import ProductoCrear, ProductoLeer, ProductoActualizar
 from auth import obtener_usuario
@@ -110,8 +110,9 @@ def post_producto(
                     "errores": errores
                 }
             )
-        
-        db_producto = Producto(**producto.model_dump()) #Crea un diccionario con los datos del producto
+
+        id = crear_id_producto(sesion)
+        db_producto = Producto(id_producto = id, **producto.model_dump()) #Crea un diccionario con los datos del producto
         sesion.add(db_producto) #Agregar el producto a la sesión
         sesion.commit() #Guardar los cambios en la base de datos
         sesion.refresh(db_producto)

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import useQueryGetMisPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetMisPedidos";
-import { estadoPedidoConstants } from "../../../constants/EstadoPedidoConstants";
+import { estadoPedidoConstants } from "../../../constants/estadoPedidoConstants";
 
 function MyPurchasesPage() {
   const [openOrder, setOpenOrder] = useState<string | null>(null);
@@ -57,7 +57,7 @@ function MyPurchasesPage() {
                 <div
                   className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                   onClick={
-                    () => setOpenOrder(compra.id_pedido!) //revisar
+                    () => setOpenOrder(compra.id_pedido) //revisar
                   }
                 >
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -158,8 +158,8 @@ function MyPurchasesPage() {
                         <button
                           className="px-4 py-2 bg-red-600 rounded-md text-sm font-medium text-white cursor-pointer disabled:opacity-50 disabled:cursor-default"
                           disabled={
-                            compra.Entrega.estado_entrega === "Entregado" ||
-                            compra.Entrega.estado_entrega === "Enviado"
+                            compra.entrega.estado_entrega === "Entregado" ||
+                            compra.entrega.estado_entrega === "Enviado"
                           }
                         >
                           Cancelar Compra
@@ -170,7 +170,7 @@ function MyPurchasesPage() {
                 )}
               </div>
             ))}
-          {!isLoading && (misCompras?.length ?? 0) == 0 && (
+          {!isLoading && (misCompras?.length ?? 0) === 0 && (
             <div>No tienes compras</div>
           )}
         </div>

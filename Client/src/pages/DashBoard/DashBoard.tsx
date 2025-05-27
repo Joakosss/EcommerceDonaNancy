@@ -9,7 +9,6 @@ import { FaBars } from "react-icons/fa6";
 
 function DashBoard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-  const [isSelected, setIsSelected] = useState<string | null>(null);
 
   const [animationParent] = useAutoAnimate();
 
@@ -19,7 +18,7 @@ function DashBoard() {
         setIsSidebarOpen={setIsSidebarOpen}
         isSidebarOpen={isSidebarOpen}
       />
-      <SideBar isSidebarOpen={isSidebarOpen} setIsSelected={setIsSelected} />
+      <SideBar isSidebarOpen={isSidebarOpen} />
       <div className="p-4 bg-gray-100">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 min-h-[89vh]">
           {/* Menu de opciones */}
@@ -86,9 +85,11 @@ function MenuDashBoard() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isHovered, setIsHovered] = useState<string | null>(null);
+
   return (
     <div className="grid grid-cols-4 gap-4 mb-4">
       {menuItems.map(({ label, icon: Icon }) => (
+        
         <div
           key={label}
           className="flex items-center justify-center rounded-sm bg-white h-28 "
@@ -101,7 +102,7 @@ function MenuDashBoard() {
           >
             <Icon
               className={
-                location.pathname === `/dashboard/${label}/` ||
+                location.pathname === `/DashBoard/${label.toLowerCase()}/` ||
                 isHovered === label
                   ? "text-primary duration-250 size-14"
                   : "size-12 duration-250"

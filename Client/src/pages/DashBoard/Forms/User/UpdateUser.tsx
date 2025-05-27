@@ -13,7 +13,6 @@ type Props = {
   onClose: () => void;
 };
 type FormType = {
-  run_usuario: string;
   p_nombre: string;
   p_apellido: string;
   s_apellido: string;
@@ -30,7 +29,6 @@ function UpdateUser({ user, onClose }: Props) {
     formState: { errors },
   } = useForm<FormType>({
     defaultValues: {
-      run_usuario: user.run_usuario,
       p_nombre: user.p_nombre,
       p_apellido: user.p_apellido,
       s_apellido: user.s_apellido,
@@ -75,20 +73,6 @@ function UpdateUser({ user, onClose }: Props) {
         Modificar un Usuario
       </h1>
       <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          key={"runInput"}
-          label="Run* "
-          Placeholder="ej: 10100100-8"
-          typeInput="text"
-          error={errors.run_usuario}
-          {...register("run_usuario", {
-            required: "Es requerido",
-            pattern: {
-              value: /^\d{1,2}\d{3}\d{3}-[\dkK]$/,
-              message: "Rut no válido verifica guion y digito verificador",
-            },
-          })}
-        />
         <Input
           key={"nombreInput"}
           label="Primer Nombre* "
@@ -144,19 +128,19 @@ function UpdateUser({ user, onClose }: Props) {
             required: "Es requerido",
           })}
         />
-        <Select
-          key={"tipoUsuarioSelect"}
-          label="Tipo de cuenta* "
-          options={userTypesConstants.filter(
-            (type) =>type.id !== "0"&&type.id !== "1"
-          )}
-          error={errors.id_perfil}
-          {...register("id_perfil", {
-            required: "Debes seleccionar una categoría",
-            validate: (value) =>
-              value !== "" || "Selecciona una categoría válida",
-          })}
-        />
+        {user.id_perfil !== "0" && (
+          <Select
+            key={"tipoUsuarioSelect"}
+            label="Tipo de cuenta* "
+            options={userTypesConstants.filter((type) => type.id !== "0")}
+            error={errors.id_perfil}
+            {...register("id_perfil", {
+              required: "Debes seleccionar una categoría",
+              validate: (value) =>
+                value !== "" || "Selecciona una categoría válida",
+            })}
+          />
+        )}
         <button
           type="submit"
           className="w-full text-white bg-primary hover:bg-primary/90  font-medium rounded-lg text-sm px-5 py-2.5 text-center"

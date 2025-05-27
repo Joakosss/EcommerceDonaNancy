@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 import OptionSideBar from "../../components/OptionSideBar";
 type Props = {
   isSidebarOpen: boolean;
-  setIsSelected: (label: string) => void;
 };
 
-function SideBar({ isSidebarOpen, setIsSelected }: Props) {
+function SideBar({ isSidebarOpen }: Props) {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ function SideBar({ isSidebarOpen, setIsSelected }: Props) {
               key={label}
               Icon={Icon}
               text={label}
-              onClick={() => setIsSelected(label)}
+              onClick={() => navigate(`${label.toLowerCase()}/`)}
             />
           ))}
           <OptionSideBar

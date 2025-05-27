@@ -36,7 +36,7 @@ function UpdatePass() {
             position: "top-left",
             autoClose: 1000,
           });
-          navigate("DashBoard/");
+          navigate("/DashBoard/");
         },
         onError: () => {
           toast.error("Tu contraseña no ha modificado", {

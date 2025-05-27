@@ -24,6 +24,7 @@ def get_buscar_productos(
 ):
     try:
         filtros = []
+        join = False
 
         #se agregan filtros a la consulta si se agrega alguno de los parámetros en el endpoint
         if id_producto:
@@ -39,8 +40,9 @@ def get_buscar_productos(
             join = True
 
         if filtros:
+            query = select(Producto)
             if join:
-                query = select(Producto).join(Modelo)
+                query = query.join(Modelo)
             query = query.where(and_(*filtros))
         else:
             query = select(Producto)

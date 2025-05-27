@@ -121,7 +121,7 @@ def patch_usuario(
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
         
         usuario_data = usuario.model_dump(exclude_unset=True)#excluye los datos que no se han modificado
-        if "contrasenia" in usuario_data and usuario_data["contrasenia"] is not None:
+        if "contrasenia" in usuario_data:
             usuario_data["contrasenia"] = crear_contrasenia(usuario_data["contrasenia"]) 
 
         for key, value in usuario_data.items():

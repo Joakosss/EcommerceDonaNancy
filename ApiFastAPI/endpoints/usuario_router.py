@@ -67,7 +67,7 @@ def get_usuario_id(
 @router.post("/", response_model=UsuarioLeer) 
 def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session)):
     try:
-
+        print(usuario)
         #Crea el nombre de usuario si no se ingresa
         if not usuario.nombre_usuario:
             usuario.nombre_usuario = crear_nombreUsuario(usuario.p_nombre, usuario.p_apellido, usuario.run_usuario)

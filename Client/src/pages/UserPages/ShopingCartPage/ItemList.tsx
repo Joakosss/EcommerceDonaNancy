@@ -13,7 +13,7 @@ function ItemList({ product }: ItemCompraProps) {
   const navigate = useNavigate();
 
   const handleDestroyItem = () => {
-    destroy(product.product.id_producto);
+    destroy(product.product.id_producto!);
   };
   const handleNavigate = (id: string) => {
     const slugName = generateSlug(product.product.nombre);
@@ -35,7 +35,7 @@ function ItemList({ product }: ItemCompraProps) {
             <div>
               <a
                 href=""
-                onClick={() => handleNavigate(product.product.id_producto)}
+                onClick={() => handleNavigate(product.product.id_producto!)}
                 className="min-h-[150px] text-lg font-semibold leading-tight text-gray-900 hover:underline "
               >
                 {product.product.nombre}
@@ -47,7 +47,7 @@ function ItemList({ product }: ItemCompraProps) {
               <button
                 type="button"
                 className="flex items-center justify-center w-5 h-5  bg-slate-800 outline-none rounded-full cursor-pointer"
-                onClick={() => decrease(product.product.id_producto)}
+                onClick={() => decrease(product.product.id_producto!)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ function ItemList({ product }: ItemCompraProps) {
               <button
                 type="button"
                 className="flex items-center justify-center w-5 h-5 bg-slate-800 outline-none rounded-full cursor-pointer"
-                onClick={() => increase(product.product.id_producto)}
+                onClick={() => increase(product.product.id_producto!)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

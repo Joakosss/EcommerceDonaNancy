@@ -2,45 +2,32 @@ import { useState } from "react";
 import Spinner from "../../../components/Spinner";
 import { ProductType } from "../../../types/ProductType";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
-import { FaCirclePlus } from "react-icons/fa6";
 import Modal from "../../../components/Modal";
 import { FaSearch } from "react-icons/fa";
 import CreateProduct from "../Forms/Product/CreateProduct";
-import { useGetQuery } from "../../../hooks/query/useGetQuery";
 import UpdateProduct from "../Forms/Product/UpdateProduct";
 import DeleteProduct from "../Forms/Product/DeleteProduct";
 import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
+import useQueryGetPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetPedidos";
+import { PedidoType } from "../../../types/PedidoType";
 
 type ModalState =
   | { type: "create" }
-  | { type: "update"; data: ProductType }
+  | { type: "update"; data: PedidoType }
   | { type: "delete"; data: string }
   | { type: null };
 type Props = {};
 
 function OrdersTable({}: Props) {
+  const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
   const [isFilter, setIsFilter] = useState<string>("");
-  const {
-    // Trae los productos
-    isLoading,
-    isError,
-    data: productos,
-  } = useGetQuery<ProductType[]>(
-    ["productos", isFilter],
-    "http://localhost:3000/PEDIDOS",
-    {
-      params: isFilter ? { id_categoria: isFilter } : {},
-    }
-  );
 
   const [modal, setModal] = useState<ModalState>({ type: null });
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
       <div className="p-5">
-        <h2 className="font-bold text-2xl text-primary ml-1">
-            Pedidos
-        </h2>
+        <h2 className="font-bold text-2xl text-primary ml-1">Pedidos</h2>
         <div className="flex justify-between">
           <form className="flex items-center max-w-sm mx-auto">
             <label htmlFor="simple-search" className="sr-only">
@@ -88,16 +75,6 @@ function OrdersTable({}: Props) {
               }
               value={isFilter}
             />
-            <button
-              className="m-1 flex items-center justify-center flex-col"
-              onClick={() => setModal({ type: "create" })}
-            >
-              <FaCirclePlus
-                size={30}
-                className="text-primary hover:text-primary/90 cursor-pointer"
-              />
-              <p className="text-sm text-primary">Crear</p>
-            </button>
           </div>
         </div>
       </div>
@@ -108,22 +85,31 @@ function OrdersTable({}: Props) {
           Error al cargar reintentar más tarde:C
         </h2>
       )}
-      {!isLoading && !isError && productos && (
+      {!isLoading && !isError && pedidos && (
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500  ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Estado
+                  Fecha
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Fecha
+                  Total
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  comprobante
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Estado Pedido
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Usuario
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Forma pago
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Total
+                  Entrega
                 </th>
                 <th scope="col" className="px-6 py-3">
                   opciones
@@ -131,15 +117,13 @@ function OrdersTable({}: Props) {
               </tr>
             </thead>
             <tbody>
-              {productos?.map((producto: ProductType) => (
+              {pedidos?.map((pedido) => (
                 <Tr
-                  key={producto.id}
-                  producto={producto}
-                  UpdateModal={() =>
-                    setModal({ type: "update", data: producto })
-                  }
+                  key={pedido.id_pedido}
+                  pedido={pedido}
+                  UpdateModal={() => setModal({ type: "update", data: pedido })}
                   deleteModal={() =>
-                    setModal({ type: "delete", data: producto.id! })
+                    setModal({ type: "delete", data: pedido.id_pedido })
                   }
                 />
               ))}
@@ -176,11 +160,11 @@ function OrdersTable({}: Props) {
 export default OrdersTable;
 
 function Tr({
-  producto,
+  pedido,
   UpdateModal,
   deleteModal,
 }: {
-  producto: ProductType;
+  pedido: PedidoType;
   UpdateModal: (arg: ProductType) => void;
   deleteModal: (arg: string) => void;
 }) {
@@ -190,16 +174,21 @@ function Tr({
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
       >
-        {producto.nombre}
+        {pedido.fecha.toString()}
       </th>
-      <td className="px-6 py-4">{producto.link_foto}</td>
-      <td className="px-6 py-4">${generateChileanPrice(producto.precio)}</td>
-      <td className="px-6 py-4">{producto.stock}</td>
+      <td className="px-6 py-4">${generateChileanPrice(pedido.total)}</td>
+      <td className="px-6 py-4">
+        {pedido.comprobante_pago || "Sin Comprobante"}
+      </td>
+      <td className="px-6 py-4">{pedido.id_estado_pedido}</td>
+      <td className="px-6 py-4">{pedido.id_usuario}</td>
+      <td className="px-6 py-4">{pedido.id_forma_pago}</td>
+      <td className="px-6 py-4">{pedido.id_entrega}</td>
       <td className="px-6 py-4 flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            UpdateModal(producto);
+            UpdateModal(pedido);
           }}
         >
           Editar
@@ -207,7 +196,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            deleteModal(producto.id!);
+            deleteModal(pedido.id_pedido!);
           }}
         >
           Eliminar

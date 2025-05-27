@@ -67,9 +67,12 @@ function CategoryPage() {
             {!isLoading &&
               !isError &&
               productos &&
-              productos.map((product) => (
-                <ProductCard key={product.id_producto} product={product} />
-              ))}
+              productos.map(
+                (product) =>
+                  product.stock > 0 && (
+                    <ProductCard key={product.id_producto} product={product} />
+                  )
+              )}
             {/* Si todo va bien pero no hay productos */}
             {!isLoading && !isError && !productos && <p>No hay productos :C</p>}
           </div>

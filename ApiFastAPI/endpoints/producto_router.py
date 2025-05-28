@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, and_
-from models import Producto, Marca, Modelo
+from models import Producto, Marca, Modelo, crear_id_producto
 from database import get_session
 from schemas import ProductoCrear, ProductoLeer, ProductoActualizar
 from auth import obtener_usuario
@@ -24,6 +24,7 @@ def get_buscar_productos(
 ):
     try:
         filtros = []
+        join = False
 
         #se agregan filtros a la consulta si se agrega alguno de los parámetros en el endpoint
         if id_producto:
@@ -39,8 +40,9 @@ def get_buscar_productos(
             join = True
 
         if filtros:
+            query = select(Producto)
             if join:
-                query = select(Producto).join(Modelo)
+                query = query.join(Modelo)
             query = query.where(and_(*filtros))
         else:
             query = select(Producto)
@@ -110,8 +112,9 @@ def post_producto(
                     "errores": errores
                 }
             )
-        
-        db_producto = Producto(**producto.model_dump()) #Crea un diccionario con los datos del producto
+
+        id = crear_id_producto(sesion)
+        db_producto = Producto(id_producto = id, **producto.model_dump()) #Crea un diccionario con los datos del producto
         sesion.add(db_producto) #Agregar el producto a la sesión
         sesion.commit() #Guardar los cambios en la base de datos
         sesion.refresh(db_producto)

@@ -35,6 +35,8 @@ def crear_pedidos():
     pedidos = [
         Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1a", fecha=datetime.date.today(), total=10000, comprobante_pago="linkcomprobante.jpg", id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc8", id_forma_pago="1", id_entrega="1"),
         Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1b", fecha=datetime.date.today(), total=5000, comprobante_pago=None, id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="1", id_entrega=None),
+        Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1c", fecha=datetime.date.today(), total=15000, comprobante_pago="linkcomprobante2.jpg", id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="2", id_entrega="2"),
+
     ]
 
     with Session(engine) as sesion:

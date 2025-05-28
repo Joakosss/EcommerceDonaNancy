@@ -16,4 +16,4 @@ from .estado_pedido import Estado_pedido, crear_estado_pedido
 from .pedido import Pedido, crear_pedidos
 from .pedido_producto import Pedido_producto, crear_pedido_productos
 from .sucursal import Sucursal, crear_sucursales
-from .producto import Producto, crear_productos
+from .producto import Producto, crear_productos, crear_id_producto

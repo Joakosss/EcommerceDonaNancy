@@ -8,7 +8,7 @@ class Estado_pedido(SQLModel, table=True):
 
 def crear_estado_pedido():
     estados_pedido = [
-        Estado_pedido(id_estado_pedido="0", descripcion="Pendiente"),
+        Estado_pedido(id_estado_pedido="0", descripcion="Revisando Pago"),
         Estado_pedido(id_estado_pedido="1", descripcion="Rechazado"),
         Estado_pedido(id_estado_pedido="2", descripcion="Cancelado"),
         Estado_pedido(id_estado_pedido="3", descripcion="Pagado"),

@@ -76,3 +76,6 @@ class PedidoActualizar(BaseModel):
     id_usuario: Optional[str] = None
     id_forma_pago: Optional[str] = None
     id_entrega: Optional[str] = None
+
+class EstadoEntregaActualizar(BaseModel):
+    id_estado_entrega: str

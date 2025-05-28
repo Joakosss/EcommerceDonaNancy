@@ -244,17 +244,16 @@ function ZonaEntrega({ compra }: { compra: ComprasType }) {
                 {tipoPagoActual(compra.id_forma_pago)?.descripcion}
               </p>
               {compra.id_forma_pago === "3" && ( //transferencia
-                
-                  <p className="font-medium text-gray-900 flex gap-3">
-                    Comprobante 
-                    <a
-                      href={`http://localhost:4000${compra.comprobante_pago}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaDownload className="text-gray-900"/>
-                    </a>
-                  </p>
+                <p className="font-medium text-gray-900 flex gap-3">
+                  Comprobante
+                  <a
+                    href={`http://localhost:4000${compra.comprobante_pago}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaDownload className="text-gray-900" />
+                  </a>
+                </p>
               )}
             </div>
           </div>
@@ -283,13 +282,17 @@ function ZonaEntrega({ compra }: { compra: ComprasType }) {
                 Método de Pago:{" "}
                 {tipoPagoActual(compra.id_forma_pago)?.descripcion}
               </p>
-              {compra.id_forma_pago === "1" && ( //transferencia
-                <a
-                  href="/uploads/comprobantes/comprobante-1748386812258-321418267.jpg"
-                  download
-                >
-                  Descargar Comprobante
-                </a>
+              {compra.id_forma_pago === "3" && ( //transferencia
+                <p className="font-medium text-gray-900 flex gap-3">
+                  Comprobante
+                  <a
+                    href={`http://localhost:4000${compra.comprobante_pago}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaDownload className="text-gray-900" />
+                  </a>
+                </p>
               )}
             </div>
           </div>

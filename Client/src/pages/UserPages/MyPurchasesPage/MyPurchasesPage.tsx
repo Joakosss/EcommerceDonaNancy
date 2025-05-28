@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import useQueryGetMisPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetMisPedidos";
-import { estadoPedidoConstants } from "../../../constants/estadoPedidoConstants";
-import { estadoEntregaConstants } from "../../../constants/estadoEntregaConstants";
 import { useQueryClient } from "@tanstack/react-query";
 import useExchange from "../../../store/useExchangeStore";
 import { ComprasType } from "../../../types/ComprasType";
-import { tipoEntregaConstants } from "../../../constants/tipoEntregaConstants";
-import { methodPaymentConstants } from "../../../constants/methodPaymentConstants";
 import { FaDownload } from "react-icons/fa";
+import { estadoEntregaActual } from "../../../utilities/estadoEntregaActual";
+import { estadoPedidoActual } from "../../../utilities/estadoPedidoActual";
+import { tipoEntregaActual } from "../../../utilities/tipoEntregaActual";
+import { tipoPagoActual } from "../../../utilities/tipoPagoActual";
 
 function MyPurchasesPage() {
   const [openOrder, setOpenOrder] = useState<string | null>(null);
@@ -35,19 +35,6 @@ function MyPurchasesPage() {
         return "bg-gray-100 text-gray-800";
     }
   };
-
-  const estadoEntregaActual = (id_estado_entrega: string) => {
-    return estadoEntregaConstants.find(
-      (estado) => estado.id === id_estado_entrega
-    );
-  };
-
-  const estadoPedidoActual = (id_estado_pedido: string) => {
-    return estadoPedidoConstants.find(
-      (estado) => estado.id === id_estado_pedido
-    );
-  };
-
   const handleOpenClose = (id_pedido: string) => {
     if (id_pedido !== openOrder) {
       setOpenOrder(id_pedido);
@@ -207,12 +194,6 @@ function Skeleton() {
 }
 
 function ZonaEntrega({ compra }: { compra: ComprasType }) {
-  const tipoEntregaActual = (id_tipo_entrega: string) => {
-    return tipoEntregaConstants.find((tipo) => tipo.id === id_tipo_entrega);
-  };
-  const tipoPagoActual = (id_tipo_pago: string) => {
-    return methodPaymentConstants.find((tipo) => tipo.id === id_tipo_pago);
-  };
   return (
     <>
       {compra.entrega.id_tipo_entrega === "0" && ( //entrega en tienda

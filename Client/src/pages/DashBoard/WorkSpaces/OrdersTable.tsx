@@ -11,15 +11,18 @@ import { productCategoryTypesConstants } from "../../../constants/productCategor
 import useQueryGetPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetPedidos";
 import { PedidoType } from "../../../types/PedidoType";
 import { ComprasType } from "../../../types/ComprasType";
+import { estadoEntregaActual } from "../../../utilities/estadoEntregaActual";
+import { estadoPedidoActual } from "../../../utilities/estadoPedidoActual";
+import { tipoEntregaActual } from "../../../utilities/tipoEntregaActual";
+import { tipoPagoActual } from "../../../utilities/tipoPagoActual";
 
 type ModalState =
   | { type: "create" }
   | { type: "update"; data: PedidoType }
   | { type: "delete"; data: string }
   | { type: null };
-type Props = {};
 
-function OrdersTable({}: Props) {
+function OrdersTable() {
   const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
   const [isFilter, setIsFilter] = useState<string>("");
   console.log(pedidos);
@@ -91,31 +94,28 @@ function OrdersTable({}: Props) {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500  ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Estado compra
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Fecha
+                <th scope="col" className="px-6 py-3 text-center">
+                  Fecha compra
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Total
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Estado Pedido
-                </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Usuario
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
+                  Forma envío
+                </th>
+                <th scope="col" className="px-6 py-3 text-center">
                   Forma pago
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Entrega
-                </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   comprobante
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   opciones
                 </th>
               </tr>
@@ -174,20 +174,29 @@ function Tr({
 }) {
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
-      <td className="px-6 py-4">{pedido.id_estado_pedido}</td> {/* Aqui iria el estado de la compra */}
+      <td className="px-6 py-4 text-center">
+        {pedido.id_estado_pedido === "3"
+          ? estadoEntregaActual(pedido.entrega?.id_estado_entrega || "")
+              ?.descripcion || "No hay"
+          : estadoPedidoActual(pedido.id_estado_pedido)?.descripcion ||
+            "No hay"}
+      </td>
+      {/* Aqui iria el estado de la compra */}
       <th
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+        className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap "
       >
         {pedido.fecha.toString()}
       </th>
-      <td className="px-6 py-4">${generateChileanPrice(pedido.total)}</td>
-
-      <td className="px-6 py-4">{pedido.id_estado_pedido}</td>
-      <td className="px-6 py-4">{pedido.id_usuario}</td>
-      <td className="px-6 py-4">{pedido.id_forma_pago}</td>
-      <td className="px-6 py-4">{pedido.id_entrega}</td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 text-center">${generateChileanPrice(pedido.total)}</td>
+      <td className="px-6 py-4 text-center">{pedido.id_usuario}</td>
+      <td className="px-6 py-4 text-center">
+        {tipoEntregaActual(pedido.entrega?.id_tipo_entrega || "")?.descripcion || "No hay"}
+      </td>
+      <td className="px-6 py-4 text-center">
+        {tipoPagoActual(pedido.id_forma_pago)?.descripcion || "No hay"}
+      </td>
+      <td className="px-6 py-4 text-center">
         {pedido.comprobante_pago ? (
           <a
             href={`http://localhost:4000${pedido.comprobante_pago}`}
@@ -201,11 +210,11 @@ function Tr({
           "Sin comprobante"
         )}
       </td>
-      <td className="px-6 py-4 flex flex-col">
+      <td className="px-6 py-4 text-center flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            UpdateModal(pedido);
+            /* UpdateModal(pedido); */
           }}
         >
           Editar

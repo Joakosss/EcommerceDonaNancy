@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import useAuthStore from "../../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
-import { PedidoType } from "../../../types/PedidoType";
+import { ComprasType } from "../../../types/ComprasType";
 /* 
     Funcion para traer los usuarios desde la BD, espera que lo llames y puedes pasarle los filtros asi:
     const {data} = useGetUsersQuery({id_perfil:"1"})
@@ -11,11 +11,11 @@ import { PedidoType } from "../../../types/PedidoType";
 function useQueryGetPedidos(filtros?: Record<string, string | number | boolean>) {
   const { tokens, setAuth, logout } = useAuthStore();
   const navigate = useNavigate();
-  return useQuery<PedidoType[]>({
+  return useQuery<ComprasType[]>({
     queryKey: ["pedidos", filtros],
     queryFn: async () => {
       try {
-        const response = await axios.get<PedidoType[]>(
+        const response = await axios.get<ComprasType[]>(
           "http://127.0.0.1:8000/api/pedidos",
           {
             params: filtros,
@@ -40,7 +40,7 @@ function useQueryGetPedidos(filtros?: Record<string, string | number | boolean>)
               id_usuario: tokens!.id_usuario,
             });
             /* Se realiza la consulta nuevamente con el nuevo auth */
-            const retryResponse = await axios.get<PedidoType[]>(
+            const retryResponse = await axios.get<ComprasType[]>(
               "http://127.0.0.1:8000/api/pedidos",
               {
                 params: filtros,

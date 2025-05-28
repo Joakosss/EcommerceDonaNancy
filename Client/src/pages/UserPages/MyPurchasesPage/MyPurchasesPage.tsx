@@ -56,10 +56,6 @@ function MyPurchasesPage() {
     setOpenOrder("");
   };
 
-  if (!misCompras) {
-    return <div>Hola</div>;
-  }
-
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -75,7 +71,7 @@ function MyPurchasesPage() {
             Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} />)}
           {!isLoading &&
             (misCompras?.length ?? 0) > 0 &&
-            misCompras.map((compra) => (
+            misCompras?.map((compra) => (
               <div
                 key={compra.id_entrega}
                 className="bg-white rounded-lg shadow-sm border border-gray-200"

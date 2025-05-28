@@ -12,6 +12,7 @@ import useQueryGetProduct from "../../../hooks/NewQuerys/productQuerys/useQueryG
 import { marcasConstants } from "../../../constants/marcasConstants";
 import { modelosConstants } from "../../../constants/modelosConstants";
 import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
+import useAuthStore from "../../../store/useAuthStore";
 
 type ModalState =
   | { type: "create" }
@@ -20,6 +21,7 @@ type ModalState =
   | { type: null };
 
 function ProductTable() {
+  const { tokens } = useAuthStore();
   const [isModeloFilter, setIsModeloFilter] = useState<string | "">("");
   const [isMarcaFilter, setIsMarcaFilter] = useState<string | "">("");
   const [isCategoriaFilter, setIsCategoriaFilter] = useState<string | "">("");
@@ -128,16 +130,19 @@ function ProductTable() {
               }
               value={isMarcaFilter}
             />
-            <button
-              className="m-1 flex items-center justify-center flex-col"
-              onClick={() => setModal({ type: "create" })}
-            >
-              <FaCirclePlus
-                size={30}
-                className="text-primary hover:text-primary/90 cursor-pointer"
-              />
-              <p className="text-sm text-primary">Crear</p>
-            </button>
+            {tokens?.autorization &&
+              !["2", "4"].includes(tokens.autorization) && (
+                <button
+                  className="m-1 flex items-center justify-center flex-col"
+                  onClick={() => setModal({ type: "create" })}
+                >
+                  <FaCirclePlus
+                    size={30}
+                    className="text-primary hover:text-primary/90 cursor-pointer"
+                  />
+                  <p className="text-sm text-primary">Crear</p>
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -165,9 +170,12 @@ function ProductTable() {
                 <th scope="col" className="px-6 py-3">
                   stock
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  opciones
-                </th>
+                {tokens?.autorization &&
+                  !["2", "4"].includes(tokens.autorization) && (
+                    <th scope="col" className="px-6 py-3">
+                      opciones
+                    </th>
+                  )}
               </tr>
             </thead>
             <tbody>
@@ -224,6 +232,7 @@ function Tr({
   UpdateModal: (arg: ProductType) => void;
   deleteModal: (arg: string) => void;
 }) {
+  const { tokens } = useAuthStore();
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
       <th
@@ -235,24 +244,26 @@ function Tr({
       <td className="px-6 py-4">{producto.link_foto}</td>
       <td className="px-6 py-4">${generateChileanPrice(producto.precio)}</td>
       <td className="px-6 py-4">{producto.stock}</td>
-      <td className="px-6 py-4 flex flex-col">
-        <button
-          className="font-medium text-primary  hover:underline cursor-pointer"
-          onClick={() => {
-            UpdateModal(producto);
-          }}
-        >
-          Editar
-        </button>
-        <button
-          className="font-medium text-primary  hover:underline cursor-pointer"
-          onClick={() => {
-            deleteModal(producto.id_producto!);
-          }}
-        >
-          Eliminar
-        </button>
-      </td>
+      {tokens?.autorization && !["2", "4"].includes(tokens.autorization) && (
+        <td className="px-6 py-4 flex flex-col">
+          <button
+            className="font-medium text-primary  hover:underline cursor-pointer"
+            onClick={() => {
+              UpdateModal(producto);
+            }}
+          >
+            Editar
+          </button>
+          <button
+            className="font-medium text-primary  hover:underline cursor-pointer"
+            onClick={() => {
+              deleteModal(producto.id_producto!);
+            }}
+          >
+            Eliminar
+          </button>
+        </td>
+      )}
     </tr>
   );
 }

@@ -17,7 +17,7 @@ type StoreAuthType = {
 
 const useAuthStore = create<StoreAuthType>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       tokens: null,
       setAuth: (tokens) => {
         set({ tokens: tokens });

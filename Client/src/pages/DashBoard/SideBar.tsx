@@ -13,8 +13,8 @@ function SideBar({ isSidebarOpen }: Props) {
 
   //no se ejecuta navigate hasta que logout se ejecute
   const handleLogOut = async () => {
-    await logout();
     navigate("/");
+    logout();
   };
 
   return (

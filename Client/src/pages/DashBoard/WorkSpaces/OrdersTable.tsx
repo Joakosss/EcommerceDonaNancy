@@ -5,7 +5,6 @@ import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import Modal from "../../../components/Modal";
 import { FaDownload, FaSearch } from "react-icons/fa";
 import CreateProduct from "../Forms/Product/CreateProduct";
-import UpdateProduct from "../Forms/Product/UpdateProduct";
 import DeleteProduct from "../Forms/Product/DeleteProduct";
 import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
 import useQueryGetPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetPedidos";
@@ -15,6 +14,8 @@ import { estadoEntregaActual } from "../../../utilities/estadoEntregaActual";
 import { estadoPedidoActual } from "../../../utilities/estadoPedidoActual";
 import { tipoEntregaActual } from "../../../utilities/tipoEntregaActual";
 import { tipoPagoActual } from "../../../utilities/tipoPagoActual";
+import VendedorUpdate from "../Forms/Orders/VendedorUpdate";
+import useAuthStore from "../../../store/useAuthStore";
 
 type ModalState =
   | { type: "create" }
@@ -23,6 +24,7 @@ type ModalState =
   | { type: null };
 
 function OrdersTable() {
+  const { tokens } = useAuthStore();
   const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
   const [isFilter, setIsFilter] = useState<string>("");
   console.log(pedidos);
@@ -144,9 +146,10 @@ function OrdersTable() {
         {modal.type === "create" && (
           <CreateProduct onClose={() => setModal({ type: null })} />
         )}
-        {modal.type === "update" && (
-          <UpdateProduct
-            product={modal.data}
+        {modal.type === "update" && tokens?.autorization === "2" && (
+          <VendedorUpdate
+            key={123e8}
+            id={modal.data.id_entrega!}
             onClose={() => setModal({ type: null })}
           />
         )}
@@ -169,9 +172,10 @@ function Tr({
   deleteModal,
 }: {
   pedido: ComprasType;
-  UpdateModal: (arg: ProductType) => void;
+  UpdateModal: (arg: string) => void;
   deleteModal: (arg: string) => void;
 }) {
+  const { tokens } = useAuthStore();
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
       <td className="px-6 py-4 text-center">
@@ -188,10 +192,13 @@ function Tr({
       >
         {pedido.fecha.toString()}
       </th>
-      <td className="px-6 py-4 text-center">${generateChileanPrice(pedido.total)}</td>
+      <td className="px-6 py-4 text-center">
+        ${generateChileanPrice(pedido.total)}
+      </td>
       <td className="px-6 py-4 text-center">{pedido.id_usuario}</td>
       <td className="px-6 py-4 text-center">
-        {tipoEntregaActual(pedido.entrega?.id_tipo_entrega || "")?.descripcion || "No hay"}
+        {tipoEntregaActual(pedido.entrega?.id_tipo_entrega || "")
+          ?.descripcion || "No hay"}
       </td>
       <td className="px-6 py-4 text-center">
         {tipoPagoActual(pedido.id_forma_pago)?.descripcion || "No hay"}
@@ -214,19 +221,22 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            /* UpdateModal(pedido); */
+            UpdateModal(pedido.id_entrega);
           }}
         >
           Editar
         </button>
-        <button
-          className="font-medium text-primary  hover:underline cursor-pointer"
-          onClick={() => {
-            deleteModal(pedido.id_pedido!);
-          }}
-        >
-          Eliminar
-        </button>
+        {tokens?.autorization &&
+          !["2", "4", "3"].includes(tokens.autorization) && (
+            <button
+              className="font-medium text-primary  hover:underline cursor-pointer"
+              onClick={() => {
+                deleteModal(pedido.id_pedido!);
+              }}
+            >
+              Eliminar
+            </button>
+          )}
       </td>
     </tr>
   );

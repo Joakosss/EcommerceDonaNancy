@@ -17,7 +17,7 @@ import UpdatePass from "./DashBoard/UpdatePass";
 import UserTable from "./DashBoard/WorkSpaces/UserTable";
 import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
 import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
-import ProcessPay from "./UserPages/reponseShopping/processPay";
+import ProcessPay from "./UserPages/reponseShopping/ProcessPay";
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
     element: <DashBoardGuard />,
     children: [
       {
-        path: "DashBoard/",
+        path: "dashboard/",
         element: <DashBoard />,
         children: [
           { path: "usuarios/", element: <UserTable /> },

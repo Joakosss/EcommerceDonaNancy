@@ -28,7 +28,7 @@ function Login() {
         console.log(data)
         setAuth(data);
         if (data.autorization === "1") navigate("/");
-        else navigate("/DashBoard");
+        else navigate("/dashboard");
       },
     });
   };

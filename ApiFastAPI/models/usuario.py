@@ -16,6 +16,7 @@ class Usuario(SQLModel, table=True):
     correo: str = Field(max_length=200, nullable=False)
     direccion: str = Field(max_length=200, nullable=True)
     id_perfil: str = Field(max_length=50, foreign_key="perfil.id_perfil", nullable=False)
+    cambiar_contrasenia: bool = Field(default=False, nullable=False)
 
 def crear_usuario():
     usuarios = [
@@ -32,7 +33,8 @@ def crear_usuario():
             telefono=912341234,
             correo="nancy.diaz@btnancy.cl",
             direccion="Las Parras 0350",
-            id_perfil="0"
+            id_perfil="0",
+            cambiar_contrasenia=True
         ),
         #Cliente
         Usuario(

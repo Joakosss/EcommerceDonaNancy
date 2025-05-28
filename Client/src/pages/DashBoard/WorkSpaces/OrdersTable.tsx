@@ -3,13 +3,14 @@ import Spinner from "../../../components/Spinner";
 import { ProductType } from "../../../types/ProductType";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import Modal from "../../../components/Modal";
-import { FaSearch } from "react-icons/fa";
+import { FaDownload, FaSearch } from "react-icons/fa";
 import CreateProduct from "../Forms/Product/CreateProduct";
 import UpdateProduct from "../Forms/Product/UpdateProduct";
 import DeleteProduct from "../Forms/Product/DeleteProduct";
 import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
 import useQueryGetPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetPedidos";
 import { PedidoType } from "../../../types/PedidoType";
+import { ComprasType } from "../../../types/ComprasType";
 
 type ModalState =
   | { type: "create" }
@@ -21,7 +22,7 @@ type Props = {};
 function OrdersTable({}: Props) {
   const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
   const [isFilter, setIsFilter] = useState<string>("");
-
+  console.log(pedidos);
   const [modal, setModal] = useState<ModalState>({ type: null });
 
   return (
@@ -91,13 +92,13 @@ function OrdersTable({}: Props) {
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
               <tr>
                 <th scope="col" className="px-6 py-3">
+                  Estado compra
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Fecha
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Total
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  comprobante
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Estado Pedido
@@ -110,6 +111,9 @@ function OrdersTable({}: Props) {
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Entrega
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  comprobante
                 </th>
                 <th scope="col" className="px-6 py-3">
                   opciones
@@ -164,12 +168,13 @@ function Tr({
   UpdateModal,
   deleteModal,
 }: {
-  pedido: PedidoType;
+  pedido: ComprasType;
   UpdateModal: (arg: ProductType) => void;
   deleteModal: (arg: string) => void;
 }) {
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
+      <td className="px-6 py-4">{pedido.id_estado_pedido}</td> {/* Aqui iria el estado de la compra */}
       <th
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
@@ -177,13 +182,25 @@ function Tr({
         {pedido.fecha.toString()}
       </th>
       <td className="px-6 py-4">${generateChileanPrice(pedido.total)}</td>
-      <td className="px-6 py-4">
-        {pedido.comprobante_pago || "Sin Comprobante"}
-      </td>
+
       <td className="px-6 py-4">{pedido.id_estado_pedido}</td>
       <td className="px-6 py-4">{pedido.id_usuario}</td>
       <td className="px-6 py-4">{pedido.id_forma_pago}</td>
       <td className="px-6 py-4">{pedido.id_entrega}</td>
+      <td className="px-6 py-4">
+        {pedido.comprobante_pago ? (
+          <a
+            href={`http://localhost:4000${pedido.comprobante_pago}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-full h-full"
+          >
+            <FaDownload className="text-gray-600" />
+          </a>
+        ) : (
+          "Sin comprobante"
+        )}
+      </td>
       <td className="px-6 py-4 flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"

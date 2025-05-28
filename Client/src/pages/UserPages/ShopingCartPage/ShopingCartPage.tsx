@@ -94,7 +94,7 @@ function ShopingCartPage() {
             redirectToWebPay(data.token, data.url);
           },
           onError: (err) => {
-            alert(err);
+            alert(`error ${err}`);
           },
         }
       );
@@ -103,7 +103,7 @@ function ShopingCartPage() {
         alert("Falta comprobante");
         return;
       }
-      if (!data.entrega.id_sucursal) {
+      if (isMethodDelivery === "0" && !data.entrega.id_sucursal) {
         alert("Falta sucursal");
         return;
       }

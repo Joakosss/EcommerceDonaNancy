@@ -74,29 +74,3 @@ function useQueryGetMisPedidos(
 
 export default useQueryGetMisPedidos;
 
-
-/* 
-comprobante_pago
-: 
-"/uploads/comprobantes/comprobante-1748018054842-789138805.jpg"
-fecha
-: 
-"2025-05-23"
-id_entrega
-: 
-"33bd06d3-4b9a-42e1-bb37-d73cff9b7f40"
-id_estado_pedido
-: 
-"0"
-id_forma_pago
-: 
-"0"
-id_pedido
-: 
-"33bd06d3-4b9a-42e1-bb37-d73cff9b7f40"
-id_usuario
-: 
-"6352a479-0b04-4fa6-89d2-a51fba16ffc6"
-total
-: 
-69 */

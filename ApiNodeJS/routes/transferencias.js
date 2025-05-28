@@ -16,8 +16,8 @@ router.post(
   upload.single("comprobante"),
   async (req, res) => {
     let cone;
-    const { products, entrega } = req.body;
-
+    const { products, entrega, pedido } = req.body;
+    console.log(req.body);
     try {
       if (!req.file) {
         console.log("No se recibió el comprobante de pago");
@@ -40,6 +40,7 @@ router.post(
         cone,
         id,
         entrega,
+        pedido,
         amount,
         id_usuario: req.user.id_usuario,
         comprobante_url: comprobanteUrl,

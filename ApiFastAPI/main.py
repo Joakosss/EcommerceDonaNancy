@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from sqlmodel import SQLModel
 from database import engine
 from models import crear_perfil, crear_usuario, crear_estado_entrega, crear_tipo_entrega, crear_marcas, crear_modelos, crear_categorias, crear_estado_pedido, crear_formas_pago, crear_productos, crear_sucursales, crear_entregas, crear_pedidos, crear_pedido_productos
-from endpoints import usuario_router, auth_router, producto_router, pedido_router, sucursal_router
+from endpoints import usuario_router, auth_router, producto_router, pedido_router, sucursal_router, informes_router
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title="API Boutique Doña Nancy",
@@ -55,3 +55,4 @@ app.include_router(usuario_router.router, prefix="/api", tags=["Usuarios"])
 app.include_router(producto_router.router, prefix="/api", tags=["Productos"])
 app.include_router(pedido_router.router, prefix="/api", tags=["Pedidos"])
 app.include_router(sucursal_router.router, prefix="/api", tags=["Sucursales"])
+app.include_router(informes_router.router, prefix="/api", tags=["Informes"])

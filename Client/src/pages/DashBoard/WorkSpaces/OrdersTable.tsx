@@ -1,12 +1,10 @@
 import { useState } from "react";
 import Spinner from "../../../components/Spinner";
-import { ProductType } from "../../../types/ProductType";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import Modal from "../../../components/Modal";
-import { FaDownload, FaSearch } from "react-icons/fa";
-import CreateProduct from "../Forms/Product/CreateProduct";
-import DeleteProduct from "../Forms/Product/DeleteProduct";
-import { productCategoryTypesConstants } from "../../../constants/productCategoryTypesConstants";
+import { FaDownload } from "react-icons/fa";
+import CreateProduct from "../Forms/Product/CreateProduct"; //modificar
+import DeleteProduct from "../Forms/Product/DeleteProduct"; //modificar
 import useQueryGetPedidos from "../../../hooks/NewQuerys/pedidosQuerys/useQueryGetPedidos";
 import { PedidoType } from "../../../types/PedidoType";
 import { ComprasType } from "../../../types/ComprasType";
@@ -25,64 +23,13 @@ type ModalState =
 
 function OrdersTable() {
   const { tokens } = useAuthStore();
-  const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
-  const [isFilter, setIsFilter] = useState<string>("");
-  console.log(pedidos);
   const [modal, setModal] = useState<ModalState>({ type: null });
+  const { data: pedidos, isError, isLoading } = useQueryGetPedidos();
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
       <div className="p-5">
         <h2 className="font-bold text-2xl text-primary ml-1">Pedidos</h2>
-        <div className="flex justify-between">
-          <form className="flex items-center max-w-sm mx-auto">
-            <label htmlFor="simple-search" className="sr-only">
-              Buscar
-            </label>
-            <div className="relative w-full">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <FaSearch className="text-gray-500" />
-              </div>
-              <input
-                type="text"
-                id="simple-search"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                placeholder="Buscar por nombre"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="p-2.5 ms-2 text-sm font-medium text-white bg-primary rounded-lg border  hover:bg-primary/80 focus:ring-4 cursor-pointer"
-            >
-              <svg
-                className="w-4 h-4"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-              <span className="sr-only">Buscar</span>
-            </button>
-          </form>
-
-          <div className="flex gap-8">
-            <Select
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setIsFilter(e.target.value)
-              }
-              value={isFilter}
-            />
-          </div>
-        </div>
       </div>
 
       {isLoading && <Spinner />}
@@ -106,7 +53,7 @@ function OrdersTable() {
                   Total
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
-                  Usuario
+                  Pedido
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
                   Forma envío
@@ -185,17 +132,16 @@ function Tr({
           : estadoPedidoActual(pedido.id_estado_pedido)?.descripcion ||
             "No hay"}
       </td>
-      {/* Aqui iria el estado de la compra */}
-      <th
+      <td
         scope="row"
         className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap "
       >
         {pedido.fecha.toString()}
-      </th>
+      </td>
       <td className="px-6 py-4 text-center">
         ${generateChileanPrice(pedido.total)}
       </td>
-      <td className="px-6 py-4 text-center">{pedido.id_usuario}</td>
+      <td className="px-6 py-4 text-center">{pedido.id_entrega}</td>
       <td className="px-6 py-4 text-center">
         {tipoEntregaActual(pedido.entrega?.id_tipo_entrega || "")
           ?.descripcion || "No hay"}
@@ -243,18 +189,20 @@ function Tr({
 }
 
 function Select({ ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  const { tokens } = useAuthStore();
   return (
-    <div className="mt-3" id="tipoUsuarioSelect">
+    <div className="mt-3" id="tipoEntregaSelect">
       <select
         {...props}
         className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 cursor-pointer outline-none"
       >
         <option value="">Todos</option>
-        {productCategoryTypesConstants.map((productCategory) => (
-          <option key={productCategory.id} value={productCategory.id}>
-            {productCategory.descripcion}
+        {/* opcion vendedor */}
+        {tokens?.autorization && ["2"].includes(tokens.autorization) && (
+          <option key="ComprasCompletados" value="4">
+            Completados
           </option>
-        ))}
+        )}
       </select>
     </div>
   );

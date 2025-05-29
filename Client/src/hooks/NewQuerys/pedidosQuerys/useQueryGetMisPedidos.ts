@@ -30,12 +30,11 @@ function useQueryGetMisPedidos(
         logout();
         navigate("/");
         throw new Error(
-          "Sesión expirada. Por favor, inicie sesión nuevamente."
+          "Sesión cerrada inesperadamente. Por favor, inicie sesión nuevamente."
         );
       }
       try {
         const response = await axiosQuery(tokens.access_token, filtros);
-        console.log(response.data)
         return response.data;
       } catch (error: any) {
         const errorAxios = error as AxiosError;

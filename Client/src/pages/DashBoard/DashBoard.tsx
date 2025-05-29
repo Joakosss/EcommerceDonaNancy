@@ -24,7 +24,6 @@ function DashBoard() {
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 min-h-[89vh]">
           {/* Menu de opciones */}
           <MenuDashBoard />
-          {/*  */}
           {/* Tablas de actividades */}
           <div ref={animationParent} className="grid grid-cols-1 gap-4 ">
             <Outlet />
@@ -96,6 +95,10 @@ function MenuDashBoard() {
     if (item.label === "Usuarios") {
       return tokens.autorization === "0";
     }
+    if (item.label === "Productos") {
+      return tokens.autorization !== "4";
+    }
+    
     return true;
   });
 

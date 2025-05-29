@@ -216,16 +216,20 @@ def get_compras_por_cliente(sesion: Session = Depends(get_session)):
             JOIN sucursal s ON e.id_sucursal = s.id_sucursal
             JOIN tipo_entrega te ON e.id_tipo_entrega = te.id_tipo_entrega
             JOIN estado_pedido ep ON p.id_estado_pedido = ep.id_estado_pedido
-            WHERE p.fecha BETWEEN TO_DATE('2025-01-01', 'YYYY-MM-DD') AND TO_DATE('2025-12-31', 'YYYY-MM-DD');
+            WHERE p.fecha BETWEEN TO_DATE('2025-01-01', 'YYYY-MM-DD') AND TO_DATE('2025-12-31', 'YYYY-MM-DD')
         """)
         resultados = sesion.exec(consulta).all()
 
         return [
             {
-                "id_cliente": row[0],
-                "nombre_cliente": row[1],
+                "id_pedido": row[0],
+                "fecha_pedido": row[1],
                 "total_pedidos": row[2],
-                "total_compras": row[3]
+                "cliente": row[3],
+                "sucursal": row[4],
+                "fecha_entrega": row[5],
+                "tipo_entrega": row[6],
+                "estado_pedido": row[7]
             } for row in resultados
         ]
 

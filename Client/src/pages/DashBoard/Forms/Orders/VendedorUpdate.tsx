@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
-import { estadoEntregaConstants } from "../../../../constants/estadoEntregaConstants";
 import useMutatePatchPedidos from "../../../../hooks/NewQuerys/pedidosQuerys/useMutatePatchPedidos";
 import { useState } from "react";
 
@@ -47,20 +46,33 @@ function VendedorUpdate({ id, onClose }: Props) {
       <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
         Modificar un pedido (Vendedor)
       </h1>
-      {estadoEntregaConstants.map((estadoEntrega) => (
-        <label key={estadoEntrega.id} className="flex items-center gap-2">
+      <div className="grid grid-cols-2 h-30 gap-2">
+        <label key="Entrega4" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
           <input
             type="radio"
             name="estado_entrega"
-            value={estadoEntrega.id}
+            value="4"
             className="text-primary focus:ring-primary"
             onChange={() => {
-              setIsRadioSelect(estadoEntrega.id);
+              setIsRadioSelect("4");
             }}
           />
-          {estadoEntrega.descripcion}
+          Completado
         </label>
-      ))}
+        <label key="Entrega3" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
+          <input
+            type="radio"
+            name="estado_entrega"
+            value="3"
+            className="text-primary focus:ring-primary"
+            onChange={() => {
+              setIsRadioSelect("4");
+            }}
+          />
+          Entregado
+        </label>
+      </div>
+
       <button
         type="button"
         className="w-full text-white bg-primary hover:bg-primary/90  font-medium rounded-lg text-sm px-5 py-2.5 text-center"

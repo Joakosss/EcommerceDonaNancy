@@ -19,7 +19,7 @@ import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
 import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
 import ProcessPay from "./UserPages/reponseShopping/ProcessPay";
 import InformesTable from "./DashBoard/WorkSpaces/InformesTable";
-import ChangePassAdmin from "./DashBoard/changePassAdmin";
+import ChangePassAdmin from "./DashBoard/ChangePassAdmin";
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
           { path: "pedidos/", element: <OrdersTable /> },
           { path: "cambiar_clave/", element: <UpdatePass /> },
         ],
-      }
+      },
     ],
   },
   { path: "admin/changePassword", element: <ChangePassAdmin /> },

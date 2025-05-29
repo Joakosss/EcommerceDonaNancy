@@ -11,7 +11,9 @@ def crear_estado_entrega():
         Estado_entrega(id_estado_entrega = "0", descripcion = "En proceso"),
         Estado_entrega(id_estado_entrega = "1", descripcion = "Pendiente"),
         Estado_entrega(id_estado_entrega = "2", descripcion = "Cancelado"),
-        Estado_entrega(id_estado_entrega = "3", descripcion = "Entregado")
+        Estado_entrega(id_estado_entrega = "3", descripcion = "Entregado"),
+        Estado_entrega(id_estado_entrega = "4", descripcion = "Completado")
+
     ]
 
     with Session(engine) as sesion:

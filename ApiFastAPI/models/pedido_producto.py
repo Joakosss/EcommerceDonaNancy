@@ -27,7 +27,11 @@ def crear_pedido_productos():
         Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e2", cantidad=1, fecha=datetime.date.today(), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1a", id_producto="3"),
         Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e3", cantidad=3, fecha=datetime.date.today(), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1a", id_producto="4"),
         Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e4", cantidad=1, fecha=datetime.date.today(), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1b", id_producto="5"),
-        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e5", cantidad=4, fecha=datetime.date.today(), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1b", id_producto="6")
+        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e5", cantidad=4, fecha=datetime.date.today(), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1b", id_producto="6"),
+        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e6", cantidad=2, fecha=datetime.date(2025, 5, 23), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1c", id_producto="7"),
+        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e7", cantidad=1, fecha=datetime.date(2025, 5, 24), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1d", id_producto="8"),
+        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e8", cantidad=5, fecha=datetime.date(2025, 5, 25), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1e", id_producto="9"),
+
     ]
 
     with Session(engine) as sesion:

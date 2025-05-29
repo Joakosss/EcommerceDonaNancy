@@ -1,12 +1,15 @@
-1) Administrador:
+0) Administrador:
     NancyDiaz
 
-2) Clientes:
+1) Clientes:
     JuanPerez (tiene varios pedidos registrados)
     AnaGonzalez
 
-3) Bodeguero:
+2) Vendedora:
     MariaGonzalez
+
+3) Bodeguero:
+    Pedro
 
 4) Contador: 
     AnaFernandez

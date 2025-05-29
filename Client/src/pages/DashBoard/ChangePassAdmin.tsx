@@ -9,10 +9,11 @@ import Input from "../../components/FormComponents/Input";
 type FormType = {
   contrasenia: string;
   contrasenia2: string;
+  cambiar_contrasenia: Boolean;
 };
 
 function ChangePassAdmin() {
-  const { tokens,access } = useAuthStore();
+  const { tokens, logout } = useAuthStore();
   const navigate = useNavigate();
   const id = tokens!.id_usuario;
   const {
@@ -27,16 +28,13 @@ function ChangePassAdmin() {
 
   const onSubmit = (data: FormType) => {
     const newUser = data;
+    newUser.cambiar_contrasenia = false;
     mutate(
       { id, newUser },
       {
         onSuccess: async () => {
-          await toast.success("Tu contraseña ha sido modificado ", {
-            hideProgressBar: true,
-            position: "top-left",
-            autoClose: 1000,
-          });
-          navigate("/DashBoard/");
+          navigate("/login");
+          logout()
         },
         onError: () => {
           toast.error("Tu contraseña no ha modificado", {
@@ -54,8 +52,9 @@ function ChangePassAdmin() {
       <div className="flex flex-col w-2xl  px-6  mx-auto">
         {isPending && <LoadingOverlay />}
         <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
-          Modificar Contraseña
+          Primer inicio de sesión
         </h1>
+        <p className="text-lg text-primary/90">Debe modificar su contraseña</p>
         <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
           <Input
             key={"contrasenia"}
@@ -75,8 +74,13 @@ function ChangePassAdmin() {
             error={errors.contrasenia2}
             {...register("contrasenia2", {
               required: "Es requerido",
-              validate: (value) =>
-                value === password || "Las contraseñas no coinciden",
+              validate:
+              {
+                notMatching: (value) =>
+                  value === password || "Las contraseñas no coinciden",
+                notAdminPass: (value) =>
+                  value !== "admin" || "La contraseña no puede ser la anterior"
+              }
             })}
           />
 

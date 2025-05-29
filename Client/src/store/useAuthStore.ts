@@ -29,7 +29,7 @@ const useAuthStore = create<StoreAuthType>()(
         set({ access: boolean });
       },
       logout: () => {
-        set({ tokens: null });
+        set({ tokens: null, access: false });
       },
       isAuthenticate: () => {
         const token = localStorage.getItem("Tokens-store");

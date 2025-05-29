@@ -43,3 +43,4 @@ class UsuarioActualizar(BaseModel):
     correo: str | None = None
     direccion: str | None = None
     id_perfil: str | None = None
+    cambiar_contrasenia: bool | None = None

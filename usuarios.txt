@@ -1,0 +1,15 @@
+1) Administrador:
+    NancyDiaz
+
+2) Clientes:
+    JuanPerez (tiene varios pedidos registrados)
+    AnaGonzalez
+
+3) Bodeguero:
+    MariaGonzalez
+
+4) Contador: 
+    AnaFernandez
+
+Todas las contraseñas:
+    admin 

@@ -158,21 +158,21 @@ function ProductTable() {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500  ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Nombre
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   link foto
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   precio
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   stock
                 </th>
                 {tokens?.autorization &&
                   !["2", "4"].includes(tokens.autorization) && (
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                       opciones
                     </th>
                   )}
@@ -235,17 +235,17 @@ function Tr({
   const { tokens } = useAuthStore();
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
-      <th
+      <td
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+        className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap "
       >
         {producto.nombre}
-      </th>
-      <td className="px-6 py-4">{producto.link_foto}</td>
-      <td className="px-6 py-4">${generateChileanPrice(producto.precio)}</td>
-      <td className="px-6 py-4">{producto.stock}</td>
+      </td>
+      <td className="px-6 py-4 text-center">{producto.link_foto}</td>
+      <td className="px-6 py-4 text-center">${generateChileanPrice(producto.precio)}</td>
+      <td className="px-6 py-4 text-center">{producto.stock}</td>
       {tokens?.autorization && !["2", "4"].includes(tokens.autorization) && (
-        <td className="px-6 py-4 flex flex-col">
+        <td className="px-6 py-4 text-center flex flex-col">
           <button
             className="font-medium text-primary  hover:underline cursor-pointer"
             onClick={() => {

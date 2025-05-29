@@ -10,7 +10,9 @@ export type TokenType = {
 
 type StoreAuthType = {
   tokens: TokenType | null;
+  access: boolean;
   setAuth: (tokens: TokenType) => void;
+  setAccess: (boolean: boolean) => void;
   logout: () => void;
   isAuthenticate: () => boolean;
 };
@@ -19,11 +21,15 @@ const useAuthStore = create<StoreAuthType>()(
   persist(
     (set) => ({
       tokens: null,
+      access: false,
       setAuth: (tokens) => {
         set({ tokens: tokens });
       },
+      setAccess: (boolean) => {
+        set({ access: boolean });
+      },
       logout: () => {
-        set({ tokens: null });
+        set({ tokens: null, access: false });
       },
       isAuthenticate: () => {
         const token = localStorage.getItem("Tokens-store");

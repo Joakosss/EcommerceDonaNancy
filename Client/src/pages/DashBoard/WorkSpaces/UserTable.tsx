@@ -123,17 +123,20 @@ function ProductTable() {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500  ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Nombre
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Correo
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Telefono
+                <th scope="col" className="px-6 py-3 text-center">
+                  Teléfono
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Tipo cuenta
+                </th>
+                <th scope="col" className="px-6 py-3 text-center">
+                  Opciones
                 </th>
               </tr>
             </thead>
@@ -198,20 +201,20 @@ function Tr({
 
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
-      <th
+      <td
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+        className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap "
       >
         {usuario.p_nombre} {usuario.p_apellido}
-      </th>
-      <td className="px-6 py-4">{usuario.correo}</td>
-      <td className="px-6 py-4">{usuario.telefono}</td>
-      <td className="px-6 py-4">
+      </td>
+      <td className="px-6 py-4 text-center">{usuario.correo}</td>
+      <td className="px-6 py-4 text-center">{usuario.telefono}</td>
+      <td className="px-6 py-4 text-center">
         {usuario.id_perfil
           ? UserTypeSearch(usuario.id_perfil)?.descripcion ?? "Desconocido"
           : "Desconocido"}
       </td>
-      <td className="px-6 py-4 flex flex-col">
+      <td className="px-6 py-4 text-center flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {

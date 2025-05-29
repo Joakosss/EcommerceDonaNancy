@@ -18,6 +18,7 @@ import UserTable from "./DashBoard/WorkSpaces/UserTable";
 import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
 import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
 import ProcessPay from "./UserPages/reponseShopping/ProcessPay";
+import InformesTable from "./DashBoard/WorkSpaces/InformesTable";
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
         children: [
           { path: "usuarios/", element: <UserTable /> },
           { path: "productos/", element: <ProductTable /> },
-          { path: "informes/", element: <ProductTable /> },
+          { path: "informes/", element: <InformesTable /> },
           { path: "pedidos/", element: <OrdersTable /> },
           { path: "cambiar_clave/", element: <UpdatePass /> },
         ],

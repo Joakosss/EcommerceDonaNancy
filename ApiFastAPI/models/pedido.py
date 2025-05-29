@@ -36,6 +36,9 @@ def crear_pedidos():
         Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1a", fecha=datetime.date.today(), total=10000, comprobante_pago="linkcomprobante.jpg", id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc8", id_forma_pago="1", id_entrega="1"),
         Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1b", fecha=datetime.date.today(), total=5000, comprobante_pago=None, id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="1", id_entrega=None),
         Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1c", fecha=datetime.date.today(), total=15000, comprobante_pago="linkcomprobante2.jpg", id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="2", id_entrega="2"),
+        Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1d", fecha=datetime.date(2025, 5, 25), total=20000, comprobante_pago="linkcomprobante3.jpg", id_estado_pedido="1", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="3", id_entrega=None),
+        Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1e", fecha=datetime.date(2025, 5, 24), total=12000, comprobante_pago=None, id_estado_pedido="2", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="1", id_entrega=None),
+        Pedido(id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1f", fecha=datetime.date(2025, 5, 23), total=8000, comprobante_pago="linkcomprobante4.jpg", id_estado_pedido="3", id_usuario="6352a479-0b04-4fa6-89d2-a51fba16ffc7", id_forma_pago="2", id_entrega=None)
 
     ]
 

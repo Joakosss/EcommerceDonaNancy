@@ -1,9 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
-from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, and_
 from sqlalchemy.orm import selectinload
-from models import Pedido, Estado_pedido, Forma_pago, Entrega, Pedido_producto
-from schemas import PedidoLeer, PedidoActualizar
+from models import Pedido, Entrega, Pedido_producto
+from schemas import PedidoLeer, PedidoActualizar, EstadoEntregaActualizar
 from database import get_session
 from auth import obtener_usuario
 from typing import Optional
@@ -49,7 +48,7 @@ def get_buscar_pedidos(
             query = query.where(and_(*filtros))
         
         #ordena por estado de pedido y fecha
-        query.order_by((Pedido.id_estado_pedido == "0").desc(),  Pedido.fecha.desc())
+        query = query.order_by(Pedido.fecha.asc())
         pedidos = sesion.exec(query).all()
 
     except Exception as e:
@@ -65,10 +64,14 @@ def get_mis_pedidos(
     try:
         query = select(Pedido).where(
             Pedido.id_usuario == usuario_actual.id_usuario
+        
         ).options(
             selectinload(Pedido.entrega).selectinload(Entrega.sucursal),
             selectinload(Pedido.productos).selectinload(Pedido_producto.producto)
         )
+
+        #ordena por estado de pedido y fecha mas reciente
+        query = query.order_by(Pedido.fecha.desc())
 
         pedidos = sesion.exec(query).all()
     except Exception as e:
@@ -96,6 +99,35 @@ def patch_pedido(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al modificar el pedido: {str(e)}")
     return pedido
+
+@router.patch("/estado_entrega/{id_pedido}", response_model=PedidoLeer)
+def actualizar_estado_entrega(
+    id_pedido: str,
+    datos: EstadoEntregaActualizar,
+    sesion: Session = Depends(get_session),
+    usuario_actual: Pedido = Depends(obtener_usuario)
+):
+    try:
+        # Buscar el pedido
+        db_pedido = sesion.get(Pedido, id_pedido)
+        if not db_pedido:
+            raise HTTPException(status_code=404, detail="Pedido no encontrado")
+
+        # Buscar la entrega asociada al pedido
+        entrega = sesion.get(Entrega, db_pedido.id_entrega)
+        if not entrega:
+            raise HTTPException(status_code=404, detail="Entrega no encontrada")
+
+        # Actualizar el estado de entrega
+        entrega.id_estado_entrega = datos.id_estado_entrega
+        sesion.add(entrega)
+        sesion.commit()
+        sesion.refresh(db_pedido)
+
+        return db_pedido
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al actualizar el estado de entrega: {str(e)}")
 
 @router.delete("/{id_pedido}")
 def delete_pedido(

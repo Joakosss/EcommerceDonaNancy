@@ -1,9 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
-from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, and_
-from sqlalchemy import case
 from sqlalchemy.orm import selectinload
-from models import Pedido, Estado_pedido, Forma_pago, Entrega, Pedido_producto
+from models import Pedido, Entrega, Pedido_producto
 from schemas import PedidoLeer, PedidoActualizar, EstadoEntregaActualizar
 from database import get_session
 from auth import obtener_usuario
@@ -50,7 +48,7 @@ def get_buscar_pedidos(
             query = query.where(and_(*filtros))
         
         #ordena por estado de pedido y fecha
-        query.order_by(Pedido.fecha.asc(), (Pedido.id_estado_pedido == "0").desc())
+        query = query.order_by(Pedido.fecha.asc())
         pedidos = sesion.exec(query).all()
 
     except Exception as e:
@@ -66,10 +64,14 @@ def get_mis_pedidos(
     try:
         query = select(Pedido).where(
             Pedido.id_usuario == usuario_actual.id_usuario
+        
         ).options(
             selectinload(Pedido.entrega).selectinload(Entrega.sucursal),
             selectinload(Pedido.productos).selectinload(Pedido_producto.producto)
         )
+
+        #ordena por estado de pedido y fecha mas reciente
+        query = query.order_by(Pedido.fecha.desc())
 
         pedidos = sesion.exec(query).all()
     except Exception as e:

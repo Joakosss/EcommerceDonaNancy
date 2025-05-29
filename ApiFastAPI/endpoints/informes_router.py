@@ -137,3 +137,97 @@ def get_stock_bajo(sesion: Session = Depends(get_session)):
 
     except Exception as ex:
         raise HTTPException(status_code=500, detail=str(ex))
+    
+#Informes de contaduria
+#ventas por mes:
+@router.get("/ventas_por_mes", response_model=list[dict])
+def get_ventas_por_mes(sesion: Session = Depends(get_session)):
+    try:
+        consulta = text("""
+            SELECT 
+            TO_CHAR(p.fecha, 'MM') AS mes,
+            SUM(p.total) AS total_ventas,
+            COUNT(p.id_pedido) AS total_pedidos
+            FROM pedido p
+            JOIN estado_pedido ep
+                ON p.id_estado_pedido = ep.id_estado_pedido
+            WHERE EXTRACT(YEAR FROM p.fecha) = EXTRACT(YEAR FROM SYSDATE)
+            GROUP BY TO_CHAR(p.fecha, 'MM')
+        """)
+        resultados = sesion.exec(consulta).all()
+
+        return [
+            {
+                "mes": row[0],
+                "total_ventas": row[1],
+                "total_pedidos": row[2]
+            } for row in resultados
+        ]
+
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=str(ex))
+    
+#Total ventas por año:
+@router.get("/ventas_por_anio", response_model=list[dict])
+def get_ventas_por_anio(sesion: Session = Depends(get_session)):
+    try:
+        consulta = text("""
+            SELECT 
+                EXTRACT(YEAR FROM SYSDATE) AS anio,
+                SUM(p.total) AS total_ventas,
+                COUNT(p.id_pedido) AS total_pedidos
+            FROM pedido p
+            JOIN estado_pedido ep
+                ON p.id_estado_pedido = ep.id_estado_pedido
+            WHERE EXTRACT(YEAR FROM SYSDATE) = EXTRACT(YEAR FROM p.fecha)
+            GROUP BY EXTRACT(YEAR FROM p.fecha)
+
+        """)
+        resultados = sesion.exec(consulta).all()
+
+        return [
+            {
+                "anio": row[0],
+                "total_ventas": row[1],
+                "total_pedidos": row[2]
+            } for row in resultados
+        ]
+
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=str(ex))
+
+#Informe de compras por cliente
+@router.get("/compras_por_cliente", response_model=list[dict])
+def get_compras_por_cliente(sesion: Session = Depends(get_session)):
+    try:
+        consulta = text("""
+            SELECT
+                p.id_pedido,
+                p.fecha,
+                p.total,
+                u.p_nombre || ' ' || u.p_apellido AS cliente,
+                s.nombre AS sucursal,
+                e.fecha_entrega AS fecha_entrega,
+                te.descripcion AS tipo_entrega,
+                ep.descripcion AS estado_pedido
+            FROM pedido p
+            JOIN usuario u ON p.id_usuario = u.id_usuario
+            JOIN entrega e ON p.id_entrega = e.id_entrega
+            JOIN sucursal s ON e.id_sucursal = s.id_sucursal
+            JOIN tipo_entrega te ON e.id_tipo_entrega = te.id_tipo_entrega
+            JOIN estado_pedido ep ON p.id_estado_pedido = ep.id_estado_pedido
+            WHERE p.fecha BETWEEN TO_DATE('2025-01-01', 'YYYY-MM-DD') AND TO_DATE('2025-12-31', 'YYYY-MM-DD');
+        """)
+        resultados = sesion.exec(consulta).all()
+
+        return [
+            {
+                "id_cliente": row[0],
+                "nombre_cliente": row[1],
+                "total_pedidos": row[2],
+                "total_compras": row[3]
+            } for row in resultados
+        ]
+
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=str(ex))

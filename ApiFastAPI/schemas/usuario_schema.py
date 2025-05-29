@@ -27,7 +27,6 @@ class UsuarioLeer(BaseModel):
     correo: str
     direccion: str | None = None
     id_perfil: str
-    cambiar_contrasenia: bool 
 
     class Config:
         from_attributes = True

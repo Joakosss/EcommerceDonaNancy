@@ -27,7 +27,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), sesion: Session = De
         "id_usuario": str(usuario.id_usuario),
         "nombre_usuario": usuario.nombre_usuario,
         "perfil": usuario.id_perfil,
-        "autorization":usuario.id_perfil
+        "autorization":usuario.id_perfil,
+        "cambiar_contrasenia":usuario.cambiar_contrasenia
     }
 
 @router.post("/refresh")

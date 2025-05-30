@@ -1,8 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
-import useMutatePatchPedidos from "../../../../hooks/NewQuerys/pedidosQuerys/useMutatePatchPedidos";
 import { useState } from "react";
+import useMutatePatchEntrega from "../../../../hooks/NewQuerys/pedidosQuerys/useMutatePatchEntrega";
 
 type Props = {
   id: string;
@@ -11,13 +11,13 @@ type Props = {
 
 function BodegueroUpdate({ id, onClose }: Props) {
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutatePatchPedidos();
+  const { mutate, isPending } = useMutatePatchEntrega();
   const [isRadioSelect, setIsRadioSelect] = useState("");
 
   const onSubmit = () => {
     if (isRadioSelect !== "") {
       mutate(
-        { id, PedidoActualizar: { id_estado_entrega: isRadioSelect } },
+        { id, newEntrega: { id_estado_entrega: isRadioSelect } },
         {
           onSuccess: () => {
             toast.success("Entrega Modificado ", {
@@ -25,7 +25,7 @@ function BodegueroUpdate({ id, onClose }: Props) {
               position: "top-left",
               autoClose: 1000,
             });
-            queryClient.invalidateQueries({ queryKey: ["productos"] });
+            queryClient.invalidateQueries({ queryKey: ["pedidos"] });
             onClose();
           },
           onError: (error) => {
@@ -55,10 +55,10 @@ function BodegueroUpdate({ id, onClose }: Props) {
           <input
             type="radio"
             name="estado_entrega"
-            value="1"
+            value="0"
             className="text-primary focus:ring-primary"
             onChange={() => {
-              setIsRadioSelect("1");
+              setIsRadioSelect("0");
             }}
           />
           En proceso

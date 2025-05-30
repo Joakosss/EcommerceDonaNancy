@@ -30,7 +30,7 @@ function ContadorUpdate({ id, onClose }: Props) {
               position: "top-left",
               autoClose: 1000,
             });
-            queryClient.invalidateQueries({ queryKey: ["productos"] });
+            queryClient.invalidateQueries({ queryKey: ["pedidos"] });
             onClose();
           },
           onError: (error) => {

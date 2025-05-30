@@ -6,6 +6,7 @@ import useStockBajo from "../../../hooks/NewQuerys/informesQuerys/useStockBajo";
 import useStockProductos from "../../../hooks/NewQuerys/informesQuerys/useStockProductos";
 import useVentasxAnnio from "../../../hooks/NewQuerys/informesQuerys/useVentasxAnnio";
 import useVentasxMes from "../../../hooks/NewQuerys/informesQuerys/useVentasxMes";
+import useAuthStore from "../../../store/useAuthStore";
 
 function InformesTable() {
   const { mutate: mutEntregasSucu, isPending: loadEntregasSucu } =
@@ -21,45 +22,57 @@ function InformesTable() {
     useVentasxAnnio();
   const { mutate: mutuseVentasxmes, isPending: loaduseVentasxmes } =
     useVentasxMes();
+  const { tokens } = useAuthStore();
 
   return (
     <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-      <div
-        className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
-        onClick={() => mutStockBajo()}
-      >
-        Stock Bajo
-      </div>
-      <div
-        className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
-        onClick={() => mutStockProd()}
-      >
-        Stock Productos
-      </div>
-      <div
-        className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
-        onClick={() => mutEntregasSucu()}
-      >
-        Entregas Sucursales
-      </div>
-      <div
-        className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
-        onClick={() => mutProductosVend()}
-      >
-        Productos vendidos
-      </div>
-      <div
-        className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
-        onClick={() => mutVentasxAnnio()}
-      >
-        Ventas por Año
-      </div>
-      <div
-        className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
-        onClick={() => mutuseVentasxmes()}
-      >
-        Ventas por año
-      </div>
+      {tokens?.autorization && ["0", "2"].includes(tokens.autorization) && (
+        <div
+          className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
+          onClick={() => mutEntregasSucu()}
+        >
+          Entregas Sucursales
+        </div>
+      )}
+      {tokens?.autorization && ["0", "3"].includes(tokens.autorization) && (
+        <>
+          <div
+            className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
+            onClick={() => mutStockBajo()}
+          >
+            Stock Bajo
+          </div>
+          <div
+            className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
+            onClick={() => mutStockProd()}
+          >
+            Stock Productos
+          </div>
+        </>
+      )}
+      {tokens?.autorization && ["0", "4"].includes(tokens.autorization) && (
+        <>
+          <div
+            className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
+            onClick={() => mutProductosVend()}
+          >
+            Productos vendidos
+          </div>
+          <div
+            className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
+            onClick={() => mutVentasxAnnio()}
+          >
+            Ventas por Año
+          </div>
+          <div
+            className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
+            onClick={() => mutuseVentasxmes()}
+          >
+            Ventas por Mes
+          </div>
+        </>
+      )}
+
       <div
         className="cursor-pointer border-primary/80 bg-primary/10 p-19 rounded text-center text-3xl font-bold text-primary hover:bg-primary/30"
         onClick={() => mutComprasxCliente()}

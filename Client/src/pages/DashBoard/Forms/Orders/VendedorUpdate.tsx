@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
 import useMutatePatchPedidos from "../../../../hooks/NewQuerys/pedidosQuerys/useMutatePatchPedidos";
 import { useState } from "react";
+import useMutatePatchEntrega from "../../../../hooks/NewQuerys/pedidosQuerys/useMutatePatchEntrega";
 
 type Props = {
   id: string;
@@ -11,13 +12,13 @@ type Props = {
 
 function VendedorUpdate({ id, onClose }: Props) {
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutatePatchPedidos();
+  const { mutate, isPending } = useMutatePatchEntrega();
   const [isRadioSelect, setIsRadioSelect] = useState("");
 
   const onSubmit = () => {
     if (isRadioSelect !== "") {
       mutate(
-        { id, PedidoActualizar: { id_estado_entrega: isRadioSelect } },
+        { id, newEntrega: { id_estado_entrega: isRadioSelect } },
         {
           onSuccess: () => {
             toast.success("Entrega Modificado ", {
@@ -25,11 +26,11 @@ function VendedorUpdate({ id, onClose }: Props) {
               position: "top-left",
               autoClose: 1000,
             });
-            queryClient.invalidateQueries({ queryKey: ["productos"] });
+            queryClient.invalidateQueries({ queryKey: ["pedidos"] });
             onClose();
           },
           onError: (error) => {
-            console.log(error.message)
+            console.log(error.message);
             toast.error("Entrega no modificado", {
               hideProgressBar: true,
               position: "top-left",
@@ -48,7 +49,10 @@ function VendedorUpdate({ id, onClose }: Props) {
         Modificar un pedido (Vendedor)
       </h1>
       <div className="grid grid-cols-2 h-30 gap-2">
-        <label key="Entrega4" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
+        <label
+          key="Entrega4"
+          className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white"
+        >
           <input
             type="radio"
             name="estado_entrega"
@@ -60,14 +64,17 @@ function VendedorUpdate({ id, onClose }: Props) {
           />
           Completado
         </label>
-        <label key="Entrega3" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
+        <label
+          key="Entrega3"
+          className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white"
+        >
           <input
             type="radio"
             name="estado_entrega"
             value="3"
             className="text-primary focus:ring-primary"
             onChange={() => {
-              setIsRadioSelect("4");
+              setIsRadioSelect("3");
             }}
           />
           Entregado

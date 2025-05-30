@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlmodel import Session, select, and_
 from sqlalchemy.orm import selectinload
 from models import Pedido, Entrega, Pedido_producto
@@ -21,7 +21,7 @@ def get_buscar_pedidos(
     id_usuario: Optional[str] = None,
     id_forma_pago: Optional[str] = None,
     id_entrega: Optional[str] = None,
-    id_estado_entrega: Optional[str] = None,
+    id_estado_entrega: Optional[list[str]] = Query(default=None),
     sesion: Session = Depends(get_session)
 ):
     try:
@@ -30,7 +30,7 @@ def get_buscar_pedidos(
         if id_pedido:
             filtros.append(Pedido.id_pedido == id_pedido)
         if id_estado_pedido:
-            filtros.append(Pedido.id_estado_pedido == id_estado_pedido)
+            filtros.append(Pedido.id_estado_pedido.in_(id_estado_pedido))
         if id_usuario:
             filtros.append(Pedido.id_usuario == id_usuario)
         if id_forma_pago:
@@ -46,7 +46,7 @@ def get_buscar_pedidos(
         )
 
         if id_estado_entrega:
-            query = query.join(Entrega).where(Entrega.id_estado_entrega == id_estado_entrega)
+            query = query.join(Entrega).where(Entrega.id_estado_entrega.in_(id_estado_entrega))
 
         if filtros:
             query = query.where(and_(*filtros))
@@ -100,9 +100,9 @@ def patch_pedido(
         sesion.add(db_pedido)
         sesion.commit()
         sesion.refresh(db_pedido)
+        return db_pedido
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al modificar el pedido: {str(e)}")
-    return pedido
 
 @router.patch("/estado_entrega/{id_pedido}", response_model=PedidoLeer)
 def actualizar_estado_entrega(

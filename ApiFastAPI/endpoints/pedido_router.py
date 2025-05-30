@@ -100,9 +100,9 @@ def patch_pedido(
         sesion.add(db_pedido)
         sesion.commit()
         sesion.refresh(db_pedido)
+        return db_pedido
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al modificar el pedido: {str(e)}")
-    return pedido
 
 @router.patch("/estado_entrega/{id_pedido}", response_model=PedidoLeer)
 def actualizar_estado_entrega(

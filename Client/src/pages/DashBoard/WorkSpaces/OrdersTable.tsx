@@ -15,6 +15,7 @@ import { tipoPagoActual } from "../../../utilities/tipoPagoActual";
 import VendedorUpdate from "../Forms/Orders/VendedorUpdate";
 import useAuthStore from "../../../store/useAuthStore";
 import ContadorUpdate from "../Forms/Orders/ContadorUpdate";
+import BodegueroUpdate from "../Forms/Orders/BodegueroUpdate";
 
 type ModalState =
   | { type: "create" }
@@ -98,6 +99,13 @@ function OrdersTable() {
           <VendedorUpdate
             key={123e8}
             id={modal.data.id_entrega!}
+            onClose={() => setModal({ type: null })}
+          />
+        )}
+        {modal.type === "update" && tokens?.autorization === "3" && (
+          <BodegueroUpdate
+            key={123e8}
+            id={modal.data.id_pedido!}
             onClose={() => setModal({ type: null })}
           />
         )}

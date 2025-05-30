@@ -9,7 +9,7 @@ type Props = {
   onClose: () => void;
 };
 
-function VendedorUpdate({ id, onClose }: Props) {
+function BodegueroUpdate({ id, onClose }: Props) {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutatePatchPedidos();
   const [isRadioSelect, setIsRadioSelect] = useState("");
@@ -44,10 +44,22 @@ function VendedorUpdate({ id, onClose }: Props) {
     <>
       {isPending && <LoadingOverlay />}
       <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
-        Modificar un pedido (Vendedor)
+        Modificar un pedido (Bodeguero)
       </h1>
       <div className="grid grid-cols-2 h-30 gap-2">
         <label key="Entrega4" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
+          <input
+            type="radio"
+            name="estado_entrega"
+            value="1"
+            className="text-primary focus:ring-primary"
+            onChange={() => {
+              setIsRadioSelect("1");
+            }}
+          />
+          En proceso
+        </label>
+        <label key="Entrega3" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
           <input
             type="radio"
             name="estado_entrega"
@@ -58,18 +70,6 @@ function VendedorUpdate({ id, onClose }: Props) {
             }}
           />
           Completado
-        </label>
-        <label key="Entrega3" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
-          <input
-            type="radio"
-            name="estado_entrega"
-            value="3"
-            className="text-primary focus:ring-primary"
-            onChange={() => {
-              setIsRadioSelect("4");
-            }}
-          />
-          Entregado
         </label>
       </div>
 
@@ -84,4 +84,4 @@ function VendedorUpdate({ id, onClose }: Props) {
   );
 }
 
-export default VendedorUpdate;
+export default BodegueroUpdate;

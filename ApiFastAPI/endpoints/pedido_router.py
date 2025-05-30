@@ -21,6 +21,7 @@ def get_buscar_pedidos(
     id_usuario: Optional[str] = None,
     id_forma_pago: Optional[str] = None,
     id_entrega: Optional[str] = None,
+    id_estado_entrega: Optional[str] = None,
     sesion: Session = Depends(get_session)
 ):
     try:
@@ -44,11 +45,14 @@ def get_buscar_pedidos(
             selectinload(Pedido.forma_pago)
         )
 
+        if id_estado_entrega:
+            query = query.join(Entrega).where(Entrega.id_estado_entrega == id_estado_entrega)
+
         if filtros:
             query = query.where(and_(*filtros))
         
         #ordena por estado de pedido y fecha
-        query = query.order_by(Pedido.fecha.asc())
+        query = query.order_by(Pedido.fecha.desc())
         pedidos = sesion.exec(query).all()
 
     except Exception as e:

@@ -5,32 +5,32 @@ import useAuthStore from "../../../store/useAuthStore";
 
 type props = {
   id: string;
-  PedidoActualizar: unknown;
+  newEntrega: unknown;
 };
 
 const axiosQuery = async (
   id: string,
-  PedidoActualizar: unknown,
+  newEntrega: unknown,
   access_token: string
 ) => {
   return await axios.patch(
-    `http://127.0.0.1:8000/api/pedidos/${id}`,
-    PedidoActualizar,
+    `http://127.0.0.1:8000/api/pedidos/estado_entrega/${id}`,
+    newEntrega,
     { headers: { Authorization: `Bearer ${access_token}` } }
   );
 };
 
-function useMutatePatchPedidos() {
+function useMutatePatchEntrega() {
   const { tokens, logout, setAuth } = useAuthStore();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: async ({ id, PedidoActualizar }: props) => {
+    mutationFn: async ({ id, newEntrega }: props) => {
       if (!tokens || !tokens.access_token) {
         logout();
         return;
       }
       try {
-        const response = await axiosQuery(id, PedidoActualizar, tokens.access_token);
+        const response = await axiosQuery(id, newEntrega, tokens.access_token);
         return response.data;
       } catch (error: any) {
         const errorAxios = error as AxiosError;
@@ -50,7 +50,7 @@ function useMutatePatchPedidos() {
             /* Se realiza la consulta nuevamente con el nuevo auth */
             const retryResponse = await axiosQuery(
               id,
-              PedidoActualizar,
+              newEntrega,
               response.data.access_token
             );
             return retryResponse.data;
@@ -66,4 +66,4 @@ function useMutatePatchPedidos() {
   });
 }
 
-export default useMutatePatchPedidos;
+export default useMutatePatchEntrega;

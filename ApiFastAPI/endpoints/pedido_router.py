@@ -30,7 +30,7 @@ def get_buscar_pedidos(
         if id_pedido:
             filtros.append(Pedido.id_pedido == id_pedido)
         if id_estado_pedido:
-            filtros.append(Pedido.id_estado_pedido.in_(id_estado_pedido))
+            filtros.append(Pedido.id_estado_pedido == id_estado_pedido)
         if id_usuario:
             filtros.append(Pedido.id_usuario == id_usuario)
         if id_forma_pago:

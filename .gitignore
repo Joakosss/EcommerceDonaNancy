@@ -58,3 +58,5 @@ Client/.eslintcache
 # === EXCEPCIONES (archivos de configuración que SÍ queremos commitear) ===
 !.vscode/extensions.json
 !.vscode/settings.json.example
+
+*/uploads/*

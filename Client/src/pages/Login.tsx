@@ -1,9 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/NancySmall.svg";
-import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { usePostMutation } from "../hooks/mutation/UsePostMutation";
-import useAuthStore, { TokenType } from "../store/useAuthStore";
+import useAuthStore from "../store/useAuthStore";
+import useMutatePostLogin from "../hooks/NewQuerys/userQuerys/useMutatePostLogin";
 
 type FormType = {
   username: string;
@@ -12,28 +11,25 @@ type FormType = {
 
 function Login() {
   const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>();
 
-  const { setAuth } = useAuthStore();
-
-  const { mutate, error } = usePostMutation<TokenType, AxiosError>(
-    "http://127.0.0.1:8000/api/auth/login",
-    {
-      onSuccess: (data) => {
-        setAuth(data);
-        if (data.autorization === "1") navigate("/");
-        else navigate("DashBoard/");
-      }
-    }
-  );
+  const { mutate, error } = useMutatePostLogin();
 
   const onSubmit = (data: FormType) => {
     const params = new URLSearchParams(data);
-    mutate(params);
+    mutate(params, {
+      onSuccess: (data) => {
+        setAuth(data);
+        if (data.autorization === "1") navigate("/");
+        else navigate("/dashboard");
+      },
+    });
   };
 
   return (

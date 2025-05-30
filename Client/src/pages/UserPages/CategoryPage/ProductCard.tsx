@@ -30,7 +30,7 @@ function ProductCard({ product }: ProductCardProps) {
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       {/* Imagen */}
       <div className="h-56 w-full">
-        <a href="" onClick={() => handleNavigate(product.id!)}>
+        <a href="" onClick={() => handleNavigate(product.id_producto!)}>
           <img
             className="w-full h-full object-contain"
             src={product.link_foto}
@@ -43,18 +43,20 @@ function ProductCard({ product }: ProductCardProps) {
         <div className="h-[48px] max-h-[48px]">
           <a
             href=""
-            onClick={() => handleNavigate(product.id!)}
-            className="min-h-[150px] text-lg font-semibold leading-tight text-gray-900 hover:underline "
+            onClick={() => handleNavigate(product.id_producto!)}
+            className="line-clamp-2 text-lg font-semibold leading-tight text-gray-900 hover:underline"
           >
             {product.nombre}
           </a>
         </div>
         {/* Precio */}
-        <div className="mt-4 flex items-center justify-between gap-4">
-          <p className="text-xl font-bold leading-tight text-gray-900">
+        <div className="mt-1 flex flex-col  gap-2">
+          <p className="text-xl font-medium leading-tight text-gray-900">
             {exchange === "CLP"
               ? `$${generateChileanPrice(product.precio)}`
-              : `$${Math.round((product.precio / DolarCache!) * 100) / 100} USD`}
+              : `$${
+                  Math.round((product.precio / DolarCache!) * 100) / 100
+                } USD`}
           </p>
           <MyButton
             type="button"

@@ -1,6 +1,6 @@
-import { useDeleteMutation } from "../../../../hooks/mutation/useDeleteMutation";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import useMutateDeleteProduct from "../../../../hooks/NewQuerys/productQuerys/useMutateDeleteProduct";
 
 type Props = {
   idProduct: string;
@@ -9,9 +9,10 @@ type Props = {
 
 function DeleteProduct({ idProduct, onClose }: Props) {
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useDeleteMutation(
-    `http://localhost:3000/productos/${idProduct}`,
-    {
+  const { mutate, isPending } = useMutateDeleteProduct();
+
+  const handleDelete = () => {
+    mutate(idProduct, {
       onSuccess: () => {
         toast.success("Producto eliminado ", {
           hideProgressBar: true,
@@ -21,15 +22,16 @@ function DeleteProduct({ idProduct, onClose }: Props) {
         queryClient.invalidateQueries({ queryKey: ["productos"] });
         onClose();
       },
-      onError: () => {
+      onError: (error) => {
         toast.error("Producto no eliminado", {
           hideProgressBar: true,
           position: "top-left",
           autoClose: 1000,
         });
       },
-    }
-  );
+    });
+  };
+
   return (
     <div className="relative p-4 text-center bg-white rounded-lg shadow  sm:p-5">
       <svg
@@ -40,9 +42,9 @@ function DeleteProduct({ idProduct, onClose }: Props) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         ></path>
       </svg>
       <p className="mb-4 text-gray-500 ">
@@ -60,7 +62,7 @@ function DeleteProduct({ idProduct, onClose }: Props) {
         <button
           type="submit"
           className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300   "
-          onClick={() => mutate()}
+          onClick={() => handleDelete()}
         >
           Sí, Estoy seguro
         </button>

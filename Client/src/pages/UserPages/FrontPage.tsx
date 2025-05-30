@@ -1,10 +1,10 @@
-import CategoryPreviews from "../../components/CategoryPreviews";
-import PromoSection from "../../components/PromoSection";
-import TrendingProducts from "../../components/TrendingProducts";
+import { lazy } from 'react';
 
-type Props = {};
+const CategoryPreviews = lazy(()=>import("../../components/CategoryPreviews") )
+const TrendingProducts = lazy(()=>import("../../components/TrendingProducts") )
+const PromoSection = lazy(()=>import("../../components/PromoSection") )
 
-function FrontPage({}: Props) {
+function FrontPage() {
   return (
     <>
       <CategoryPreviews />
@@ -15,3 +15,4 @@ function FrontPage({}: Props) {
 }
 
 export default FrontPage;
+

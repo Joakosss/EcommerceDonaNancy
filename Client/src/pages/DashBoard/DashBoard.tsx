@@ -1,18 +1,15 @@
 import { useState } from "react";
 import NancySmall from "../../images/NancySmall.svg";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import SideBar from "./SideBar";
-import ProductTable from "./WorkSpaces/ProductTable";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ToastContainer } from "react-toastify";
-import UserTable from "./WorkSpaces/UserTable";
 import { menuItems } from "../../constants/dashBoardMenuItems";
+import { FaBars } from "react-icons/fa6";
+import useAuthStore from "../../store/useAuthStore";
 
 function DashBoard() {
-
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-  const [isSelected, setIsSelected] = useState<string | null>(null);
-  const [isHovered, setIsHovered] = useState<string | null>(null);
 
   const [animationParent] = useAutoAnimate();
 
@@ -22,53 +19,14 @@ function DashBoard() {
         setIsSidebarOpen={setIsSidebarOpen}
         isSidebarOpen={isSidebarOpen}
       />
-      <SideBar isSidebarOpen={isSidebarOpen} setIsSelected={setIsSelected}/>
+      <SideBar isSidebarOpen={isSidebarOpen} />
       <div className="p-4 bg-gray-100">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 min-h-[89vh]">
           {/* Menu de opciones */}
-          <div className="grid grid-cols-4 gap-4 mb-4">
-            {menuItems.map(({ label, icon: Icon }) => (
-              <div
-                key={label}
-                className="flex items-center justify-center rounded-sm bg-white h-28 "
-              >
-                <button
-                  className="text-2xl text-gray-400 flex items-center justify-center flex-col"
-                  onMouseEnter={() => setIsHovered(label)}
-                  onMouseLeave={() => setIsHovered(null)}
-                  onClick={
-                    isSelected === label
-                      ? () => setIsSelected(null)
-                      : () => setIsSelected(label)
-                  }
-                >
-                  <Icon
-                    className={
-                      isHovered === label || isSelected === label
-                        ? "text-primary duration-250 size-14"
-                        : "size-12 duration-250"
-                    }
-                  />
-
-                  <p
-                    className={
-                      isHovered === label || isSelected === label
-                        ? "duration-250 text-primary text-sm md:text-xl"
-                        : "duration-250 text-gray-500 text-sm md:text-xl"
-                    }
-                  >
-                    {label}
-                  </p>
-                </button>
-              </div>
-            ))}
-          </div>
-          {/*  */}
+          <MenuDashBoard />
           {/* Tablas de actividades */}
           <div ref={animationParent} className="grid grid-cols-1 gap-4 ">
-            {isSelected === "Pedidos" && <UserTable key={"Pedidos"} />}
-            {isSelected === "Productos" && <ProductTable key={"Productos"} />}
-            {isSelected === "Usuarios" && <UserTable key={"Usuarios"} />}
+            <Outlet />
           </div>
         </div>
       </div>
@@ -104,25 +62,13 @@ function NavbarDashBoard({
                 setIsSidebarOpen(!isSidebarOpen);
               }}
               type="button"
-              className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer"
             >
               <span className="sr-only">Abrir sideBar</span>
-              <svg
-                className="w-6 h-6"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clipRule="evenodd"
-                  fillRule="evenodd"
-                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-                ></path>
-              </svg>
+              <FaBars size={20} />
             </button>
             {/* Logo */}
-            <Link to={"/dashBoard"} className="flex ms-2 md:me-24">
+            <Link to={"/dashboard"} className="flex ms-2 md:me-24">
               <img src={NancySmall} className="h-10 me-3" alt="FlowBite Logo" />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-primary">
                 Doña Nancy
@@ -132,5 +78,65 @@ function NavbarDashBoard({
         </div>
       </div>
     </nav>
+  );
+}
+
+function MenuDashBoard() {
+  const { tokens, logout } = useAuthStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isHovered, setIsHovered] = useState<string | null>(null);
+
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!tokens || !tokens.autorization) {
+      logout();
+      return;
+    }
+    if (item.label === "Usuarios") {
+      return tokens.autorization === "0";
+    }
+    if (item.label === "Productos") {
+      return tokens.autorization !== "4";
+    }
+    
+    return true;
+  });
+
+  return (
+    <div className="grid grid-cols-4 gap-4 mb-4">
+      {filteredMenuItems.map(({ label, icon: Icon }) => (
+        <div
+          key={label}
+          className="flex items-center justify-center rounded-sm bg-white h-28 "
+        >
+          <button
+            className="text-2xl text-gray-400 flex items-center justify-center flex-col"
+            onMouseEnter={() => setIsHovered(label)}
+            onMouseLeave={() => setIsHovered(null)}
+            onClick={() => navigate(`${label.toLowerCase()}/`)}
+          >
+            <Icon
+              className={
+                location.pathname === `/dashboard/${label.toLowerCase()}/` ||
+                isHovered === label
+                  ? "text-primary duration-250 size-14"
+                  : "size-12 duration-250"
+              }
+            />
+
+            <p
+              className={
+                location.pathname === `/dashboard/${label}/` ||
+                isHovered === label
+                  ? "duration-250 text-primary text-sm md:text-xl"
+                  : "duration-250 text-gray-500 text-sm md:text-xl"
+              }
+            >
+              {label}
+            </p>
+          </button>
+        </div>
+      ))}
+    </div>
   );
 }

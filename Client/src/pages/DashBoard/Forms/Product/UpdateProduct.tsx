@@ -3,11 +3,12 @@ import { ProductType } from "../../../../types/ProductType";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
-import { productCategoryTypesConstants } from "../../../../constants/productCategoryTypesConstants";
-import { usePatchMutation } from "../../../../hooks/mutation/usePatchMutation";
 import Input from "../../../../components/FormComponents/Input";
 import Textarea from "../../../../components/FormComponents/Textarea";
 import Select from "../../../../components/FormComponents/Select";
+import useMutatePatchProduct from "../../../../hooks/NewQuerys/productQuerys/useMutatePatchProduct";
+import { marcasConstants } from "../../../../constants/marcasConstants";
+import { modelosConstants } from "../../../../constants/modelosConstants";
 
 type Props = {
   product: ProductType;
@@ -19,7 +20,8 @@ type FormType = {
   link_foto?: string;
   precio: number;
   stock: number;
-  id_categoria: string;
+  id_marca: string;
+  id_modelo: string;
 };
 
 function UpdateProduct({ product, onClose }: Props) {
@@ -38,32 +40,32 @@ function UpdateProduct({ product, onClose }: Props) {
     },
   }); //Manejamos el formulario
 
-  const { mutate, isPending } = usePatchMutation<ProductType>(
-    `http://localhost:3000/productos/${product.id}`,
-    {
-      onSuccess: () => {
-        toast.success("Producto Modificado ", {
-          hideProgressBar: true,
-          position: "top-left",
-          autoClose: 1000,
-        });
-        queryClient.invalidateQueries({ queryKey: ["productos"] });
-        onClose();
-      },
-      onError: () => {
-        toast.error("Producto no modificado", {
-          hideProgressBar: true,
-          position: "top-left",
-          autoClose: 1000,
-        });
-      },
-    }
-  );
+  const { mutate, isPending } = useMutatePatchProduct();
 
   const onSubmit = (data: FormType) => {
     data.precio = Number(data.precio);
     data.stock = Number(data.stock);
-    mutate(data);
+    mutate(
+      { id: product.id_producto!, newProduct: data },
+      {
+        onSuccess: () => {
+          toast.success("Producto Modificado ", {
+            hideProgressBar: true,
+            position: "top-left",
+            autoClose: 1000,
+          });
+          queryClient.invalidateQueries({ queryKey: ["productos"] });
+          onClose();
+        },
+        onError: (error) => {
+          toast.error("Producto no modificado", {
+            hideProgressBar: true,
+            position: "top-left",
+            autoClose: 1000,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -127,10 +129,16 @@ function UpdateProduct({ product, onClose }: Props) {
           })}
         />
         <Select
-          key={"categoriaSelect"}
+          key={"marcasSelect"}
+          label="Marca de producto* "
+          options={marcasConstants}
+          {...register("id_marca")}
+        />
+        <Select
+          key={"ModeloSelect"}
           label="Tipo de producto* "
-          options={productCategoryTypesConstants}
-          {...register("id_categoria")}
+          options={modelosConstants}
+          {...register("id_modelo")}
         />
         <button
           type="submit"

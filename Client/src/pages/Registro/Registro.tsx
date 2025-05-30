@@ -11,7 +11,8 @@ import Paso0 from "./Paso0";
 import { UsuarioType } from "../../types/UsuarioType";
 import { AxiosError } from "axios";
 import Modal from "../../components/Modal";
-import NancySmall from "../../images/NancySmall.svg"
+import NancySmall from "../../images/NancySmall.svg";
+import useMutatePostRegister from "../../hooks/NewQuerys/userQuerys/useMutatePostRegister";
 type FormType = {
   nombre_usuario: string;
   contrasenia: string;
@@ -37,17 +38,9 @@ function Registro() {
   const nextStep = () => setStep((prev) => prev + 1);
   const ChangeStep = (step: number) => setStep(step);
 
-  const { mutate, error } = usePostMutation<UsuarioType, AxiosError>(
-    "http://127.0.0.1:8000/api/usuarios/",
-    {
-      onSuccess: () => {
-        setIsModal(true);
-      },
-      onError(error) {
-        alert(error);
-      },
-    }
-  );
+  const { mutate, error } = useMutatePostRegister();
+
+
 
   const onSubmit = (data: FormType) => {
     const { confirmar_contrasenia, ...rest } = data;
@@ -55,7 +48,11 @@ function Registro() {
       ...rest,
       id_perfil: "1",
     };
-    mutate(usuarioConPerfil);
+    mutate(usuarioConPerfil, {
+      onSuccess: () => {
+        setIsModal(true);
+      },
+    });
   };
 
   return (
@@ -121,10 +118,13 @@ function Registro() {
       </section>
       <Modal isOpen={isModal} onClose={() => navigate("/login")}>
         <div className="flex flex-col justify-center items-center">
-        <h2 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">¡Te registraste con éxito!</h2>
-        <img src={NancySmall} alt="logo nancy" className="w-20" />
-        <p className="text-md font-medium md:text-lg">Nos alegra tenerte aquí.</p>
-
+          <h2 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
+            ¡Te registraste con éxito!
+          </h2>
+          <img src={NancySmall} alt="logo nancy" className="w-20" />
+          <p className="text-md font-medium md:text-lg">
+            Nos alegra tenerte aquí.
+          </p>
         </div>
         <button
           type="button"

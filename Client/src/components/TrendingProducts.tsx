@@ -1,41 +1,29 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { ProductType } from "../types/ProductType";
 import { generateChileanPrice } from "../utilities/generateChileanPrice";
 import { useNavigate } from "react-router-dom";
 import { generateSlug } from "../utilities/generateSlug";
 import cartC from "../images/CartC.svg";
 import useExchange from "../store/useExchangeStore";
+import useQueryGetTopSales from "../hooks/NewQuerys/useQueryGetTopSales";
 
 export default function Example() {
   const queryClient = useQueryClient();
   const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
   const { exchange } = useExchange();
-  const {
-    data: products,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["TrendingProducts"],
-    queryFn: async (): Promise<ProductType[]> => {
-      const response = await axios.get(
-        "http://localhost:3000/PedidosPopulares"
-      );
-      return response.data;
-    },
-  });
+  const { data: products, isLoading, isError } = useQueryGetTopSales();
 
   const navigate = useNavigate();
 
   const handleNavigate = (product: ProductType) => {
     const slugName = generateSlug(product.nombre);
-    navigate(`/producto/${product.id}/${slugName}`);
+    navigate(`/producto/${product.id_producto}/${slugName}`);
   };
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-2xl font-bold tracking-tight text-primary">
           Productos Populares
         </h2>
 
@@ -50,7 +38,7 @@ export default function Example() {
             !isError &&
             products &&
             products.map((product) => (
-              <div key={product.id} className="group relative">
+              <div key={product.id_producto} className="group relative cursor-pointer">
                 <img
                   alt={product.nombre}
                   src={product.link_foto}
@@ -60,7 +48,7 @@ export default function Example() {
                 />
                 <div className="mt-4 h-[48px] max-h-[48px]">
                   <h3 className="text-sm text-gray-700">
-                    <a href="" onClick={() => handleNavigate(product)}>
+                    <a onClick={() => handleNavigate(product)}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {product.nombre}
                     </a>

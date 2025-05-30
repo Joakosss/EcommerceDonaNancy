@@ -67,7 +67,7 @@ def get_usuario_id(
 @router.post("/", response_model=UsuarioLeer) 
 def post_usuario(usuario: UsuarioCrear, session: Session = Depends(get_session)):
     try:
-
+        print(usuario)
         #Crea el nombre de usuario si no se ingresa
         if not usuario.nombre_usuario:
             usuario.nombre_usuario = crear_nombreUsuario(usuario.p_nombre, usuario.p_apellido, usuario.run_usuario)
@@ -120,9 +120,9 @@ def patch_usuario(
         if not db_usuario:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
         
-        contrasenia = crear_contrasenia(usuario.contrasenia) if usuario.contrasenia else None
         usuario_data = usuario.model_dump(exclude_unset=True)#excluye los datos que no se han modificado
-        usuario_data["contrasenia"] = contrasenia
+        if "contrasenia" in usuario_data:
+            usuario_data["contrasenia"] = crear_contrasenia(usuario_data["contrasenia"]) 
 
         for key, value in usuario_data.items():
             setattr(db_usuario, key, value)

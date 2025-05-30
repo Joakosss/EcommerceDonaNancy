@@ -1,33 +1,38 @@
 import { useForm } from "react-hook-form";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
-import { ProductType } from "../../../../types/ProductType";
 import { toast } from "react-toastify";
-import { usePostMutation } from "../../../../hooks/mutation/UsePostMutation";
-import { productCategoryTypesConstants } from "../../../../constants/productCategoryTypesConstants";
 import { useQueryClient } from "@tanstack/react-query";
 import Input from "../../../../components/FormComponents/Input";
 import Textarea from "../../../../components/FormComponents/Textarea";
 import Select from "../../../../components/FormComponents/Select";
+import useMutatePostProduct from "../../../../hooks/NewQuerys/productQuerys/useMutatePostProduct";
+import { marcasConstants } from "../../../../constants/marcasConstants";
+import { modelosConstants } from "../../../../constants/modelosConstants";
 
 type FormType = {
   nombre: string;
   descripcion: string;
-  link_foto?: string;
+  link_foto: string;
   precio: number;
   stock: number;
-  id_categoria: string;
+  id_marca: string;
+  id_modelo: string;
 };
 function CreateProduct({ onClose }: { onClose: () => void }) {
   const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutatePostProduct();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>(); //Manejamos el formulario
 
-  const { mutate, isPending } = usePostMutation<ProductType>(
-    "http://localhost:3000/productos",
-    {
+  const onSubmit = (data: FormType) => {
+    data.precio = Number(data.precio);
+    data.stock = Number(data.stock);
+    data.link_foto = data.link_foto || "";
+    mutate(data, {
       onSuccess: () => {
         toast.success("Producto registrado", {
           hideProgressBar: true,
@@ -37,20 +42,14 @@ function CreateProduct({ onClose }: { onClose: () => void }) {
         queryClient.invalidateQueries({ queryKey: ["productos"] });
         onClose();
       },
-      onError: () => {
+      onError: (error) => {
         toast.error("Producto no registrado", {
           hideProgressBar: true,
           position: "top-left",
           autoClose: 1000,
         });
       },
-    }
-  );
-
-  const onSubmit = (data: FormType) => {
-    data.precio = Number(data.precio);
-    data.stock = Number(data.stock);
-    mutate(data);
+    });
   };
 
   return (
@@ -59,10 +58,7 @@ function CreateProduct({ onClose }: { onClose: () => void }) {
       <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
         Registrando un producto
       </h1>
-      <form
-        className="space-y-4 md:space-y-6"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           key={"nombreInput"}
           label="Nombre* "
@@ -114,10 +110,16 @@ function CreateProduct({ onClose }: { onClose: () => void }) {
           })}
         />
         <Select
-          key={"categoriaSelect"}
+          key={"marcasSelect"}
+          label="Marca de producto* "
+          options={marcasConstants}
+          {...register("id_marca")}
+        />
+        <Select
+          key={"ModeloSelect"}
           label="Tipo de producto* "
-          options={productCategoryTypesConstants}
-          {...register("id_categoria")}
+          options={modelosConstants}
+          {...register("id_modelo")}
         />
         <button
           type="submit"

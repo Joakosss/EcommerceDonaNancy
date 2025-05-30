@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import happyCart from "../../../images/HappyCart.svg"
 
-type Props = {};
-
-function Success({}: Props) {
+function Success() {
   const { empty } = useShoppingCartStore();
   useEffect(() => {
     empty();

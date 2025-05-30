@@ -17,9 +17,9 @@ export const useGetMutation = <
 ): UseMutationResult<TData, TError, TVariables, TContext> => {
   return useMutation({
     mutationKey,
-    mutationFn: async (filters: TVariables) => {
+    mutationFn: async (variables: TVariables) => {
       try {
-        const response = await axios.get<TData>(url, { params: filters });
+        const response = await axios.get<TData>(url, { params: variables });
         return response.data;
       } catch (error) {
         throw error;

@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../../../components/Spinner";
 import { FaCirclePlus } from "react-icons/fa6";
 import Modal from "../../../components/Modal";
 import { FaSearch } from "react-icons/fa";
-import { useGetQuery } from "../../../hooks/query/useGetQuery";
 import DeleteUser from "../Forms/User/DeleteUser";
 import { UsuarioType } from "../../../types/UsuarioType";
 import CreateUser from "../Forms/User/CreateUser";
 import { userTypesConstants } from "../../../constants/userTypesConstants";
 import UpdateUser from "../Forms/User/UpdateUser";
+import useQueryGetUsers from "../../../hooks/NewQuerys/userQuerys/useQueryGetUsers";
 
 type ModalState =
   | { type: "create" }
@@ -17,21 +17,28 @@ type ModalState =
   | { type: null };
 
 function ProductTable() {
-  const [isFilter, setIsFilter] = useState<string>("");
-  const {
-    // Trae los productos
-    isLoading,
-    isError,
-    data: usuarios,
-  } = useGetQuery<UsuarioType[]>(
-    ["usuarios", isFilter], //key donde se guarda y filtros
-    "http://localhost:3000/Usuarios",
-    {
-      params: isFilter ? { id_perfil: isFilter } : {}, // aplica filtro o no segun corresponda
-    }
-  );
-
+  const [isPerfilFilter, setIsPerfilFilter] = useState<string>("");
+  /* dos useState para filtrar el nombre */
+  const [isPreNameFilter, setIsPreNameFilter] = useState<string>("");
+  const [isNameFilter, setIsNameFilter] = useState<string>("");
   const [modal, setModal] = useState<ModalState>({ type: null });
+
+  const {
+    data: usuarios,
+    isError,
+    isLoading,
+  } = useQueryGetUsers({ id_perfil: isPerfilFilter, p_nombre: isNameFilter });
+
+  /* UseEffect para no mandar consultas cada vez que modificamos el input */
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setIsNameFilter(isPreNameFilter);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [isPreNameFilter]);
 
   return (
     <div className="relative sm:rounded-lg border-2 border-primary/40">
@@ -40,7 +47,7 @@ function ProductTable() {
           Nuestros Usuarios
         </h2>
         <div className="flex justify-between">
-          <form className="flex items-center max-w-sm mx-auto">
+          <div className="flex items-center max-w-sm mx-auto">
             <label htmlFor="simple-search" className="sr-only">
               Buscar
             </label>
@@ -53,11 +60,20 @@ function ProductTable() {
                 id="simple-search"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                 placeholder="Buscar por nombre"
+                onChange={(e) => setIsPreNameFilter(e.target.value)}
+                value={isPreNameFilter}
               />
             </div>
             <button
-              type="submit"
+              type="button"
               className="p-2.5 ms-2 text-sm font-medium text-white bg-primary rounded-lg border  hover:bg-primary/80 focus:ring-4 cursor-pointer"
+              onClick={
+                isPreNameFilter !== "" && isPreNameFilter !== isNameFilter
+                  ? () => {
+                      setIsNameFilter(isPreNameFilter);
+                    }
+                  : () => {}
+              }
             >
               <svg
                 className="w-4 h-4"
@@ -76,15 +92,15 @@ function ProductTable() {
               </svg>
               <span className="sr-only">Buscar</span>
             </button>
-          </form>
+          </div>
           <div className="flex gap-8">
             <Select
-              onChange={(e) => setIsFilter(e.target.value)}
-              value={isFilter}
+              onChange={(e) => setIsPerfilFilter(e.target.value)}
+              value={isPerfilFilter}
             />
             <button
               className="m-1 flex items-center justify-center flex-col"
-              onClick={() => setModal({type:"create"})}
+              onClick={() => setModal({ type: "create" })}
             >
               <FaCirclePlus
                 size={30}
@@ -107,30 +123,33 @@ function ProductTable() {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500  ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Nombre
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Correo
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Telefono
+                <th scope="col" className="px-6 py-3 text-center">
+                  Teléfono
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-center">
                   Tipo cuenta
+                </th>
+                <th scope="col" className="px-6 py-3 text-center">
+                  Opciones
                 </th>
               </tr>
             </thead>
             <tbody>
-              {usuarios?.map((usuario: UsuarioType) => (
+              {usuarios.map((usuario: UsuarioType) => (
                 <Tr
-                  key={usuario.id}
+                  key={usuario.id_usuario}
                   usuario={usuario}
                   UpdateModal={() =>
                     setModal({ type: "update", data: usuario })
                   }
                   deleteModal={() =>
-                    setModal({ type: "delete", data: usuario.id! })
+                    setModal({ type: "delete", data: usuario.id_usuario! })
                   }
                 />
               ))}
@@ -145,9 +164,7 @@ function ProductTable() {
         isOpen={modal.type !== null}
         onClose={() => setModal({ type: null })}
       >
-        {modal.type === "create" && (
-          <CreateUser onClose={() => setModal({ type: null })} />
-        )}
+        {modal.type === "create" && <CreateUser />}
         {modal.type === "update" && (
           <UpdateUser
             user={modal.data}
@@ -176,18 +193,28 @@ function Tr({
   UpdateModal: (arg: UsuarioType) => void;
   deleteModal: (arg: string) => void;
 }) {
+  const UserTypeSearch = (id_tipo_cuenta: string) => {
+    return userTypesConstants.find(
+      (userType) => userType.id === id_tipo_cuenta
+    );
+  };
+
   return (
     <tr className="bg-white border-b   border-gray-200 hover:bg-gray-50 ">
-      <th
+      <td
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+        className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap "
       >
         {usuario.p_nombre} {usuario.p_apellido}
-      </th>
-      <td className="px-6 py-4">{usuario.correo}</td>
-      <td className="px-6 py-4">{usuario.telefono}</td>
-      <td className="px-6 py-4">{usuario.id_perfil}</td>
-      <td className="px-6 py-4 flex flex-col">
+      </td>
+      <td className="px-6 py-4 text-center">{usuario.correo}</td>
+      <td className="px-6 py-4 text-center">{usuario.telefono}</td>
+      <td className="px-6 py-4 text-center">
+        {usuario.id_perfil
+          ? UserTypeSearch(usuario.id_perfil)?.descripcion ?? "Desconocido"
+          : "Desconocido"}
+      </td>
+      <td className="px-6 py-4 text-center flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
@@ -199,7 +226,7 @@ function Tr({
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"
           onClick={() => {
-            deleteModal(usuario.id!);
+            deleteModal(usuario.id_usuario!);
           }}
         >
           Eliminar

@@ -12,7 +12,14 @@ import MyPurchasesPage from "./UserPages/MyPurchasesPage/MyPurchasesPage";
 import DashBoard from "./DashBoard/DashBoard";
 import Page404 from "./Page404";
 import DashBoardGuard from "./Guards/DashBoardGuard";
-
+import ProfilePage from "./UserPages/Profile/ProfilePage";
+import UpdatePass from "./DashBoard/UpdatePass";
+import UserTable from "./DashBoard/WorkSpaces/UserTable";
+import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
+import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
+import ProcessPay from "./UserPages/reponseShopping/ProcessPay";
+import InformesTable from "./DashBoard/WorkSpaces/InformesTable";
+import ChangePassAdmin from "./DashBoard/ChangePassAdmin";
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -23,23 +30,32 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <FrontPage /> },
       { path: "producto/:id/:slug", element: <ProductPage /> },
-      { path: "productos/", element: <CategoryPage /> },
+      { path: "Productos/:category/", element: <CategoryPage /> },
       { path: "carrito/", element: <ShopingCartPage /> },
       { path: "misCompras/", element: <MyPurchasesPage /> },
-      { path: "success/", element: <Success /> }, //esto es lo que sale despues de venta exitosa
+      { path: "success/:idOrden", element: <Success /> }, //esto es lo que sale despues de venta exitosa
+      { path: "processPay/:idPedido", element: <ProcessPay /> }, //esto es lo que sale despues de venta exitosa con transferencia
+      { path: "miPerfil/:id", element: <ProfilePage /> },
       { path: "failure/:error", element: <Failure /> },
     ],
   },
   {
     element: <DashBoardGuard />,
     children: [
-      { path: "DashBoard/", element: <DashBoard />, children: [] },
-      { path: "Administrador/", element: <Layout />, children: [] },
-      { path: "Vendedor/", element: <Layout />, children: [] },
-      { path: "Bodeguero/", element: <Layout />, children: [] },
-      { path: "Contador/", element: <Layout />, children: [] },
+      {
+        path: "dashboard/",
+        element: <DashBoard />,
+        children: [
+          { path: "usuarios/", element: <UserTable /> },
+          { path: "productos/", element: <ProductTable /> },
+          { path: "informes/", element: <InformesTable /> },
+          { path: "pedidos/", element: <OrdersTable /> },
+          { path: "cambiar_clave/", element: <UpdatePass /> },
+        ],
+      },
     ],
   },
+  { path: "admin/changePassword", element: <ChangePassAdmin /> },
   { path: "*", element: <Page404 /> },
 ]);
 

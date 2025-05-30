@@ -7,6 +7,7 @@ import createOrden from "../services/createOrden.js";
 import createPedidoProducto from "../services/createPedidoProducto.js";
 import InsertPedidoProducto from "../services/InsertPedidoProducto.js";
 import { v4 } from "uuid";
+import updateStock from "../services/updateStock.js";
 const router = Router();
 
 //Crear pedido
@@ -48,6 +49,8 @@ router.post(
 
       //insertamos los productos comprados
       await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
+
+      await updateStock({ cone, productDetails });
 
       await cone.execute("COMMIT"); //si todo sale bien commit
 

@@ -11,6 +11,7 @@ import InsertPedidoProducto from "../services/InsertPedidoProducto.js";
 import deletePedidoCascade from "../services/deletePedidoCascade.js";
 import updatePedido from "../services/updatePedido.js";
 import upload from "../middleware/filesStorage.js";
+import updateStock from "../services/updateStock.js";
 const router = Router();
 
 router.post(
@@ -40,6 +41,8 @@ router.post(
         pedido,
       });
       await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
+
+      await updateStock({ cone, productDetails });
 
       await cone.execute("COMMIT"); //si todo sale bien commit
 

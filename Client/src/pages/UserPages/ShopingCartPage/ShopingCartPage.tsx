@@ -91,7 +91,6 @@ function ShopingCartPage() {
         },
         {
           onSuccess: (data) => {
-            alert("entraste");
             redirectToWebPay(data.token, data.url);
           },
           onError: (err) => {

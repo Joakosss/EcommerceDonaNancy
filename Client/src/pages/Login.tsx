@@ -25,7 +25,6 @@ function Login() {
     const params = new URLSearchParams(data);
     mutate(params, {
       onSuccess: (data) => {
-        console.log(data)
         setAuth(data);
         if (data.autorization === "1") navigate("/");
         else navigate("/dashboard");

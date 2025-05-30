@@ -43,7 +43,6 @@ function CreateProduct({ onClose }: { onClose: () => void }) {
         onClose();
       },
       onError: (error) => {
-        console.log(error.stack);
         toast.error("Producto no registrado", {
           hideProgressBar: true,
           position: "top-left",

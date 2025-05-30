@@ -22,7 +22,6 @@ function useQueryGetUsers(filtros?: Record<string, string | number | boolean>) {
             headers: { Authorization: `Bearer ${tokens?.access_token}` },
           }
         );
-        console.log(response.data)
         return response.data;
       } catch (error: any) {
         const errorAxios = error as AxiosError;

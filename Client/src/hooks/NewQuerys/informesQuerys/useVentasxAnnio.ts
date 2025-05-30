@@ -25,7 +25,6 @@ function useVentasxAnnio() {
       }
       try {
         const response = await axiosQuery(tokens.access_token);
-        console.log(response.data);
         return response.data;
       } catch (error: any) {
         const errorAxios = error as AxiosError;

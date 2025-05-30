@@ -155,7 +155,7 @@ function MyPurchasesPage() {
                       <ZonaEntrega compra={compra} />
                     </div>
                     {/* Actions */}
-                    <div className="border-t border-gray-100 px-6 py-4 bg-gray-50">
+                   {/*  <div className="border-t border-gray-100 px-6 py-4 bg-gray-50">
                       <div className="flex justify-end space-x-4">
                         <button
                           className="px-4 py-2 bg-red-600 rounded-md text-sm font-medium text-white cursor-pointer disabled:opacity-50 disabled:cursor-default"
@@ -171,7 +171,7 @@ function MyPurchasesPage() {
                           Cancelar Compra
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

@@ -16,6 +16,7 @@ import VendedorUpdate from "../Forms/Orders/VendedorUpdate";
 import useAuthStore from "../../../store/useAuthStore";
 import ContadorUpdate from "../Forms/Orders/ContadorUpdate";
 import BodegueroUpdate from "../Forms/Orders/BodegueroUpdate";
+import { generatePdfBodeguero } from "../../../utilities/generatePdfBodeguero";
 
 type ModalState =
   | { type: "create" }
@@ -63,9 +64,18 @@ function OrdersTable() {
                 <th scope="col" className="px-6 py-3 text-center">
                   Forma pago
                 </th>
-                <th scope="col" className="px-6 py-3 text-center">
-                  comprobante
-                </th>
+                {tokens?.autorization &&
+                  ["3", "0"].includes(tokens.autorization) && (
+                    <th scope="col" className="px-6 py-3 text-center">
+                      Productos
+                    </th>
+                  )}
+                {tokens?.autorization &&
+                  ["4", "0"].includes(tokens.autorization) && (
+                    <th scope="col" className="px-6 py-3 text-center">
+                      Comprobante
+                    </th>
+                  )}
                 <th scope="col" className="px-6 py-3 text-center">
                   opciones
                 </th>
@@ -165,20 +175,35 @@ function Tr({
       <td className="px-6 py-4 text-center">
         {tipoPagoActual(pedido.id_forma_pago)?.descripcion || "No hay"}
       </td>
-      <td className="px-6 py-4 text-center">
-        {pedido.comprobante_pago ? (
-          <a
-            href={`http://localhost:4000${pedido.comprobante_pago}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center w-full h-full"
+
+      {tokens?.autorization && ["3", "0"].includes(tokens.autorization) && (
+        <td className="px-6 py-4 text-center">
+          <button
+            className="flex items-center justify-center w-full h-full cursor-pointer"
+            onClick={() => {
+              generatePdfBodeguero(pedido);
+            }}
           >
             <FaDownload className="text-gray-600" />
-          </a>
-        ) : (
-          "Sin comprobante"
-        )}
-      </td>
+          </button>
+        </td>
+      )}
+      {tokens?.autorization && ["4", "0"].includes(tokens.autorization) && (
+        <td className="px-6 py-4 text-center">
+          {pedido.comprobante_pago ? (
+            <a
+              href={`http://localhost:4000${pedido.comprobante_pago}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-full h-full"
+            >
+              <FaDownload className="text-gray-600" />
+            </a>
+          ) : (
+            "Sin comprobante"
+          )}
+        </td>
+      )}
       <td className="px-6 py-4 text-center flex flex-col">
         <button
           className="font-medium text-primary  hover:underline cursor-pointer"

@@ -85,7 +85,7 @@ function PedidosObservables(): Record<string, string | number | boolean> {
       return { id_estado_entrega: "4" };
     case "3":
       //Bodeguero - solo pedidos pagados y pedidos en proceso
-      return { id_estado_entrega: "0,1" };
+      return { id_estado_entrega: "1" };
     case "4":
       //Contador - solo pedidos pagados y pedidos en proceso
       return { id_estado_pedido: "0" };

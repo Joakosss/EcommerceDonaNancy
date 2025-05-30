@@ -28,7 +28,8 @@ function BodegueroUpdate({ id, onClose }: Props) {
             queryClient.invalidateQueries({ queryKey: ["productos"] });
             onClose();
           },
-          onError: () => {
+          onError: (error) => {
+            console.log(error.message);
             toast.error("Entrega no modificado", {
               hideProgressBar: true,
               position: "top-left",
@@ -47,7 +48,10 @@ function BodegueroUpdate({ id, onClose }: Props) {
         Modificar un pedido (Bodeguero)
       </h1>
       <div className="grid grid-cols-2 h-30 gap-2">
-        <label key="Entrega4" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
+        <label
+          key="Entrega4"
+          className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white"
+        >
           <input
             type="radio"
             name="estado_entrega"
@@ -59,7 +63,10 @@ function BodegueroUpdate({ id, onClose }: Props) {
           />
           En proceso
         </label>
-        <label key="Entrega3" className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white">
+        <label
+          key="Entrega3"
+          className="flex items-center justify-center gap-2 bg-primary/80 hover:bg-primary/90 m-2 p-2 rounded-md font-bold text-white"
+        >
           <input
             type="radio"
             name="estado_entrega"

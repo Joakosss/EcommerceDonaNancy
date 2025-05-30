@@ -33,7 +33,8 @@ function ContadorUpdate({ id, onClose }: Props) {
             queryClient.invalidateQueries({ queryKey: ["productos"] });
             onClose();
           },
-          onError: () => {
+          onError: (error) => {
+            console.log(error.message);
             toast.error("Entrega no modificado", {
               hideProgressBar: true,
               position: "top-left",

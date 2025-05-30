@@ -41,6 +41,7 @@ function ShopingCartPage() {
       navigate("/login");
       return;
     }
+    if (shoppingCart.length === 0) return;
     setStep(2);
   };
   /* Formulario y mutate */
@@ -170,10 +171,7 @@ function ShopingCartPage() {
               )}
             </div>
 
-            <PayZone
-              handleNextPage={handleNextPage}
-              step={step}
-            />
+            <PayZone handleNextPage={handleNextPage} step={step} />
           </div>
         </form>
       </FormProvider>

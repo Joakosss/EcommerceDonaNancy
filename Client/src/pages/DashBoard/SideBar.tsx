@@ -8,8 +8,23 @@ type Props = {
 };
 
 function SideBar({ isSidebarOpen }: Props) {
-  const { logout } = useAuthStore();
+  const { logout,tokens } = useAuthStore();
   const navigate = useNavigate();
+
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!tokens || !tokens.autorization) {
+      logout();
+      return;
+    }
+    if (item.label === "Usuarios") {
+      return tokens.autorization === "0";
+    }
+    if (item.label === "Productos") {
+      return tokens.autorization !== "4";
+    }
+
+    return true;
+  });
 
   //no se ejecuta navigate hasta que logout se ejecute
   const handleLogOut = async () => {
@@ -27,7 +42,7 @@ function SideBar({ isSidebarOpen }: Props) {
     >
       <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
         <ul className="space-y-2 font-medium">
-          {menuItems.map(({ label, icon: Icon }) => (
+          {filteredMenuItems.map(({ label, icon: Icon }) => (
             <OptionSideBar
               key={label}
               Icon={Icon}

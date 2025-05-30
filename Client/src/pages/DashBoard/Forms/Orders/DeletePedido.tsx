@@ -9,7 +9,7 @@ type Props = {
 
 function DeletePedido({ idProduct, onClose }: Props) {
   const queryClient = useQueryClient();
-  
+
   const { mutate, isPending } = useDeleteMutation(
     `http://localhost:3000/productos/${idProduct}`,
     {
@@ -22,7 +22,8 @@ function DeletePedido({ idProduct, onClose }: Props) {
         queryClient.invalidateQueries({ queryKey: ["productos"] });
         onClose();
       },
-      onError: () => {
+      onError: (error) => {
+        console.log(error.message);
         toast.error("Producto no eliminado", {
           hideProgressBar: true,
           position: "top-left",

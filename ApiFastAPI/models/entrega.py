@@ -24,7 +24,10 @@ class Entrega(SQLModel, table=True):
 def crear_entregas():
     entregas =[
         Entrega(id_entrega="1", fecha_entrega=datetime.date.today(), direccion_entrega="Calle entrega 456", id_sucursal="1", id_estado_entrega="1", id_tipo_entrega="1"),
-        Entrega(id_entrega="2", fecha_entrega=datetime.date.today(), direccion_entrega="Calle entrega 123", id_sucursal="1", id_estado_entrega="1", id_tipo_entrega="1"),
+        Entrega(id_entrega="2", fecha_entrega=datetime.date.today(), direccion_entrega="Calle entrega 123", id_sucursal="3", id_estado_entrega="1", id_tipo_entrega="1"),
+        Entrega(id_entrega="3", fecha_entrega=datetime.date(2025, 5, 25), direccion_entrega="Calle entrega 789", id_sucursal="1", id_estado_entrega="1", id_tipo_entrega="0"),
+        Entrega(id_entrega="4", fecha_entrega=datetime.date(2025, 5, 24), direccion_entrega="Calle entrega 321", id_sucursal="2", id_estado_entrega="1", id_tipo_entrega="1"),
+        Entrega(id_entrega="5", fecha_entrega=datetime.date(2025, 5, 23), direccion_entrega="Calle entrega 654", id_sucursal="1", id_estado_entrega="1", id_tipo_entrega="0"),
     ]
     with Session(engine) as session:
         entregas_existentes = session.exec(select(Entrega)).all()

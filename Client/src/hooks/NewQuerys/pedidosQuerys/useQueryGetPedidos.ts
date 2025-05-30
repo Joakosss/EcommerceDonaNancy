@@ -9,16 +9,37 @@ import { ComprasType } from "../../../types/ComprasType";
 */
 const axiosQuery = async (
   access_token: string,
-  filtros?: Record<string, string | number | boolean>
+  filtros?: Record<
+    string,
+    string | number | boolean | (string | number | boolean)[]
+  >
 ) => {
+  const params = new URLSearchParams();
+
+  if (filtros) {
+    Object.entries(filtros).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        // Si es array, añadir múltiples entradas con la misma clave
+        value.forEach((item) => {
+          params.append(key, item.toString());
+        });
+      } else {
+        params.append(key, value.toString());
+      }
+    });
+  }
+
   return await axios.get<ComprasType[]>("http://127.0.0.1:8000/api/pedidos", {
-    params: filtros,
+    params,
     headers: { Authorization: `Bearer ${access_token}` },
   });
 };
 
 function useQueryGetPedidos(
-  filtros?: Record<string, string | number | boolean>
+  filtros?: Record<
+    string,
+    string | number | boolean | (string | number | boolean)[]
+  >
 ) {
   const { tokens, setAuth, logout } = useAuthStore();
   const navigate = useNavigate();
@@ -74,7 +95,10 @@ function useQueryGetPedidos(
 
 export default useQueryGetPedidos;
 
-function PedidosObservables(): Record<string, string | number | boolean> {
+function PedidosObservables(): Record<
+  string,
+  string | number | boolean | (string | number | boolean)[]
+> {
   const { tokens } = useAuthStore();
   switch (tokens?.autorization) {
     case "1":
@@ -85,7 +109,7 @@ function PedidosObservables(): Record<string, string | number | boolean> {
       return { id_estado_entrega: "4" };
     case "3":
       //Bodeguero - solo pedidos pagados y pedidos en proceso
-      return { id_estado_entrega: "1" };
+      return { id_estado_entrega: ["0", "1"] };
     case "4":
       //Contador - solo pedidos pagados y pedidos en proceso
       return { id_estado_pedido: "0" };

@@ -1,4 +1,4 @@
-async function createOrden({ cone, id, entrega, amount, id_usuario, comprobante_url }) {
+async function createOrden({ cone, id, entrega,pedido, amount, id_usuario, comprobante_url }) {
   if (!cone || !id || !entrega || !amount || !id_usuario) {
     throw new Error("Faltan parámetros requeridos");
   }
@@ -8,8 +8,8 @@ async function createOrden({ cone, id, entrega, amount, id_usuario, comprobante_
     {
       id_entrega: id,
       fecha_entrega: new Date(entrega.fecha_entrega),
-      direccion_entrega: entrega.direccion_entrega,
-      id_sucursal: "1", //sucursal cambiar
+      direccion_entrega: entrega.direccion_entrega || "",
+      id_sucursal: entrega.sucursal || "", 
       id_estado_entrega: "1", //en proceso
       id_tipo_entrega: entrega.id_tipo_entrega,
     }
@@ -22,9 +22,9 @@ async function createOrden({ cone, id, entrega, amount, id_usuario, comprobante_
       total: amount,
       comprobante_pago: comprobante_url,
       id_estado_pedido: 0,
-      id_usuario: id_usuario, //debemos tener el id del usuario
-      id_forma_pago: 0,
-      id_entrega: id, // se supone debemos crear entrega cuando ya se pague por ende debemos modificar la bd para que sea null
+      id_usuario: id_usuario, 
+      id_forma_pago: pedido.id_forma_pago,
+      id_entrega: id,
     }
   );
 }

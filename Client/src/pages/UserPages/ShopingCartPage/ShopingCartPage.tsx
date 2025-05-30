@@ -41,6 +41,7 @@ function ShopingCartPage() {
       navigate("/login");
       return;
     }
+    if (shoppingCart.length === 0) return;
     setStep(2);
   };
   /* Formulario y mutate */
@@ -90,11 +91,10 @@ function ShopingCartPage() {
         },
         {
           onSuccess: (data) => {
-            alert("entraste");
             redirectToWebPay(data.token, data.url);
           },
           onError: (err) => {
-            alert(err);
+            alert(`error ${err}`);
           },
         }
       );
@@ -103,7 +103,7 @@ function ShopingCartPage() {
         alert("Falta comprobante");
         return;
       }
-      if (!data.entrega.id_sucursal) {
+      if (isMethodDelivery === "0" && !data.entrega.id_sucursal) {
         alert("Falta sucursal");
         return;
       }
@@ -170,10 +170,7 @@ function ShopingCartPage() {
               )}
             </div>
 
-            <PayZone
-              handleNextPage={handleNextPage}
-              step={step}
-            />
+            <PayZone handleNextPage={handleNextPage} step={step} />
           </div>
         </form>
       </FormProvider>

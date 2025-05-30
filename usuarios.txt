@@ -6,10 +6,10 @@
     AnaGonzalez
 
 2) Vendedora:
-    MariaGonzalez
+    MariaLopez
 
 3) Bodeguero:
-    Pedro
+    PedroGonzalez
 
 4) Contador: 
     AnaFernandez

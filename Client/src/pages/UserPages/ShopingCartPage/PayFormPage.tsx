@@ -103,7 +103,7 @@ function PayFormPage({
                         <option value="">Selecciona</option>
                         {sucursales.data &&
                           sucursales.data.map((sucursal: SucursalType) => (
-                            <option key={sucursal.nombre} value={sucursal.id}>
+                            <option key={sucursal.nombre} value={sucursal.id_sucursal}>
                               {sucursal.nombre}
                             </option>
                           ))}

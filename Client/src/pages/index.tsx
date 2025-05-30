@@ -17,7 +17,9 @@ import UpdatePass from "./DashBoard/UpdatePass";
 import UserTable from "./DashBoard/WorkSpaces/UserTable";
 import ProductTable from "./DashBoard/WorkSpaces/ProductTable";
 import OrdersTable from "./DashBoard/WorkSpaces/OrdersTable";
-import ProcessPay from "./UserPages/reponseShopping/processPay";
+import ProcessPay from "./UserPages/reponseShopping/ProcessPay";
+import InformesTable from "./DashBoard/WorkSpaces/InformesTable";
+import ChangePassAdmin from "./DashBoard/ChangePassAdmin";
 const router = createBrowserRouter([
   //por cada ruta un objeto
   { path: "registro/", element: <Registro /> },
@@ -41,18 +43,19 @@ const router = createBrowserRouter([
     element: <DashBoardGuard />,
     children: [
       {
-        path: "DashBoard/",
+        path: "dashboard/",
         element: <DashBoard />,
         children: [
           { path: "usuarios/", element: <UserTable /> },
           { path: "productos/", element: <ProductTable /> },
-          { path: "informes/", element: <ProductTable /> },
+          { path: "informes/", element: <InformesTable /> },
           { path: "pedidos/", element: <OrdersTable /> },
           { path: "cambiar_clave/", element: <UpdatePass /> },
         ],
-      }
+      },
     ],
   },
+  { path: "admin/changePassword", element: <ChangePassAdmin /> },
   { path: "*", element: <Page404 /> },
 ]);
 

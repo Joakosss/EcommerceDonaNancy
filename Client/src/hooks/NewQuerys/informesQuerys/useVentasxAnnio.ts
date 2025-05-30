@@ -1,40 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import useAuthStore from "../../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
-import { ComprasType } from "../../../types/ComprasType";
-/* 
-    Funcion para traer los usuarios desde la BD, espera que lo llames y puedes pasarle los filtros asi:
-    const {data} = useGetUsersQuery({id_perfil:"1"})
-*/
+import { utils, writeFile } from "xlsx";
 
-const axiosQuery = async (
-  accessToken: string,
-  filtros?: Record<string, string | number | boolean>
-) => {
-  return await axios.get("http://localhost:8000/api/pedidos/mis-pedidos", {
-    params: filtros,
+const axiosQuery = async (accessToken: string) => {
+  return await axios.get("http://localhost:8000/api/informes/ventas_por_anio", {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 };
 
-function useQueryGetMisPedidos(
-  filtros?: Record<string, string | number | boolean>
-) {
+function useVentasxAnnio() {
   const { tokens, setAuth, logout } = useAuthStore();
   const navigate = useNavigate();
-  return useQuery<[ComprasType]>({
-    queryKey: ["misPedidos", filtros],
-    queryFn: async () => {
+  return useMutation({
+    mutationKey: ["ventas_annio"],
+    mutationFn: async () => {
       if (!tokens || !tokens.access_token || !tokens.refresh_token) {
         logout();
         navigate("/");
         throw new Error(
-          "Sesión cerrada inesperadamente. Por favor, inicie sesión nuevamente."
+          "Sesión expirada. Por favor, inicie sesión nuevamente."
         );
       }
       try {
-        const response = await axiosQuery(tokens.access_token, filtros);
+        const response = await axiosQuery(tokens.access_token);
         return response.data;
       } catch (error: any) {
         const errorAxios = error as AxiosError;
@@ -52,24 +42,27 @@ function useQueryGetMisPedidos(
               id_usuario: tokens.id_usuario,
             });
             /* Se realiza la consulta nuevamente con el nuevo auth */
-            const retryResponse = await axiosQuery(
-              response.data.access_token,
-              filtros
-            );
+            const retryResponse = await axiosQuery(response.data.access_token);
             return retryResponse.data;
           } catch (error: any) {
-            logout();
             navigate("/");
+            logout();
             throw new Error(error.response?.data.detail || "Sesión expirada");
           }
         }
         throw new Error(
-          error.response?.data.detail || "La solicitud de pedidos falló"
+          error.response?.data.detail || "La solicitud de stock bajo falló"
         );
       }
+    },
+    onSuccess: (data) => {
+      const wb = utils.book_new();
+      const ws = utils.json_to_sheet(data);
+      // Añadir la hoja al libro
+      utils.book_append_sheet(wb, ws, "Ventas por annio");
+      writeFile(wb, "reporte_ventas_annio.xlsx"); //descarga el excel con los datos 
     },
   });
 }
 
-export default useQueryGetMisPedidos;
-
+export default useVentasxAnnio;

@@ -4,6 +4,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import transferenciasRouter from "./routes/transferencias.js";
 import webpayRouter from "./routes/webpay.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 
@@ -16,7 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs"); // Requiere que tengas EJS instalado o puedes reemplazar por res.send
 
-app.use("/api/comprobantes", express.static("files/comprobantes"));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //Routes c:
 app.use("/transferencias", transferenciasRouter);

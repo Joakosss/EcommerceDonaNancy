@@ -23,7 +23,6 @@ function DeleteProduct({ idProduct, onClose }: Props) {
         onClose();
       },
       onError: (error) => {
-        console.log(error.message)
         toast.error("Producto no eliminado", {
           hideProgressBar: true,
           position: "top-left",

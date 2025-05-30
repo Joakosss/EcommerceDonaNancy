@@ -40,15 +40,7 @@ function Registro() {
 
   const { mutate, error } = useMutatePostRegister();
 
-  /*   const { mutate, error } = usePostMutation<UsuarioType, AxiosError>(
-    "http://127.0.0.1:8000/api/usuarios/",
-    {
-      onSuccess: () => {setIsModal(true)}
-      onError(error) {
-        alert(error);
-      },
-    }
-  ); */
+
 
   const onSubmit = (data: FormType) => {
     const { confirmar_contrasenia, ...rest } = data;

@@ -6,6 +6,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ToastContainer } from "react-toastify";
 import { menuItems } from "../../constants/dashBoardMenuItems";
 import { FaBars } from "react-icons/fa6";
+import useAuthStore from "../../store/useAuthStore";
 
 function DashBoard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -23,7 +24,6 @@ function DashBoard() {
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 min-h-[89vh]">
           {/* Menu de opciones */}
           <MenuDashBoard />
-          {/*  */}
           {/* Tablas de actividades */}
           <div ref={animationParent} className="grid grid-cols-1 gap-4 ">
             <Outlet />
@@ -68,7 +68,7 @@ function NavbarDashBoard({
               <FaBars size={20} />
             </button>
             {/* Logo */}
-            <Link to={"/dashBoard"} className="flex ms-2 md:me-24">
+            <Link to={"/dashboard"} className="flex ms-2 md:me-24">
               <img src={NancySmall} className="h-10 me-3" alt="FlowBite Logo" />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-primary">
                 Doña Nancy
@@ -82,14 +82,29 @@ function NavbarDashBoard({
 }
 
 function MenuDashBoard() {
+  const { tokens, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [isHovered, setIsHovered] = useState<string | null>(null);
 
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!tokens || !tokens.autorization) {
+      logout();
+      return;
+    }
+    if (item.label === "Usuarios") {
+      return tokens.autorization === "0";
+    }
+    if (item.label === "Productos") {
+      return tokens.autorization !== "4";
+    }
+    
+    return true;
+  });
+
   return (
     <div className="grid grid-cols-4 gap-4 mb-4">
-      {menuItems.map(({ label, icon: Icon }) => (
-        
+      {filteredMenuItems.map(({ label, icon: Icon }) => (
         <div
           key={label}
           className="flex items-center justify-center rounded-sm bg-white h-28 "
@@ -102,7 +117,7 @@ function MenuDashBoard() {
           >
             <Icon
               className={
-                location.pathname === `/DashBoard/${label.toLowerCase()}/` ||
+                location.pathname === `/dashboard/${label.toLowerCase()}/` ||
                 isHovered === label
                   ? "text-primary duration-250 size-14"
                   : "size-12 duration-250"

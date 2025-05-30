@@ -58,7 +58,6 @@ function UpdateProduct({ product, onClose }: Props) {
           onClose();
         },
         onError: (error) => {
-          console.log(error.message);
           toast.error("Producto no modificado", {
             hideProgressBar: true,
             position: "top-left",

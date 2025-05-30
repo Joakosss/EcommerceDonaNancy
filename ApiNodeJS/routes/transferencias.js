@@ -7,6 +7,7 @@ import createOrden from "../services/createOrden.js";
 import createPedidoProducto from "../services/createPedidoProducto.js";
 import InsertPedidoProducto from "../services/InsertPedidoProducto.js";
 import { v4 } from "uuid";
+import updateStock from "../services/updateStock.js";
 const router = Router();
 
 //Crear pedido
@@ -16,8 +17,8 @@ router.post(
   upload.single("comprobante"),
   async (req, res) => {
     let cone;
-    const { products, entrega } = req.body;
-
+    const { products, entrega, pedido } = req.body;
+    console.log(req.body);
     try {
       if (!req.file) {
         console.log("No se recibió el comprobante de pago");
@@ -40,6 +41,7 @@ router.post(
         cone,
         id,
         entrega,
+        pedido,
         amount,
         id_usuario: req.user.id_usuario,
         comprobante_url: comprobanteUrl,
@@ -47,6 +49,8 @@ router.post(
 
       //insertamos los productos comprados
       await InsertPedidoProducto({ cone, productDetails, id_pedido: id });
+
+      await updateStock({ cone, productDetails });
 
       await cone.execute("COMMIT"); //si todo sale bien commit
 

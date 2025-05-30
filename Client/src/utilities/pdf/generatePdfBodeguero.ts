@@ -1,6 +1,7 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { ComprasType } from "../types/ComprasType";
+import { ComprasType } from "../../types/ComprasType";
+
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -9,7 +10,6 @@ export const generatePdfBodeguero = (pedido: ComprasType) => {
     content: [
       { text: "Productos", style: "header" },
       { text: "\n" },
-
       // Información del pedido
       {
         columns: [
@@ -25,7 +25,6 @@ export const generatePdfBodeguero = (pedido: ComprasType) => {
           },
         ],
       },
-
       { text: "\n" },
 
       // Tabla de productos

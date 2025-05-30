@@ -8,10 +8,8 @@ import Input from "../../../../components/FormComponents/Input";
 import Select from "../../../../components/FormComponents/Select";
 import { useState } from "react";
 import { FaRegFilePdf } from "react-icons/fa6";
-import pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from "pdfmake/build/vfs_fonts";
-import { TDocumentDefinitions } from "pdfmake/interfaces";
 import useMutatePostUser from "../../../../hooks/NewQuerys/userQuerys/useMutatePostUser";
+import { generateAdminNewUser } from "../../../../utilities/pdf/generateAdminNewUser";
 
 type FormType = {
   run_usuario: string;
@@ -24,7 +22,6 @@ type FormType = {
 
 function CreateUser() {
   const queryClient = useQueryClient();
-  pdfMake.vfs = pdfFonts.vfs;
 
   const [isNewUser, setIsNewUser] = useState<UsuarioType | null>(null);
   const [ispassword, setIspassword] = useState<string>("");
@@ -73,75 +70,7 @@ function CreateUser() {
     });
   };
 
-  const getDocDefinition = (user: UsuarioType): TDocumentDefinitions => {
-    const fullName = [user.p_nombre, user.p_apellido, user.s_apellido]
-      .filter(Boolean)
-      .join(" ");
 
-    return {
-      content: [
-        {
-          text: "Usuario",
-          style: "header",
-        },
-        {
-          style: "detailsTable",
-          table: {
-            widths: ["auto", "*"],
-            body: [
-              [
-                { text: "Nombre:", style: "label" },
-                { text: fullName, style: "value" },
-              ],
-              [
-                { text: "Correo:", style: "label" },
-                { text: user.correo, style: "value" },
-              ],
-              [
-                { text: "Teléfono:", style: "label" },
-                { text: user.telefono.toString(), style: "value" },
-              ],
-              [
-                { text: "Perfil:", style: "label" },
-                {
-                  text: userTypesConstants.find(
-                    (type) => type.id === isNewUser?.id_perfil
-                  )?.descripcion,
-                  style: "value",
-                },
-              ],
-              [
-                { text: "Usuario:", style: "label" },
-                { text: user.nombre_usuario, style: "value" },
-              ],
-              [
-                { text: "Contraseña:", style: "label" },
-                { text: ispassword, style: "value" },
-              ],
-            ],
-          },
-          layout: "noBorders",
-        },
-      ],
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true,
-          margin: [20, 0, 20, 12] as [number, number, number, number],
-          alignment: "center" as const,
-        },
-        label: {
-          fontSize: 12,
-          bold: true,
-          margin: [20, 4, 20, 4] as [number, number, number, number],
-        },
-        value: {
-          fontSize: 12,
-          margin: [20, 4, 20, 4] as [number, number, number, number],
-        },
-      },
-    };
-  };
 
   return (
     <>
@@ -314,9 +243,7 @@ function CreateUser() {
 
           <FaRegFilePdf
             className="size-7 text-primary cursor-pointer my-2.5"
-            onClick={() =>
-              pdfMake.createPdf(getDocDefinition(isNewUser)).open()
-            }
+            onClick={() => generateAdminNewUser(isNewUser, ispassword)}
           />
         </>
       )}

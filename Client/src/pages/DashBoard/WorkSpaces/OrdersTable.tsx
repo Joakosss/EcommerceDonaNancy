@@ -16,7 +16,7 @@ import VendedorUpdate from "../Forms/Orders/VendedorUpdate";
 import useAuthStore from "../../../store/useAuthStore";
 import ContadorUpdate from "../Forms/Orders/ContadorUpdate";
 import BodegueroUpdate from "../Forms/Orders/BodegueroUpdate";
-import { generatePdfBodeguero } from "../../../utilities/generatePdfBodeguero";
+import { generatePdfBodeguero } from "../../../utilities/pdf/generatePdfBodeguero";
 
 type ModalState =
   | { type: "create" }
@@ -229,22 +229,3 @@ function Tr({
   );
 }
 
-function Select({ ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  const { tokens } = useAuthStore();
-  return (
-    <div className="mt-3" id="tipoEntregaSelect">
-      <select
-        {...props}
-        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 cursor-pointer outline-none"
-      >
-        <option value="">Todos</option>
-        {/* opcion vendedor */}
-        {tokens?.autorization && ["2"].includes(tokens.autorization) && (
-          <option key="ComprasCompletados" value="4">
-            Completados
-          </option>
-        )}
-      </select>
-    </div>
-  );
-}

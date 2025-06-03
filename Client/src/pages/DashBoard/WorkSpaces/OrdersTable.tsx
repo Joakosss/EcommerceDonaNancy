@@ -76,9 +76,12 @@ function OrdersTable() {
                       Comprobante
                     </th>
                   )}
-                <th scope="col" className="px-6 py-3 text-center">
-                  opciones
-                </th>
+                {tokens?.autorization &&
+                  !["0"].includes(tokens.autorization) && (
+                    <th scope="col" className="px-6 py-3 text-center">
+                      opciones
+                    </th>
+                  )}
               </tr>
             </thead>
             <tbody>
@@ -204,28 +207,29 @@ function Tr({
           )}
         </td>
       )}
-      <td className="px-6 py-4 text-center flex flex-col">
-        <button
-          className="font-medium text-primary  hover:underline cursor-pointer"
-          onClick={() => {
-            UpdateModal(pedido.id_entrega);
-          }}
-        >
-          Editar
-        </button>
-        {tokens?.autorization &&
-          !["2", "4", "3"].includes(tokens.autorization) && (
-            <button
-              className="font-medium text-primary  hover:underline cursor-pointer"
-              onClick={() => {
-                deleteModal(pedido.id_pedido!);
-              }}
-            >
-              Eliminar
-            </button>
-          )}
-      </td>
+      {tokens?.autorization && !["0"].includes(tokens.autorization) && (
+        <td className="px-6 py-4 text-center flex flex-col">
+          <button
+            className="font-medium text-primary  hover:underline cursor-pointer"
+            onClick={() => {
+              UpdateModal(pedido.id_entrega);
+            }}
+          >
+            Editar
+          </button>
+          {tokens?.autorization &&
+            !["2", "4", "3"].includes(tokens.autorization) && (
+              <button
+                className="font-medium text-primary  hover:underline cursor-pointer"
+                onClick={() => {
+                  deleteModal(pedido.id_pedido!);
+                }}
+              >
+                Eliminar
+              </button>
+            )}
+        </td>
+      )}
     </tr>
   );
 }
-

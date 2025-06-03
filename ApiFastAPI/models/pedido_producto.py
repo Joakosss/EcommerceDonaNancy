@@ -31,6 +31,8 @@ def crear_pedido_productos():
         Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e6", cantidad=2, fecha=datetime.date(2025, 5, 23), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1c", id_producto="7"),
         Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e7", cantidad=1, fecha=datetime.date(2025, 5, 24), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1d", id_producto="8"),
         Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e8", cantidad=5, fecha=datetime.date(2025, 5, 25), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1e", id_producto="9"),
+        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729e9", cantidad=3, fecha=datetime.date(2025, 5, 26), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1f", id_producto="10"),
+        Pedido_producto(id_pedido_producto="4fd2d2b8-9610-4f00-8d55-435d92b729ea", cantidad=2, fecha=datetime.date(2025, 5, 27), valor_unidad=5000, id_pedido="2015cae5-99eb-454d-ab1a-ede02d703a1f", id_producto="11")
 
     ]
 

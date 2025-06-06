@@ -5,11 +5,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import Input from "../../components/FormComponents/Input";
+import { passwordNotAllowed } from "../../constants/passwordNotAllowed";
 
 type FormType = {
   contrasenia: string;
   contrasenia2: string;
-  cambiar_contrasenia: Boolean;
+  cambiar_contrasenia: boolean;
 };
 
 function ChangePassAdmin() {
@@ -63,7 +64,9 @@ function ChangePassAdmin() {
             typeInput="password"
             error={errors.contrasenia}
             {...register("contrasenia", {
-              required: "Es requerido",
+              required: "Requerido",
+              minLength:{value:8,message:'Debe contener al menos 8 caracteres'},
+              validate:(value)=> !passwordNotAllowed.includes(value)|| 'Esta contraseña no está permitida'
             })}
           />
           <Input

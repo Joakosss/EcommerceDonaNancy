@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+import { passwordNotAllowed } from "../../constants/passwordNotAllowed";
 
 function Paso3() {
   const {
@@ -52,6 +53,8 @@ function Paso3() {
           placeholder="*********"
           {...register("contrasenia", {
             required: "Requerido",
+            minLength:{value:8,message:'Debe contener al menos 8 caracteres'},
+            validate:(value)=> !passwordNotAllowed.includes(value)|| 'Esta contraseña no está permitida'
           })}
         />
       </div>

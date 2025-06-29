@@ -4,11 +4,17 @@ import useShoppingCartStore, {
 } from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import { generateSlug } from "../../../utilities/generateSlug";
+import { useQueryClient } from "@tanstack/react-query";
+import useExchange from "../../../store/useExchangeStore";
 type ItemCompraProps = {
   product: ProductCartType;
 };
 
 function ItemList({ product }: ItemCompraProps) {
+  const queryClient = useQueryClient();
+  const { exchange } = useExchange();
+  const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
+
   const { destroy, decrease, increase } = useShoppingCartStore();
   const navigate = useNavigate();
 
@@ -104,7 +110,11 @@ function ItemList({ product }: ItemCompraProps) {
           </div>
           {/* Precio */}
           <h3 className="text-sm sm:text-base font-semibold text-slate-900 mt-auto">
-            ${generateChileanPrice(product.product.precio)}
+            {exchange === "CLP"
+              ? `$${generateChileanPrice(product.product.precio)}`
+              : `$${
+                  Math.round((product.product.precio / DolarCache!) * 100) / 100
+                } USD`}
           </h3>
         </div>
       </div>

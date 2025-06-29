@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import useShoppingCartStore from "../../../store/useShoppingCartStore";
 import { generateChileanPrice } from "../../../utilities/generateChileanPrice";
 import MyButton from "../../../components/MyButton";
+import useExchange from "../../../store/useExchangeStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 type PayZoneProps = {
   handleNextPage: () => void;
@@ -10,6 +12,9 @@ type PayZoneProps = {
 
 function PayZone({ handleNextPage, step }: PayZoneProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { exchange } = useExchange();
+  const DolarCache = queryClient.getQueryData<number>(["Dolar"]);
   const { totalPrice, counterItems } = useShoppingCartStore();
   const discount = counterItems >= 4 ? totalPrice * 0.25 : 0;
 
@@ -20,7 +25,9 @@ function PayZone({ handleNextPage, step }: PayZoneProps) {
           <li className="flex flex-wrap gap-4 text-sm">
             Subtotal{" "}
             <span className="ml-auto font-semibold">
-              ${generateChileanPrice(totalPrice)}
+              {exchange === "CLP"
+                ? `$${generateChileanPrice(totalPrice)}`
+                : `$${Math.round((totalPrice / DolarCache!) * 100) / 100} USD`}
             </span>
           </li>
           <li className="flex flex-wrap gap-4 text-sm">Descuentos:</li>
@@ -29,7 +36,11 @@ function PayZone({ handleNextPage, step }: PayZoneProps) {
               <li className="flex flex-wrap gap-4 text-sm">
                 25% Off{" "}
                 <span className="ml-auto font-semibold">
-                  ${generateChileanPrice(discount)}
+                  {exchange === "CLP"
+                    ? `$${generateChileanPrice(discount)}`
+                    : `$${
+                        Math.round((discount / DolarCache!) * 100) / 100
+                      } USD`}
                 </span>
               </li>
             </>
@@ -38,7 +49,9 @@ function PayZone({ handleNextPage, step }: PayZoneProps) {
           <li className="flex flex-wrap gap-4 text-sm font-semibold">
             Total{" "}
             <span className="ml-auto">
-              ${generateChileanPrice(totalPrice - discount)}
+              {exchange === "CLP"
+                ? `$${generateChileanPrice(totalPrice - discount)}`
+                : `$${Math.round(((totalPrice - discount) / DolarCache!) * 100) / 100} USD`}
             </span>
           </li>
         </ul>
